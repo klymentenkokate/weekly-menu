@@ -270,14 +270,6 @@
   }
   .cell-main .cmac em { font-style: normal; color: var(--m-protein); font-weight: 600; }
 
-  /* rubber stamp */
-  .badge {
-    display: inline-block; margin-top: 7px; padding: 3px 9px 2px;
-    font-family: var(--stamp); font-size: 8.5px; letter-spacing: .14em;
-    text-transform: uppercase; font-weight: 700;
-    color: var(--terracotta); border: 1.5px solid var(--terracotta);
-    border-radius: 30px; transform: rotate(-3.5deg); opacity: .85;
-  }
 
   /* ---------- buttons: drawn outlines ---------- */
   .wk-acts { display: flex; gap: 10px; flex-wrap: wrap; margin: 26px 0 0; align-items: center; }
@@ -2210,13 +2202,13 @@ const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sun
 // Built to land on TARGET: 1347 kcal/day average, only 33 kcal between the
 // lightest and heaviest day.
 const DEFAULT_PLAN = [
-  { b:'b16', d:'d25' },   // Mon  1328 kcal   prawn crispbread  / cauliflower & chickpea curry
-  { b:'b24', d:'d24' },   // Tue  1331 kcal   tempeh hash       / salmon & lentil traybake
-  { b:'b6',  d:'d26' },   // Wed  1358 kcal   shakshuka         / cod, bean & cabbage stew
-  { b:'b18', d:'d27' },   // Thu  1360 kcal   tofu scramble     / pea, corn & tofu rice
-  { b:'b17', d:'d29' },   // Fri  1343 kcal   savoury skyr bowl / carrot, pea & salmon
-  { b:'b15', d:'d22' },   // Sat  1361 kcal   tuna & bean toast / baked eggs & lentils
-  { b:'b8',  d:'d20' }    // Sun  1345 kcal   mackerel pâté     / sardine & broccoli pasta
+  { b:'b30', d:'d7'  },   // Mon  1363 kcal   beetroot & egg bowl / tofu & lentil curry
+  { b:'b16', d:'d5'  },   // Tue  1332 kcal   prawn crispbread    / tortilla paisana
+  { b:'b20', d:'d10' },   // Wed  1362 kcal   cockle crispbread   / salmon teriyaki
+  { b:'b18', d:'d30' },   // Thu  1370 kcal   tofu scramble       / beetroot & mackerel
+  { b:'b32', d:'d26' },   // Fri  1328 kcal   courgette bake      / cod, bean & cabbage
+  { b:'b24', d:'d13' },   // Sat  1327 kcal   tempeh hash         / tuna meatballs
+  { b:'b23', d:'d1'  }    // Sun  1334 kcal   sardine toast       / baked salmon
 ];
 let plan = DEFAULT_PLAN.map(x => ({ ...x }));
 
@@ -2311,7 +2303,6 @@ const UK = {
  "More often": "★ Частіше",
  "★ More often": "★ Частіше",
  "Less often": "Рідше",
- "cook ×2": "готуй ×2",
  "from last night": "з учорашньої вечері",
  "At Mercadona · English, then the shelf name": "У Mercadona · українською, потім назва на полиці",
  "Ingredients — one portion": "Інгредієнти — одна порція",
@@ -2713,7 +2704,6 @@ function safeRenderWeek() {
 function cellHtml(r, slot, opts) {
   const cls = 'cell' + (opts.carry ? ' carry' : '');
   const label = opts.carry ? t('from last night') : t(slot);
-  const badge = opts.badge ? `<span class="badge">${t(opts.badge)}</span>` : '';
   // Main area swaps the meal (lunch can't be swapped, so it opens the recipe);
   // the second button always opens the recipe, which is the thing you actually
   // want when you are standing in the kitchen.
@@ -2724,7 +2714,6 @@ function cellHtml(r, slot, opts) {
       <span class="slot">${label}</span>
       <span class="rname">${esc(t(r.name))}</span>
       <span class="cmac">${r.kcal} ${t('kcal')} · <em>${r.p} ${t('g')}</em></span>
-      ${badge}
     </button>
     <button class="cell-view" data-view="${r.id}" title="${esc(t('See how to cook it'))}">${t('Recipe')} &rsaquo;</button>
   </div>`;
@@ -2748,6 +2737,24 @@ function findEggDays(p = plan) {
   for (let i = 0; i < 7; i++) {
     const n = eggsOnDay(p, i);
     if (n > EGG_LIMIT) out.push({ day: i, eggs: n });
+  }
+  return out;
+}
+
+// The same protein twice in one day — e.g. sardines at breakfast and again at lunch.
+// Consecutive dinners already differ, so in practice this catches breakfast clashing
+// with the carried lunch or that night's dinner.
+function findDupeDays(p = plan) {
+  const out = [];
+  for (let i = 0; i < 7; i++) {
+    const b = p[i].b ? SOURCE[p[i].b] : null;
+    const l = SOURCE[p[(i + 6) % 7].d];
+    const d = SOURCE[p[i].d];
+    let src = null, slots = null;
+    if (b && b === l)      { src = b; slots = ['Breakfast', 'Lunch']; }
+    else if (b && b === d) { src = b; slots = ['Breakfast', 'Dinner']; }
+    else if (l === d)      { src = l; slots = ['Lunch', 'Dinner']; }
+    if (src) out.push({ day: i, src, slots });
   }
   return out;
 }
@@ -2788,12 +2795,16 @@ function weightedOrder(pool) {
 
 // Two dinners sharing a protein must sit at least three days apart, because each one
 // also occupies the following day's lunch slot.
-function pickDinners(pool) {
+function pickDinners(pool, fixedB) {
   const chosen = new Array(7).fill(null);
   const free = (src, i) => [-2, -1, 1, 2].every(o => {
     const j = chosen[(i + o + 7) % 7];
     return !j || SOURCE[j] !== src;
   });
+  // When breakfasts are being kept, a dinner also has to clear the breakfast it
+  // shares a day with, and the one it will sit next to as tomorrow's lunch.
+  const clearsB = (src, i) => !fixedB ||
+    (SOURCE[fixedB[i]] !== src && SOURCE[fixedB[(i + 1) % 7]] !== src);
   // Two consecutive dinners share a day, so their eggs must already fit under the
   // limit before breakfast is even added.
   const eggsFit = (id, i) => [-1, 1].every(o => {
@@ -2802,7 +2813,8 @@ function pickDinners(pool) {
   });
   for (let i = 0; i < 7; i++) {
     const pick = weightedOrder(pool)
-      .find(r => !chosen.includes(r.id) && free(SOURCE[r.id], i) && eggsFit(r.id, i));
+      .find(r => !chosen.includes(r.id) && free(SOURCE[r.id], i)
+                 && eggsFit(r.id, i) && clearsB(SOURCE[r.id], i));
     if (!pick) return null;
     chosen[i] = pick.id;
   }
@@ -2818,7 +2830,8 @@ function pickBreakfasts(pool, dinners) {
       if (out.includes(r.id)) return false;
       out[i] = r.id;
       const trial = dinners.map((d, j) => ({ b: out[j], d }));
-      const ok = findRuns(trial).length === 0 && eggsOnDay(trial, i) <= EGG_LIMIT;
+      const ok = findRuns(trial).length === 0 && eggsOnDay(trial, i) <= EGG_LIMIT
+                 && !findDupeDays(trial).some(x => x.day === i);
       out[i] = null;
       return ok;
     });
@@ -2843,12 +2856,13 @@ function buildWeek(keepBreakfasts) {
 
   let fallback = null;
   for (let attempt = 0; attempt < 500; attempt++) {
-    const dinners = pickDinners(dPool);
+    const keptB = keepBreakfasts ? plan.map(d => d.b) : null;
+    const dinners = pickDinners(dPool, keptB);
     if (!dinners) continue;
-    const bs = keepBreakfasts ? plan.map(d => d.b) : pickBreakfasts(bPool, dinners);
+    const bs = keptB || pickBreakfasts(bPool, dinners);
     if (!bs) continue;
     const trial = dinners.map((d, i) => ({ b: bs[i], d }));
-    if (findRuns(trial).length || findEggDays(trial).length) continue;
+    if (findRuns(trial).length || findEggDays(trial).length || findDupeDays(trial).length) continue;
 
     const days = [0,1,2,3,4,5,6].map(i => dayKcal(trial, i));
     const avg = days.reduce((a, b) => a + b, 0) / 7;
@@ -2898,7 +2912,9 @@ document.getElementById('shuffleDinnersBtn').addEventListener('click', () => shu
 function renderWeek() {
   const runs = findRuns();
   const eggDays = findEggDays();
-  const flagged = new Set([...runs.flatMap(r => r.days), ...eggDays.map(e => e.day)]);
+  const dupes = findDupeDays();
+  const flagged = new Set([...runs.flatMap(r => r.days), ...eggDays.map(e => e.day),
+                          ...dupes.map(x => x.day)]);
 
   document.getElementById('week').innerHTML = plan.map((day, i) => {
     const b = byId(day.b), l = byId(lunchFor(i)), d = byId(day.d);
@@ -2910,7 +2926,7 @@ function renderWeek() {
         }</span></div>
       ${cellHtml(b, 'Breakfast', { swap:'b', dayIdx:i })}
       ${cellHtml(l, 'Lunch', { carry:true, dayIdx:i })}
-      ${cellHtml(d, 'Dinner', { swap:'d', dayIdx:i, badge:'cook ×2' })}
+      ${cellHtml(d, 'Dinner', { swap:'d', dayIdx:i })}
     </div>`;
   }).join('');
 
@@ -2918,7 +2934,10 @@ function renderWeek() {
   const msgs = runs.map(r =>
       `<b>${SOURCE_LABEL[r.src]}</b> lands on ${r.days.map(d => t(DAYS[d])).join(', ')} — three days running.`)
     .concat(eggDays.map(e =>
-      `<b>${t(DAYS[e.day])}</b> comes to ${e.eggs} eggs, over your limit of ${EGG_LIMIT}.`));
+      `<b>${t(DAYS[e.day])}</b> comes to ${e.eggs} eggs, over your limit of ${EGG_LIMIT}.`))
+    .concat(dupes.map(x =>
+      `<b>${t(DAYS[x.day])}</b> has ${t(SOURCE_LABEL[x.src]).toLowerCase()} twice — ` +
+      x.slots.map(sl => t(sl).toLowerCase()).join(' and ') + '.'));
   warn.hidden = !msgs.length;
   warn.innerHTML = msgs.join('<br>');
 
