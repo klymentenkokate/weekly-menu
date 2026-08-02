@@ -2780,8 +2780,11 @@ function findEggDays(p = plan) {
 }
 
 // The same protein twice in one day — e.g. sardines at breakfast and again at lunch.
-// Consecutive dinners already differ, so in practice this catches breakfast clashing
-// with the carried lunch or that night's dinner.
+// Dairy is exempt: yogurt, cottage cheese and feta turn up as sides rather than as
+// the thing you'd tire of, so twice in a day is fine.
+const DUPE_EXEMPT = ['dairy'];
+const dupeCounts = src => src && !DUPE_EXEMPT.includes(src);
+
 function findDupeDays(p = plan) {
   const out = [];
   for (let i = 0; i < 7; i++) {
@@ -2789,9 +2792,9 @@ function findDupeDays(p = plan) {
     const l = SOURCE[p[(i + 6) % 7].d];
     const d = SOURCE[p[i].d];
     let src = null, slots = null;
-    if (b && b === l)      { src = b; slots = ['Breakfast', 'Lunch']; }
-    else if (b && b === d) { src = b; slots = ['Breakfast', 'Dinner']; }
-    else if (l === d)      { src = l; slots = ['Lunch', 'Dinner']; }
+    if (b && b === l && dupeCounts(b))      { src = b; slots = ['Breakfast', 'Lunch']; }
+    else if (b && b === d && dupeCounts(b)) { src = b; slots = ['Breakfast', 'Dinner']; }
+    else if (l === d && dupeCounts(l))      { src = l; slots = ['Lunch', 'Dinner']; }
     if (src) out.push({ day: i, src, slots });
   }
   return out;
@@ -2841,7 +2844,7 @@ function pickDinners(pool, fixedB) {
   });
   // When breakfasts are being kept, a dinner also has to clear the breakfast it
   // shares a day with, and the one it will sit next to as tomorrow's lunch.
-  const clearsB = (src, i) => !fixedB ||
+  const clearsB = (src, i) => !fixedB || !dupeCounts(src) ||
     (SOURCE[fixedB[i]] !== src && SOURCE[fixedB[(i + 1) % 7]] !== src);
   // Two consecutive dinners share a day, so their eggs must already fit under the
   // limit before breakfast is even added.
@@ -2893,7 +2896,9 @@ function buildWeek(keepBreakfasts) {
   if (bPool.length < 7) { bPool = allB; relaxed = true; }
 
   let fallback = null;
-  for (let attempt = 0; attempt < 500; attempt++) {
+  // 1200 rather than a few hundred: with breakfasts held fixed the search is much
+  // tighter, and the extra attempts cost single-digit milliseconds.
+  for (let attempt = 0; attempt < 1200; attempt++) {
     const keptB = keepBreakfasts ? plan.map(d => d.b) : null;
     const dinners = pickDinners(dPool, keptB);
     if (!dinners) continue;
