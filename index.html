@@ -497,6 +497,14 @@
     margin: 12px 0 0; min-height: 1.4em;
   }
 
+  .swapnote { margin: 0 0 14px; font-size: 14px; color: var(--ink-soft); }
+  .dlg-body h4.warn { color: var(--terracotta); }
+  button.swapopt .why {
+    display: block; font-family: var(--hand); font-size: 13px;
+    color: var(--terracotta); margin-top: 2px;
+  }
+  button.swapopt.breaks { opacity: .62; border-style: dashed; }
+  button.swapopt.breaks:hover { opacity: 1; border-color: var(--terracotta); background: none; }
   .swaplist { display: grid; gap: 7px; margin-top: 8px; }
   button.swapopt {
     font: inherit; font-size: 14px; text-align: left; padding: 10px 13px; cursor: pointer;
@@ -2609,7 +2617,14 @@ const UK = {
  "Image saved — attach it in Telegram or WhatsApp.": "Зображення збережено — прикріпи його в Telegram або WhatsApp.",
  "Copied — paste it into any chat.": "Скопійовано — встав у будь-який чат.",
  "Could not copy automatically.": "Не вдалося скопіювати автоматично.",
- "Sharing was blocked — save the image instead.": "Надсилання заблоковано — збережи зображення."
+ "Sharing was blocked — save the image instead.": "Надсилання заблоковано — збережи зображення.",
+ "Best fit": "Найкраще підходить",
+ "Would break a rule": "Порушить правило",
+ "three days running": "три дні поспіль",
+ "twice that day": "двічі того дня",
+ "on": "—",
+ "Only dinners that keep overnight are listed — this one becomes": "Показані лише вечері, що зберігаються до завтра — ця стане обідом у",
+ "'s lunch.": "."
 };
 let lang = 'en';
 try { lang = localStorage.getItem('mealPlanLang') === 'uk' ? 'uk' : 'en'; } catch (e) {}
@@ -2986,28 +3001,66 @@ function renderWeek() {
 
 }
 
+// What would this choice break? A dinner lands on two days (tonight and tomorrow's
+// lunch), a breakfast on one. Only issues touching those days are the swap's fault.
+function swapIssues(slot, dayIdx, id) {
+  const trial = plan.map(x => ({ ...x }));
+  trial[dayIdx] = { ...trial[dayIdx], [slot]: id };
+  const days = slot === 'd' ? [dayIdx, (dayIdx + 1) % 7] : [dayIdx];
+  const out = [];
+  findRuns(trial).filter(r => r.days.some(d => days.includes(d)))
+    .forEach(r => out.push(t(SOURCE_LABEL[r.src]) + ' ' + t('three days running')));
+  findDupeDays(trial).filter(x => days.includes(x.day))
+    .forEach(x => out.push(t(SOURCE_LABEL[x.src]) + ' ' + t('twice that day')));
+  findEggDays(trial).filter(e => days.includes(e.day))
+    .forEach(e => out.push(e.eggs + ' ' + t('eggs') + ' ' + t('on') + ' ' + t(DAYS[e.day])));
+  return [...new Set(out)];
+}
+
 document.getElementById('week').addEventListener('click', e => {
   const btn = e.target.closest('button');
   if (!btn) return;
   if (btn.dataset.view) return openRecipe(byId(btn.dataset.view));
   const slot = btn.dataset.swap, dayIdx = +btn.dataset.day;
-  const rank = r => (rating[r.id] === 1 ? 0 : rating[r.id] === -1 ? 2 : 1);
-  const pool = (slot === 'b'
-      ? RECIPES.filter(r => r.meal === 'breakfast')
-      : RECIPES.filter(r => KEEPS.includes(r.id))
-    ).sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
   const current = slot === 'b' ? plan[dayIdx].b : plan[dayIdx].d;
+  const pool = slot === 'b'
+      ? RECIPES.filter(r => r.meal === 'breakfast')
+      : RECIPES.filter(r => KEEPS.includes(r.id));
+
+  // How close does each option leave the day to target?
+  const other = slot === 'b'
+    ? byId(plan[(dayIdx + 6) % 7].d).kcal + byId(plan[dayIdx].d).kcal
+    : byId(plan[dayIdx].b).kcal + byId(plan[(dayIdx + 6) % 7].d).kcal;
+
+  const scored = pool.map(r => ({
+    r,
+    issues: swapIssues(slot, dayIdx, r.id),
+    miss: Math.abs((other + r.kcal) - TARGET.kcal),
+    fav: rating[r.id] === 1 ? 0 : rating[r.id] === -1 ? 2 : 1
+  })).sort((a, b) =>
+      a.issues.length - b.issues.length || a.fav - b.fav || a.miss - b.miss);
+
+  const good = scored.filter(x => !x.issues.length);
+  const bad  = scored.filter(x => x.issues.length);
+
+  const row = x => `<button class="swapopt${x.issues.length ? ' breaks' : ''}"
+      data-pick="${x.r.id}" aria-current="${x.r.id === current}">
+      <span>${rating[x.r.id] === 1 ? '<span class="star">★</span> ' : ''}${esc(t(x.r.name))}${
+        x.issues.length ? `<span class="why">${esc(x.issues.join(' · '))}</span>` : ''}</span>
+      <span class="q">${x.r.kcal} ${t('kcal')} · ${x.r.p} ${t('g')}</span>
+    </button>`;
+
   document.getElementById('swapTitle').textContent =
     t(slot === 'b' ? 'Breakfast' : 'Dinner') + ' — ' + t(DAYS[dayIdx]);
   document.getElementById('swapBody').innerHTML =
     (slot === 'd'
-      ? '<p style="margin:0 0 12px;font-size:14px;color:var(--ink-soft)">Only dinners that hold overnight are listed, because this one becomes ' + DAYS[(dayIdx + 1) % 7] + '\'s lunch.</p>'
+      ? `<p class="swapnote">${t('Only dinners that keep overnight are listed — this one becomes')} ` +
+        t(DAYS[(dayIdx + 1) % 7]) + `${t("'s lunch.")}</p>`
       : '') +
-    '<div class="swaplist">' + pool.map(r =>
-      `<button class="swapopt" data-pick="${r.id}" aria-current="${r.id === current}">
-        <span>${rating[r.id] === 1 ? '<span class="star">★</span> ' : ''}${esc(t(r.name))}</span>
-        <span class="q">${rating[r.id] === -1 ? 'less often · ' : ''}${r.kcal} kcal · ${r.p} g</span>
-      </button>`).join('') + '</div>';
+    (good.length ? `<h4>${t('Best fit')}</h4><div class="swaplist">` +
+       good.map(row).join('') + '</div>' : '') +
+    (bad.length ? `<h4 class="warn">${t('Would break a rule')}</h4><div class="swaplist">` +
+       bad.map(row).join('') + '</div>' : '');
   document.getElementById('swapBody').dataset.slot = slot;
   document.getElementById('swapBody').dataset.day = dayIdx;
   document.getElementById('swapDlg').showModal();
