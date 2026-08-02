@@ -231,13 +231,23 @@
   .daycol.clash .eggct { color: var(--terracotta); font-weight: 600; }
 
   .cell {
-    padding: 11px 12px 12px; border-bottom: 1px dashed var(--rule-soft);
-    text-align: left; background: none; border-left: 0; border-right: 0; border-top: 0;
+    border-bottom: 1px dashed var(--rule-soft);
+    display: flex; flex-direction: column; align-items: flex-start;
+  }
+  .cell-main {
+    padding: 11px 12px 7px; text-align: left; background: none; border: 0;
     width: 100%; font: inherit; color: inherit; cursor: pointer; display: block;
     transition: background .14s;
   }
-  .cell:hover { background: color-mix(in srgb, var(--sage) 20%, transparent); }
-  .cell .slot {
+  .cell-main:hover { background: color-mix(in srgb, var(--sage) 20%, transparent); }
+  .cell-view {
+    margin: 0 12px 10px; padding: 2px 0; background: none; border: 0;
+    font-family: var(--hand); font-size: 13px; color: var(--olive);
+    cursor: pointer; border-bottom: 1px solid color-mix(in srgb, var(--olive) 45%, transparent);
+    transition: color .12s, border-color .12s;
+  }
+  .cell-view:hover { color: var(--moss); border-color: var(--moss); }
+  .cell-main .slot {
     font-family: var(--stamp); font-size: 8.5px; letter-spacing: .16em;
     text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 4px;
   }
@@ -247,18 +257,18 @@
         color-mix(in srgb, var(--mustard) 9%, transparent) 9px,
         color-mix(in srgb, var(--mustard) 9%, transparent) 18px);
   }
-  .cell.carry:hover { background: color-mix(in srgb, var(--mustard) 20%, transparent); }
-  .cell.carry .slot { color: var(--mustard); font-family: var(--hand);
+  .cell.carry .cell-main:hover { background: color-mix(in srgb, var(--mustard) 22%, transparent); }
+  .cell.carry .cell-main .slot { color: var(--mustard); font-family: var(--hand);
                       font-size: 12px; letter-spacing: 0; text-transform: none; }
-  .cell .rname {
+  .cell-main .rname {
     font-family: var(--display); font-size: 16.5px; line-height: 1.22;
     display: block; letter-spacing: -.004em;
   }
-  .cell .cmac {
+  .cell-main .cmac {
     font-family: var(--body); font-size: 10.5px; font-variant-numeric: tabular-nums;
     color: var(--ink-faint); display: block; margin-top: 5px; letter-spacing: .02em;
   }
-  .cell .cmac em { font-style: normal; color: var(--m-protein); font-weight: 600; }
+  .cell-main .cmac em { font-style: normal; color: var(--m-protein); font-weight: 600; }
 
   /* rubber stamp */
   .badge {
@@ -2567,7 +2577,10 @@ const UK = {
  "Sunday": "Неділя",
  "Ingredients — one portion": "Інгредієнти — одна порція",
  "egg": "яйце",
- "eggs": "яйця"
+ "eggs": "яйця",
+ "Recipe": "Рецепт",
+ "See how to cook it": "Подивитися, як готувати",
+ "Tap to swap": "Натисни, щоб замінити"
 };
 let lang = 'en';
 try { lang = localStorage.getItem('mealPlanLang') === 'uk' ? 'uk' : 'en'; } catch (e) {}
@@ -2701,13 +2714,20 @@ function cellHtml(r, slot, opts) {
   const cls = 'cell' + (opts.carry ? ' carry' : '');
   const label = opts.carry ? t('from last night') : t(slot);
   const badge = opts.badge ? `<span class="badge">${t(opts.badge)}</span>` : '';
-  const attrs = opts.swap ? ` data-swap="${opts.swap}" data-day="${opts.dayIdx}"` : ' data-view="' + r.id + '"';
-  return `<button class="${cls}"${attrs}>
-    <span class="slot">${label}</span>
-    <span class="rname">${esc(t(r.name))}</span>
-    <span class="cmac">${r.kcal} ${t('kcal')} · <em>${r.p} ${t('g')}</em></span>
-    ${badge}
-  </button>`;
+  // Main area swaps the meal (lunch can't be swapped, so it opens the recipe);
+  // the second button always opens the recipe, which is the thing you actually
+  // want when you are standing in the kitchen.
+  const attrs = opts.swap ? ` data-swap="${opts.swap}" data-day="${opts.dayIdx}"` : ` data-view="${r.id}"`;
+  const hint = opts.swap ? t('Tap to swap') : t('from last night');
+  return `<div class="${cls}">
+    <button class="cell-main"${attrs} title="${esc(hint)}">
+      <span class="slot">${label}</span>
+      <span class="rname">${esc(t(r.name))}</span>
+      <span class="cmac">${r.kcal} ${t('kcal')} · <em>${r.p} ${t('g')}</em></span>
+      ${badge}
+    </button>
+    <button class="cell-view" data-view="${r.id}" title="${esc(t('See how to cook it'))}">${t('Recipe')} &rsaquo;</button>
+  </div>`;
 }
 
 // A protein appearing on three consecutive days breaks the rule. Because each dinner
