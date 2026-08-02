@@ -342,6 +342,15 @@
     background: var(--moss); border-color: var(--moss); color: var(--paper); font-weight: 600;
   }
 
+  .fishrow { padding-top: 2px; }
+  .fishchips { display: flex; gap: 6px; flex-wrap: wrap; }
+  button.chip.fish {
+    font-size: 12.5px; padding: 7px 11px;
+    border-color: color-mix(in srgb, var(--sky) 60%, var(--rule));
+  }
+  button.chip.fish em { font-style: normal; opacity: .55; font-size: 11px; margin-left: 4px; }
+  button.chip.fish[aria-pressed="true"] { background: var(--sky); border-color: var(--sky); color: #16323d; }
+
   .count {
     font-family: var(--hand); font-size: 16px; color: var(--ink-faint);
     margin: 24px 0 14px; transform: rotate(-.5deg); display: inline-block;
@@ -638,6 +647,10 @@
       <button class="chip f-cui" data-v="mideast" aria-pressed="false" data-i18n>Middle Eastern</button>
       <button class="chip f-cui" data-v="nordic" aria-pressed="false" data-i18n>Nordic</button>
       <button class="chip f-cui" data-v="simple" aria-pressed="false" data-i18n>No fuss</button>
+    </div>
+    <div class="ctl-row fishrow" id="fishRow" hidden>
+      <span class="ctl-label" data-i18n>Which fish</span>
+      <span class="fishchips" id="fishChips"></span>
     </div>
     <div class="ctl-row">
       <span class="ctl-label" data-i18n>Filter</span>
@@ -2668,7 +2681,23 @@ const UK = {
  "recipe selected": "рецепт обрано",
  "recipes selected": "рецептів обрано",
  "Recipes": "Рецепти",
- "Shopping & prep": "Покупки і підготовка"
+ "Shopping & prep": "Покупки і підготовка",
+ "Which fish": "Яка риба",
+ "Salmon": "Лосось",
+ "Trout": "Форель",
+ "Cod": "Тріска",
+ "Hake": "Хек",
+ "Sea bass": "Сібас",
+ "Sea bream": "Дорадо",
+ "Monkfish": "Морський чорт",
+ "Mackerel": "Скумбрія",
+ "Sardines": "Сардини",
+ "Anchovies": "Анчоуси",
+ "Melva": "Мелва",
+ "Prawns": "Креветки",
+ "Mussels": "Мідії",
+ "Clams": "Молюски",
+ "Cockles": "Сердцевидки"
 };
 let lang = 'en';
 try { lang = localStorage.getItem('mealPlanLang') === 'uk' ? 'uk' : 'en'; } catch (e) {}
@@ -2693,6 +2722,32 @@ function prunePicks() {
   [...picked].forEach(id => { if (!inWeek.has(id)) { picked.delete(id); changed = true; } });
   if (changed) savePicked();
 }
+
+// Match on the actual ingredient, not the recipe's headline protein — the point is
+// "there is cod in the fridge", which should not surface hake.
+const FISH_KINDS = [
+  ['salmon',   'Salmon',    ['Fresh salmon fillet', 'Smoked salmon']],
+  ['trout',    'Trout',     ['Smoked trout', 'Trout fillets']],
+  ['tuna',     'Tuna',      ['Tuna in brine', 'Tuna for tartare, previously frozen']],
+  ['cod',      'Cod',       ['Cod loins']],
+  ['hake',     'Hake',      ['Hake loins']],
+  ['seabass',  'Sea bass',  ['Sea bass fillets']],
+  ['seabream', 'Sea bream', ['Sea bream fillets']],
+  ['monkfish', 'Monkfish',  ['Monkfish']],
+  ['mackerel', 'Mackerel',  ['Mackerel in olive oil']],
+  ['sardines', 'Sardines',  ['Sardines in olive oil']],
+  ['anchovies','Anchovies', ['Anchovies in olive oil']],
+  ['melva',    'Melva',     ['Melva in olive oil, drained']],
+  ['prawns',   'Prawns',    ['Cooked peeled prawns', 'Frozen peeled prawns']],
+  ['mussels',  'Mussels',   ['Fresh mussels', 'Mussels in escabeche, drained']],
+  ['clams',    'Clams',     ['Fresh clams']],
+  ['cockles',  'Cockles',   ['Cockles in brine, drained']]
+];
+const fishKinds = new Set();
+const hasFish = (r, key) => {
+  const k = FISH_KINDS.find(x => x[0] === key);
+  return !!k && r.ing.some(i => k[2].includes(i[0]));
+};
 
 const MEAL_LABEL = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner' };
 let meal = 'all';
@@ -2734,10 +2789,32 @@ function matches(r) {
   for (const t of tags) {
     if (t === 'under10') { if (r.mins > 10) return false; }
     else if (t === 'fav') { if (rating[r.id] !== 1) return false; }
+    else if (t === 'fish' && fishKinds.size) {
+      if (![...fishKinds].some(k => hasFish(r, k))) return false;
+    }
     else if (!r.tags.includes(t)) return false;
   }
   return true;
 }
+
+function renderFishRow() {
+  const on = tags.has('fish');
+  document.getElementById('fishRow').hidden = !on;
+  if (!on) { fishKinds.clear(); return; }
+  document.getElementById('fishChips').innerHTML = FISH_KINDS.map(([key, label, ings]) => {
+    const n = RECIPES.filter(r => r.ing.some(i => ings.includes(i[0]))).length;
+    return n ? `<button class="chip fish" data-fish="${key}" aria-pressed="${fishKinds.has(key)}">${
+      t(label)}<em>${n}</em></button>` : '';
+  }).join('');
+}
+
+document.getElementById('fishChips').addEventListener('click', e => {
+  const b = e.target.closest('[data-fish]');
+  if (!b) return;
+  const k = b.dataset.fish;
+  fishKinds.has(k) ? fishKinds.delete(k) : fishKinds.add(k);
+  renderFishRow(); render();
+});
 
 function render() {
   const list = RECIPES.filter(matches);
@@ -2799,7 +2876,7 @@ document.querySelectorAll('.f-tag').forEach(b => b.addEventListener('click', () 
   const v = b.dataset.v;
   if (tags.has(v)) { tags.delete(v); b.setAttribute('aria-pressed','false'); }
   else { tags.add(v); b.setAttribute('aria-pressed','true'); }
-  render();
+  renderFishRow(); render();
 }));
 
 $('closeBtn').addEventListener('click', () => $('dlg').close());
@@ -3252,7 +3329,7 @@ function applyLang() {
   });
   const b = document.getElementById('langBtn');
   if (b) b.textContent = lang === 'uk' ? 'ENG' : 'УКР';
-  render(); safeRenderWeek(); renderPickBar();
+  renderFishRow(); render(); safeRenderWeek(); renderPickBar();
 }
 
 document.getElementById('langBtn').addEventListener('click', () => {
