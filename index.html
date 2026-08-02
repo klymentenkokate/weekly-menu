@@ -484,6 +484,19 @@
   }
   button.close:hover { border-color: var(--ink-soft); color: var(--ink); }
 
+  /* ---------- share snapshot ---------- */
+  .snapwrap {
+    border: 1px solid var(--rule); border-radius: 12px 8px 13px 9px / 8px 13px 9px 12px;
+    overflow: hidden; background: var(--paper-2); box-shadow: var(--lift);
+  }
+  .snapwrap canvas { display: block; width: 100%; height: auto; }
+  .snap-acts { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 16px; }
+  .snap-acts button.act { font-size: 13px; padding: 9px 15px; }
+  .snap-note {
+    font-family: var(--hand); font-size: 15px; color: var(--olive);
+    margin: 12px 0 0; min-height: 1.4em;
+  }
+
   .swaplist { display: grid; gap: 7px; margin-top: 8px; }
   button.swapopt {
     font: inherit; font-size: 14px; text-align: left; padding: 10px 13px; cursor: pointer;
@@ -553,6 +566,7 @@
       <button class="act primary" id="shuffleBtn" data-i18n>Shuffle the week</button>
       <button class="act" id="shuffleDinnersBtn" data-i18n>Shuffle dinners only</button>
       <button class="act" id="weekListBtn" data-i18n>Week shopping list</button>
+      <button class="act" id="shareBtn" data-i18n>Share this week</button>
       <button class="act" id="resetWeekBtn" data-i18n>Reset</button>
     </div>
     <p class="shuffle-note" id="shuffleNote" hidden></p>
@@ -620,6 +634,22 @@
     <button class="close" id="closeBtn" data-i18n>Close</button>
   </div>
   <div class="dlg-body" id="dlgBody"></div>
+</dialog>
+
+<dialog id="shareDlg">
+  <div class="dlg-head">
+    <h2 data-i18n>Share this week</h2>
+    <button class="close" id="shareClose" data-i18n>Close</button>
+  </div>
+  <div class="dlg-body">
+    <div class="snapwrap"><canvas id="snap"></canvas></div>
+    <div class="snap-acts">
+      <button class="act primary" id="snapShare" data-i18n hidden>Send</button>
+      <button class="act" id="snapSave" data-i18n>Save image</button>
+      <button class="act" id="snapCopy" data-i18n>Copy as text</button>
+    </div>
+    <p class="snap-note" id="snapNote"></p>
+  </div>
 </dialog>
 
 <dialog id="swapDlg">
@@ -2571,7 +2601,15 @@ const UK = {
  "eggs": "яйця",
  "Recipe": "Рецепт",
  "See how to cook it": "Подивитися, як готувати",
- "Tap to swap": "Натисни, щоб замінити"
+ "Tap to swap": "Натисни, щоб замінити",
+ "Share this week": "Поділитися тижнем",
+ "Send": "Надіслати",
+ "Save image": "Зберегти зображення",
+ "Copy as text": "Скопіювати текстом",
+ "Image saved — attach it in Telegram or WhatsApp.": "Зображення збережено — прикріпи його в Telegram або WhatsApp.",
+ "Copied — paste it into any chat.": "Скопійовано — встав у будь-який чат.",
+ "Could not copy automatically.": "Не вдалося скопіювати автоматично.",
+ "Sharing was blocked — save the image instead.": "Надсилання заблоковано — збережи зображення."
 };
 let lang = 'en';
 try { lang = localStorage.getItem('mealPlanLang') === 'uk' ? 'uk' : 'en'; } catch (e) {}
@@ -3088,6 +3126,146 @@ document.getElementById('langBtn').addEventListener('click', () => {
   lang = lang === 'uk' ? 'en' : 'uk';
   try { localStorage.setItem('mealPlanLang', lang); } catch (e) {}
   applyLang();
+});
+
+/* ---------- shareable snapshot ---------- */
+
+// Cochin has no Cyrillic, so the stacks fall through to a face that does.
+const SNAP_DISPLAY = '"Cochin","Big Caslon",Georgia,"Times New Roman",serif';
+const SNAP_BODY = '"Avenir Next",Avenir,"Helvetica Neue",Helvetica,Arial,sans-serif';
+
+function weekAsText() {
+  const lines = [t('Weekly menu').toUpperCase(), ''];
+  plan.forEach((day, i) => {
+    const b = byId(day.b), l = byId(lunchFor(i)), d = byId(day.d);
+    lines.push(t(DAYS[i]).toUpperCase());
+    lines.push('  ' + t('Breakfast') + ': ' + t(b.name));
+    lines.push('  ' + t('Lunch') + ': ' + t(l.name));
+    lines.push('  ' + t('Dinner') + ': ' + t(d.name));
+    lines.push('');
+  });
+  return lines.join('\n').trim();
+}
+
+function drawSnapshot() {
+  const cv = document.getElementById('snap');
+  const cs = getComputedStyle(document.documentElement);
+  const v = n => cs.getPropertyValue(n).trim() || '#000';
+  const W = 1080, PAD = 64, ROW = 150;
+  const H = 250 + ROW * 7 + 90;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cv.width = W * dpr; cv.height = H * dpr;
+  cv.style.aspectRatio = W + ' / ' + H;
+  const c = cv.getContext('2d');
+  c.scale(dpr, dpr);
+
+  // paper
+  c.fillStyle = v('--paper'); c.fillRect(0, 0, W, H);
+  c.strokeStyle = v('--rule-soft'); c.lineWidth = 1;
+  for (let y = 120; y < H; y += 30) {           // faint ruled lines
+    c.beginPath(); c.moveTo(0, y + .5); c.lineTo(W, y + .5); c.stroke();
+  }
+  c.fillStyle = v('--sage') + '55';              // a colour field, bleeding off
+  c.beginPath(); c.ellipse(W - 60, 40, 260, 170, -0.3, 0, Math.PI * 2); c.fill();
+
+  // masthead
+  c.fillStyle = v('--ink-faint');
+  c.font = '600 20px ' + SNAP_BODY;
+  c.fillText(t('Pescatarian · Mercadona · 3 meals, no snacks').toUpperCase().slice(0, 60), PAD, 78);
+  c.fillStyle = v('--ink');
+  c.font = '400 76px ' + SNAP_DISPLAY;
+  c.fillText(t('Weekly menu'), PAD, 158);
+  c.strokeStyle = v('--olive'); c.lineWidth = 3;
+  c.beginPath(); c.moveTo(PAD, 176); c.lineTo(PAD + 300, 172); c.stroke();
+
+  const clip = (txt, max) => {
+    if (c.measureText(txt).width <= max) return txt;
+    let out = txt;
+    while (out.length > 4 && c.measureText(out + '…').width > max) out = out.slice(0, -1);
+    return out + '…';
+  };
+
+  plan.forEach((day, i) => {
+    const top = 250 + i * ROW;
+    c.strokeStyle = v('--rule'); c.lineWidth = 1;
+    c.beginPath(); c.moveTo(PAD, top - 22.5); c.lineTo(W - PAD, top - 22.5); c.stroke();
+
+    c.fillStyle = v('--moss');
+    c.font = '400 40px ' + SNAP_DISPLAY;
+    c.fillText(t(DAYS[i]), PAD, top + 22);
+
+    const meals = [
+      [t('Breakfast'), byId(day.b)],
+      [t('Lunch'), byId(lunchFor(i))],
+      [t('Dinner'), byId(day.d)]
+    ];
+    meals.forEach(([label, r], k) => {
+      const y = top + 8 + k * 38;
+      c.fillStyle = v('--ink-faint');
+      c.font = '600 15px ' + SNAP_BODY;
+      c.fillText(label.toUpperCase(), 330, y);
+      c.fillStyle = v('--ink');
+      c.font = '400 27px ' + SNAP_DISPLAY;
+      c.fillText(clip(t(r.name), W - PAD - 480), 480, y + 2);
+      c.fillStyle = v('--ink-faint');
+      c.font = '400 15px ' + SNAP_BODY;
+      c.fillText(r.p + ' ' + t('g'), W - PAD - 44, y);
+    });
+  });
+
+  c.fillStyle = v('--ink-faint');
+  c.font = '400 18px ' + SNAP_BODY;
+  c.fillText('klymentenkokate.github.io/weekly-menu', PAD, H - 40);
+  return cv;
+}
+
+function snapBlob() {
+  return new Promise(res => document.getElementById('snap').toBlob(res, 'image/png'));
+}
+const snapName = () => 'weekly-menu.png';
+const note = m => { document.getElementById('snapNote').textContent = m; };
+
+document.getElementById('shareBtn').addEventListener('click', () => {
+  drawSnapshot();
+  note('');
+  // Native share only appears where it can actually send a file
+  const canFiles = !!(navigator.canShare && navigator.canShare({
+    files: [new File([new Blob([''], { type: 'image/png' })], 'x.png', { type: 'image/png' })]
+  }));
+  document.getElementById('snapShare').hidden = !canFiles;
+  document.getElementById('shareDlg').showModal();
+});
+document.getElementById('shareClose').addEventListener('click', () =>
+  document.getElementById('shareDlg').close());
+
+document.getElementById('snapShare').addEventListener('click', async () => {
+  try {
+    const blob = await snapBlob();
+    const file = new File([blob], snapName(), { type: 'image/png' });
+    await navigator.share({ files: [file], text: weekAsText() });
+  } catch (e) {
+    if (e && e.name !== 'AbortError') note(t('Sharing was blocked — save the image instead.'));
+  }
+});
+
+document.getElementById('snapSave').addEventListener('click', async () => {
+  const blob = await snapBlob();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = snapName();
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  note(t('Image saved — attach it in Telegram or WhatsApp.'));
+});
+
+document.getElementById('snapCopy').addEventListener('click', async () => {
+  const txt = weekAsText();
+  try { await navigator.clipboard.writeText(txt); note(t('Copied — paste it into any chat.')); }
+  catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); note(t('Copied — paste it into any chat.')); }
+    catch (_) { note(t('Could not copy automatically.')); }
+    ta.remove();
+  }
 });
 
 applyLang();
