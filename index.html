@@ -521,6 +521,24 @@
   .pickbar-in { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 13px 0; }
   .pickcount { font-family: var(--hand); font-size: 17px; color: var(--moss); flex: 1; min-width: 150px; }
 
+  .dlg-body li:has(> button.have) { padding: 0; border-bottom: 1px dotted var(--rule); }
+  button.have {
+    width: 100%; display: flex; align-items: baseline; gap: 10px;
+    background: none; border: 0; font: inherit; color: inherit; cursor: pointer;
+    padding: 8px 4px; text-align: left; border-radius: 6px;
+    transition: opacity .12s, background .12s;
+  }
+  button.have:hover { background: color-mix(in srgb, var(--sage) 18%, transparent); }
+  button.have .tick {
+    flex: none; width: 17px; height: 17px; line-height: 15px; text-align: center;
+    font-size: 11px; border: 1.5px solid var(--rule); border-radius: 4px;
+    color: var(--paper); align-self: center;
+  }
+  button.have[aria-pressed="true"] { opacity: .45; }
+  button.have[aria-pressed="true"] .tick { background: var(--moss); border-color: var(--moss); }
+  button.have[aria-pressed="true"] .iname { text-decoration: line-through; }
+  button.have .iname { flex: 1; }
+
   .listtop {
     display: flex; align-items: center; justify-content: space-between;
     gap: 12px; flex-wrap: wrap; margin: 0 0 6px;
@@ -2705,7 +2723,9 @@ const UK = {
  "Mussels": "Мідії",
  "Clams": "Молюски",
  "Cockles": "Сердцевидки",
- "To buy": "Купити"
+ "To buy": "Купити",
+ "already have": "вже є",
+ "Untick all": "Зняти всі позначки"
 };
 let lang = 'en';
 try { lang = localStorage.getItem('mealPlanLang') === 'uk' ? 'uk' : 'en'; } catch (e) {}
@@ -2717,6 +2737,17 @@ try {
   const sv = JSON.parse(localStorage.getItem('mealPlanPicked'));
   if (Array.isArray(sv)) sv.forEach(id => picked.add(id));
 } catch (e) {}
+// Items already in the fridge or cupboard. Keyed by ingredient name so a tick
+// survives a reload; clearable from the list when starting a fresh shop.
+const have = new Set();
+try {
+  const hv = JSON.parse(localStorage.getItem('mealPlanHave'));
+  if (Array.isArray(hv)) hv.forEach(n => have.add(n));
+} catch (e) {}
+function saveHave() {
+  try { localStorage.setItem('mealPlanHave', JSON.stringify([...have])); } catch (e) {}
+}
+
 function savePicked() {
   try { localStorage.setItem('mealPlanPicked', JSON.stringify([...picked])); } catch (e) {}
 }
@@ -3314,38 +3345,77 @@ function shoppingData() {
 // is actually in the shop can find it.
 function shoppingText() {
   const d = shoppingData();
-  const out = [t('Week shopping list').toUpperCase(), t('To buy') + ': ' + d.count, ''];
-  d.aisles.forEach(a => {
+  const left = d.aisles.map(a => [a, d.groups[a].filter(r => !have.has(r.name))])
+                       .filter(([, rows]) => rows.length);
+  const pantryLeft = d.pantry.filter(([n]) => !have.has(n));
+  const n = left.reduce((x, [, rows]) => x + rows.length, 0);
+
+  // count the cupboard section too, so this matches the figure on screen
+  const out = [t('Week shopping list').toUpperCase(),
+               t('To buy') + ': ' + (n + pantryLeft.length), ''];
+  left.forEach(([a, rows]) => {
     out.push(t(a).toUpperCase());
-    d.groups[a].forEach(row =>
+    rows.forEach(row =>
       out.push('· ' + t(row.name) + (row.sp ? ' / ' + row.sp : '') +
                ' — ' + fmtTotal(row.amount, row.unit)));
     out.push('');
   });
-  out.push(t('Store cupboard — check before you go').toUpperCase());
-  d.pantry.forEach(([n, sp]) => out.push('· ' + t(n) + (sp ? ' / ' + sp : '')));
+  if (pantryLeft.length) {
+    out.push(t('Store cupboard — check before you go').toUpperCase());
+    pantryLeft.forEach(([n2, sp]) => out.push('· ' + t(n2) + (sp ? ' / ' + sp : '')));
+  }
   return out.join('\n').trim();
 }
 
 document.getElementById('weekListBtn').addEventListener('click', () => {
   const d = shoppingData();
+  const line = (name, sp, qty) =>
+    `<li><button class="have" data-have="${esc(name)}" aria-pressed="${have.has(name)}">
+       <span class="tick">${have.has(name) ? '✓' : ''}</span>
+       <span class="iname">${esc(t(name))}<span class="sp">${esc(sp)}</span></span>
+       <span class="qty">${esc(qty)}</span></button></li>`;
   const body = d.aisles.map(a =>
-    `<h4>${esc(t(a))}</h4><ul>${d.groups[a].map(row =>
-      `<li><span class="iname">${esc(t(row.name))}<span class="sp">${esc(row.sp)}</span></span>
-       <span class="qty">${esc(fmtTotal(row.amount, row.unit))}</span></li>`).join('')}</ul>`).join('');
+    `<h4>${esc(t(a))}</h4><ul>${d.groups[a]
+      .map(row => line(row.name, row.sp, fmtTotal(row.amount, row.unit))).join('')}</ul>`).join('');
 
   document.getElementById('dlgTitle').textContent = t('Week shopping list');
   document.getElementById('dlgBody').innerHTML =
     `<div class="listtop">
-       <p class="listcount">${t('To buy')}: ${d.count}</p>
+       <p class="listcount" id="listCount"></p>
        <button class="act" id="listCopy">${t('Copy as text')}</button>
+       <button class="act" id="haveClear" hidden>${t('Untick all')}</button>
      </div>
      <p class="listnote" id="listNote"></p>
      ${body}
      <h4>${t('Store cupboard — check before you go')}</h4>
-     <ul>${d.pantry.map(([n, sp]) =>
-       `<li><span class="iname">${esc(t(n))}<span class="sp">${esc(sp)}</span></span>
-        <span class="qty">${t('have some')}</span></li>`).join('')}</ul>`;
+     <ul>${d.pantry.map(([n, sp]) => line(n, sp, t('have some'))).join('')}</ul>`;
+
+  const refreshCount = () => {
+    const names = d.aisles.flatMap(a => d.groups[a].map(r => r.name)).concat(d.pantry.map(p => p[0]));
+    const marked = names.filter(n => have.has(n)).length;
+    document.getElementById('listCount').textContent =
+      t('To buy') + ': ' + (names.length - marked) +
+      (marked ? '   ·   ' + t('already have') + ': ' + marked : '');
+    document.getElementById('haveClear').hidden = !marked;
+  };
+  refreshCount();
+
+  document.getElementById('dlgBody').addEventListener('click', e => {
+    const b = e.target.closest('[data-have]');
+    if (!b) return;
+    const name = b.dataset.have;
+    have.has(name) ? have.delete(name) : have.add(name);
+    saveHave();
+    b.setAttribute('aria-pressed', have.has(name));
+    b.querySelector('.tick').textContent = have.has(name) ? '✓' : '';
+    refreshCount();
+    document.getElementById('listNote').textContent = '';
+  });
+
+  document.getElementById('haveClear').addEventListener('click', () => {
+    have.clear(); saveHave();
+    document.getElementById('weekListBtn').click();
+  });
 
   document.getElementById('listCopy').addEventListener('click', async () => {
     const el = document.getElementById('listNote');
