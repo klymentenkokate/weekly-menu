@@ -484,6 +484,29 @@
   }
   button.close:hover { border-color: var(--ink-soft); color: var(--ink); }
 
+  /* ---------- recipe picker ---------- */
+  .rec-pick { padding: 13px 19px 0; }
+  button.pick {
+    width: 100%; font: inherit; font-size: 13px; padding: 9px; cursor: pointer;
+    border: 1.5px dashed var(--rule); background: transparent; color: var(--ink-soft);
+    border-radius: 12px 8px 13px 9px / 8px 13px 9px 12px;
+    transition: border-color .12s, color .12s, background .12s;
+  }
+  button.pick:hover { border-color: var(--olive); color: var(--olive); }
+  button.pick[aria-pressed="true"] {
+    border-style: solid; border-color: var(--moss); color: var(--paper);
+    background: var(--moss); font-weight: 600;
+  }
+  .rec.chosen { box-shadow: 0 0 0 2px var(--moss), var(--lift); }
+
+  .pickbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    background: var(--paper); border-top: 2px solid var(--moss);
+    box-shadow: 0 -8px 26px -12px rgba(0,0,0,.35);
+  }
+  .pickbar-in { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 13px 0; }
+  .pickcount { font-family: var(--hand); font-size: 17px; color: var(--moss); flex: 1; min-width: 150px; }
+
   /* ---------- share snapshot ---------- */
   .snapwrap {
     border: 1px solid var(--rule); border-radius: 12px 8px 13px 9px / 8px 13px 9px 12px;
@@ -644,9 +667,17 @@
   <div class="dlg-body" id="dlgBody"></div>
 </dialog>
 
+<div class="pickbar" id="pickBar" hidden>
+  <div class="wrap pickbar-in">
+    <span class="pickcount" id="pickCount"></span>
+    <button class="act primary" id="pickShare" data-i18n>Share these recipes</button>
+    <button class="act" id="pickClear" data-i18n>Clear</button>
+  </div>
+</div>
+
 <dialog id="shareDlg">
   <div class="dlg-head">
-    <h2 data-i18n>Share this week</h2>
+    <h2 id="shareTitle">Share this week</h2>
     <button class="close" id="shareClose" data-i18n>Close</button>
   </div>
   <div class="dlg-body">
@@ -2624,11 +2655,29 @@ const UK = {
  "twice that day": "двічі того дня",
  "on": "—",
  "Only dinners that keep overnight are listed — this one becomes": "Показані лише вечері, що зберігаються до завтра — ця стане обідом у",
- "'s lunch.": "."
+ "'s lunch.": ".",
+ "Select to cook": "Обрати для готування",
+ "Selected": "Обрано",
+ "Share these recipes": "Поділитися рецептами",
+ "Clear": "Очистити",
+ "recipe selected": "рецепт обрано",
+ "recipes selected": "рецептів обрано",
+ "Recipes": "Рецепти",
+ "Shopping & prep": "Покупки і підготовка"
 };
 let lang = 'en';
 try { lang = localStorage.getItem('mealPlanLang') === 'uk' ? 'uk' : 'en'; } catch (e) {}
 const t = str => (lang === 'uk' && UK[str]) ? UK[str] : str;
+
+// Recipes ticked for cooking, so a batch can be sent as one message.
+const picked = new Set();
+try {
+  const sv = JSON.parse(localStorage.getItem('mealPlanPicked'));
+  if (Array.isArray(sv)) sv.forEach(id => picked.add(id));
+} catch (e) {}
+function savePicked() {
+  try { localStorage.setItem('mealPlanPicked', JSON.stringify([...picked])); } catch (e) {}
+}
 
 const MEAL_LABEL = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner' };
 let meal = 'all';
@@ -2642,25 +2691,25 @@ const PLURAL = { clove:'cloves', tin:'tins', slice:'slices' };
 
 // amount === null means store-cupboard: no quantity to buy, nothing to sum.
 function fmtQty(a, u) {
-  if (a === null) return 'to taste';
+  if (a === null) return t('to taste');
   const whole = Math.floor(a), frac = a - whole;
   let n = FRACT[frac] ? (whole ? whole + FRACT[frac] : FRACT[frac])
         : String(Math.round(a * 100) / 100);
   if (u === '') return n;
-  if (PLURAL[u]) return n + ' ' + (a === 1 ? u : PLURAL[u]);
-  return n + ' ' + u;
+  if (PLURAL[u]) return n + ' ' + t(a === 1 ? u : PLURAL[u]);
+  return n + ' ' + t(u);
 }
 
 // Whole units can't be bought in halves, so round up. Weights convert at 1000.
 function fmtTotal(a, u) {
-  if (u === 'g' && a >= 1000) return (Math.round(a / 10) / 100) + ' kg';
-  if (u === 'ml' && a >= 1000) return (Math.round(a / 10) / 100) + ' L';
+  if (u === 'g' && a >= 1000) return (Math.round(a / 10) / 100) + ' ' + t('kg');
+  if (u === 'ml' && a >= 1000) return (Math.round(a / 10) / 100) + ' ' + t('L');
   if (u === '' || PLURAL[u]) {
     const n = Math.ceil(a - 1e-9);
-    return u === '' ? String(n) : n + ' ' + (n === 1 ? u : PLURAL[u]);
+    return u === '' ? String(n) : n + ' ' + t(n === 1 ? u : PLURAL[u]);
   }
   const n = Math.round(a * 100) / 100;
-  return n + ' ' + u;
+  return n + ' ' + t(u);
 }
 const esc = s => String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
 
@@ -2679,7 +2728,7 @@ function render() {
   const list = RECIPES.filter(matches);
   $('count').textContent = list.length + ' ' + t(list.length === 1 ? 'recipe' : 'recipes');
   $('grid').innerHTML = list.map(r => `
-    <article class="rec${rating[r.id] === 1 ? ' fav' : ''}${rating[r.id] === -1 ? ' dim' : ''}" data-id="${r.id}">
+    <article class="rec${rating[r.id] === 1 ? ' fav' : ''}${rating[r.id] === -1 ? ' dim' : ''}${picked.has(r.id) ? ' chosen' : ''}" data-id="${r.id}">
       <div class="rec-top">
         <div class="rec-meta"><span class="meal">${t(MEAL_LABEL[r.meal])}</span><span>${t(CUISINE_LABEL[CUISINE[r.id]])} · ${r.mins} ${t('min')}</span></div>
         <h3>${esc(t(r.name))}</h3>
@@ -2702,6 +2751,10 @@ function render() {
           <p class="tip">${esc(t(r.tip))}</p>
         </details>
       </div>
+      <div class="rec-pick">
+        <button class="pick" data-pick-id="${r.id}" aria-pressed="${picked.has(r.id)}">${
+          picked.has(r.id) ? '✓ ' + t('Selected') : '+ ' + t('Select to cook')}</button>
+      </div>
       <div class="rec-rate">
         <button class="rate fav" data-rate="1"  data-id="${r.id}" aria-pressed="${rating[r.id] === 1}">${t('★ More often')}</button>
         <button class="rate no"  data-rate="-1" data-id="${r.id}" aria-pressed="${rating[r.id] === -1}">${t('Less often')}</button>
@@ -2710,6 +2763,14 @@ function render() {
 }
 
 $('grid').addEventListener('click', e => {
+  const pk = e.target.closest('[data-pick-id]');
+  if (pk) {
+    const id = pk.dataset.pickId;
+    picked.has(id) ? picked.delete(id) : picked.add(id);
+    [...picked].forEach(x => { if (!byId(x)) picked.delete(x); });   // drop removed recipes
+    savePicked(); render(); renderPickBar();
+    return;
+  }
   const btn = e.target.closest('[data-rate]');
   if (!btn) return;
   const id = btn.dataset.id, v = +btn.dataset.rate;
@@ -3177,13 +3238,100 @@ function applyLang() {
   });
   const b = document.getElementById('langBtn');
   if (b) b.textContent = lang === 'uk' ? 'ENG' : 'УКР';
-  render(); safeRenderWeek();
+  render(); safeRenderWeek(); renderPickBar();
 }
 
 document.getElementById('langBtn').addEventListener('click', () => {
   lang = lang === 'uk' ? 'en' : 'uk';
   try { localStorage.setItem('mealPlanLang', lang); } catch (e) {}
   applyLang();
+});
+
+/* ---------- selected-recipes snapshot ---------- */
+let shareMode = 'week';
+
+function renderPickBar() {
+  const bar = document.getElementById('pickBar');
+  bar.hidden = picked.size === 0;
+  document.getElementById('pickCount').textContent =
+    picked.size + ' ' + t(picked.size === 1 ? 'recipe selected' : 'recipes selected');
+  document.body.style.paddingBottom = picked.size ? '84px' : '';
+}
+
+const pickedList = () => RECIPES.filter(r => picked.has(r.id));
+
+function recipesAsText() {
+  const out = [];
+  pickedList().forEach(r => {
+    out.push(t(r.name).toUpperCase());
+    out.push(r.kcal + ' ' + t('kcal') + ' · ' + r.p + ' ' + t('g protein') + ' · ' + r.mins + ' ' + t('min'));
+    out.push('');
+    r.ing.forEach(([n, sp, a, u]) =>
+      out.push('· ' + t(n) + ' — ' + fmtQty(a, u) + (sp ? '  (' + sp + ')' : '')));
+    out.push('');
+    r.steps.forEach((x, i) => out.push((i + 1) + '. ' + t(x)));
+    out.push('', '------------------------', '');
+  });
+  return out.join('\n').trim();
+}
+
+// Ingredients are what you need in hand; the method rides in the text version,
+// which Telegram renders far better than a very tall image would.
+function drawRecipes() {
+  const cv = document.getElementById('snap');
+  const cs = getComputedStyle(document.documentElement);
+  const v = n => cs.getPropertyValue(n).trim() || '#000';
+  const list = pickedList();
+  const W = 1080, PAD = 64;
+  const H = 210 + list.reduce((a, r) => a + 96 + r.ing.length * 34 + 26, 0) + 60;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cv.width = W * dpr; cv.height = H * dpr;
+  cv.style.aspectRatio = W + ' / ' + H;
+  const c = cv.getContext('2d');
+  c.scale(dpr, dpr);
+
+  c.fillStyle = v('--paper'); c.fillRect(0, 0, W, H);
+  c.fillStyle = v('--sage') + '55';
+  c.beginPath(); c.ellipse(W - 40, 30, 240, 150, -0.3, 0, Math.PI * 2); c.fill();
+
+  c.fillStyle = v('--ink-faint'); c.font = '600 20px ' + SNAP_BODY;
+  c.fillText(t('Shopping & prep').toUpperCase(), PAD, 74);
+  c.fillStyle = v('--ink'); c.font = '400 70px ' + SNAP_DISPLAY;
+  c.fillText(t('Recipes'), PAD, 150);
+  c.strokeStyle = v('--olive'); c.lineWidth = 3;
+  c.beginPath(); c.moveTo(PAD, 168); c.lineTo(PAD + 230, 164); c.stroke();
+
+  let y = 226;
+  list.forEach(r => {
+    c.strokeStyle = v('--rule'); c.lineWidth = 1;
+    c.beginPath(); c.moveTo(PAD, y - 26.5); c.lineTo(W - PAD, y - 26.5); c.stroke();
+    c.fillStyle = v('--ink'); c.font = '400 40px ' + SNAP_DISPLAY;
+    c.fillText(t(r.name), PAD, y + 12);
+    c.fillStyle = v('--ink-faint'); c.font = '400 18px ' + SNAP_BODY;
+    c.fillText(r.kcal + ' ' + t('kcal') + ' · ' + r.p + ' ' + t('g protein') + ' · ' + r.mins + ' ' + t('min'), PAD, y + 44);
+    y += 96;
+    r.ing.forEach(([n, sp, a, u]) => {
+      c.fillStyle = v('--ink'); c.font = '400 22px ' + SNAP_BODY;
+      c.fillText('·  ' + t(n), PAD + 14, y);
+      c.fillStyle = v('--olive'); c.font = '400 18px ' + SNAP_BODY;
+      c.fillText(sp, PAD + 470, y);
+      c.fillStyle = v('--ink-soft'); c.font = '400 20px ' + SNAP_BODY;
+      c.fillText(fmtQty(a, u), W - PAD - 130, y);
+      y += 34;
+    });
+    y += 26;
+  });
+
+  c.fillStyle = v('--ink-faint'); c.font = '400 18px ' + SNAP_BODY;
+  c.fillText('klymentenkokate.github.io/weekly-menu', PAD, H - 34);
+  return cv;
+}
+
+document.getElementById('pickShare').addEventListener('click', () => {
+  shareMode = 'recipes'; openShareDialog();
+});
+document.getElementById('pickClear').addEventListener('click', () => {
+  picked.clear(); savePicked(); render(); renderPickBar();
 });
 
 /* ---------- shareable snapshot ---------- */
@@ -3280,11 +3428,13 @@ function drawSnapshot() {
 function snapBlob() {
   return new Promise(res => document.getElementById('snap').toBlob(res, 'image/png'));
 }
-const snapName = () => 'weekly-menu.png';
+const snapName = () => shareMode === 'recipes' ? 'recipes.png' : 'weekly-menu.png';
 const note = m => { document.getElementById('snapNote').textContent = m; };
 
-document.getElementById('shareBtn').addEventListener('click', () => {
-  drawSnapshot();
+function openShareDialog() {
+  shareMode === 'recipes' ? drawRecipes() : drawSnapshot();
+  document.getElementById('shareTitle').textContent =
+    t(shareMode === 'recipes' ? 'Share these recipes' : 'Share this week');
   note('');
   // Native share only appears where it can actually send a file
   const canFiles = !!(navigator.canShare && navigator.canShare({
@@ -3292,6 +3442,9 @@ document.getElementById('shareBtn').addEventListener('click', () => {
   }));
   document.getElementById('snapShare').hidden = !canFiles;
   document.getElementById('shareDlg').showModal();
+}
+document.getElementById('shareBtn').addEventListener('click', () => {
+  shareMode = 'week'; openShareDialog();
 });
 document.getElementById('shareClose').addEventListener('click', () =>
   document.getElementById('shareDlg').close());
@@ -3300,7 +3453,7 @@ document.getElementById('snapShare').addEventListener('click', async () => {
   try {
     const blob = await snapBlob();
     const file = new File([blob], snapName(), { type: 'image/png' });
-    await navigator.share({ files: [file], text: weekAsText() });
+    await navigator.share({ files: [file], text: shareMode === 'recipes' ? recipesAsText() : weekAsText() });
   } catch (e) {
     if (e && e.name !== 'AbortError') note(t('Sharing was blocked — save the image instead.'));
   }
@@ -3315,7 +3468,7 @@ document.getElementById('snapSave').addEventListener('click', async () => {
 });
 
 document.getElementById('snapCopy').addEventListener('click', async () => {
-  const txt = weekAsText();
+  const txt = shareMode === 'recipes' ? recipesAsText() : weekAsText();
   try { await navigator.clipboard.writeText(txt); note(t('Copied — paste it into any chat.')); }
   catch (e) {
     const ta = document.createElement('textarea');
