@@ -2684,6 +2684,16 @@ function savePicked() {
   try { localStorage.setItem('mealPlanPicked', JSON.stringify([...picked])); } catch (e) {}
 }
 
+// The picker sits on the plan, so a selection only means something while the
+// recipe is still in it. Any change to the week drops the ones that left.
+function prunePicks() {
+  const inWeek = new Set();
+  plan.forEach(d => { inWeek.add(d.b); inWeek.add(d.d); });
+  let changed = false;
+  [...picked].forEach(id => { if (!inWeek.has(id)) { picked.delete(id); changed = true; } });
+  if (changed) savePicked();
+}
+
 const MEAL_LABEL = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner' };
 let meal = 'all';
 let cuisine = 'all';
@@ -3007,7 +3017,7 @@ function shuffle(keepBreakfasts) {
     return;
   }
   plan = res.plan;
-  savePlan(); renderWeek();
+  savePlan(); prunePicks(); renderWeek(); renderPickBar();
   const favs = plan.filter(d => rating[d.b] === 1 || rating[d.d] === 1).length;
   note.hidden = false;
   note.className = res.offTarget ? 'shuffle-note warn' : 'shuffle-note';
@@ -3137,7 +3147,7 @@ document.getElementById('swapBody').addEventListener('click', e => {
   const body = document.getElementById('swapBody');
   const slot = body.dataset.slot, dayIdx = +body.dataset.day;
   plan[dayIdx][slot] = opt.dataset.pick;
-  savePlan(); renderWeek();
+  savePlan(); prunePicks(); renderWeek(); renderPickBar();
   document.getElementById('swapDlg').close();
 });
 
@@ -3146,7 +3156,7 @@ document.getElementById('swapClose').addEventListener('click', () =>
 
 document.getElementById('resetWeekBtn').addEventListener('click', () => {
   plan = DEFAULT_PLAN.map(x => ({ ...x }));
-  savePlan(); renderWeek();
+  savePlan(); prunePicks(); renderWeek(); renderPickBar();
 });
 
 function openRecipe(r) {
@@ -3335,7 +3345,8 @@ document.getElementById('pickShare').addEventListener('click', () => {
   shareMode = 'recipes'; openShareDialog();
 });
 document.getElementById('pickClear').addEventListener('click', () => {
-  picked.clear(); savePicked(); render(); renderPickBar();
+  // the ticks live in the week grid, so that is what has to redraw
+  picked.clear(); savePicked(); renderWeek(); renderPickBar();
 });
 
 /* ---------- shareable snapshot ---------- */
