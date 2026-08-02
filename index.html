@@ -1,0 +1,3055 @@
+<title>Weekly menu</title>
+<style>
+  /* ============================================================
+     Notebook / botanical-almanac identity
+     Display  : Cochin, Big Caslon — high contrast, bracketed, nostalgic
+     Body     : Avenir Next — humanist, soft, highly legible
+     Annotation: Bradley Hand — pencil marginalia, decorative only
+     ============================================================ */
+  :root {
+    --desk:       #F2ECDE;
+    --paper:      #FBF8F0;
+    --paper-2:    #F6F1E3;
+    --ink:        #34402F;
+    --ink-soft:   #6B7360;
+    --ink-faint: #6c6b5c;
+    --rule:       #DED6C1;
+    --rule-soft:  #E8E1CF;
+
+    --olive: #6e764d;
+    --moss:       #4F6146;
+    --sage:       #A8B59A;
+    --blush:      #D2907F;
+    --terracotta: #ab5d41;
+    --mustard:    #D2A03C;
+    --sky:        #93B3C2;
+    --lavender:   #A99BC4;
+
+    --accent:     var(--moss);
+    --tape:       rgba(210, 160, 60, .30);
+
+    --m-protein:  #4F6146;
+    --m-fat:      #BC6647;
+    --m-carb: #a9852c;
+
+    --lift:  0 1px 1px rgba(52,64,47,.05), 0 8px 18px -10px rgba(52,64,47,.30);
+    --lift-2: 0 2px 3px rgba(52,64,47,.07), 0 16px 30px -14px rgba(52,64,47,.35);
+
+    --display: Cochin, "Big Caslon", Baskerville, "Hoefler Text", "Iowan Old Style", Palatino, serif;
+    --body: "Avenir Next", Avenir, system-ui, -apple-system, "Segoe UI", Inter, sans-serif;
+    --hand: "Bradley Hand", "Noteworthy", "Segoe Print", "Comic Sans MS", cursive;
+    --stamp: "Avenir Next", system-ui, sans-serif;
+
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --desk:#1C1A15; --paper:#252219; --paper-2:#2B2820;
+      --ink:#EBE4D2; --ink-soft:#B0A995; --ink-faint:#7E7866;
+      --rule:#3B372B; --rule-soft:#332F25;
+      --olive:#A3AC77; --moss:#8FA882; --sage:#7E8C72;
+      --blush:#D79A88; --terracotta:#D07A57; --mustard:#DFAF52;
+      --sky:#9CBCCB; --lavender:#B5A8D0;
+      --accent:#9DBA8E; --tape:rgba(223,175,82,.20);
+      --m-protein:#9DBA8E; --m-fat:#D07A57; --m-carb:#DFAF52;
+      --lift: 0 1px 1px rgba(0,0,0,.30), 0 8px 18px -10px rgba(0,0,0,.65);
+      --lift-2: 0 2px 3px rgba(0,0,0,.35), 0 16px 30px -14px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --desk:#1C1A15; --paper:#252219; --paper-2:#2B2820;
+    --ink:#EBE4D2; --ink-soft:#B0A995; --ink-faint: #8f8a7a;
+    --rule:#3B372B; --rule-soft:#332F25;
+    --olive:#A3AC77; --moss:#8FA882; --sage:#7E8C72;
+    --blush:#D79A88; --terracotta:#D07A57; --mustard:#DFAF52;
+    --sky:#9CBCCB; --lavender:#B5A8D0;
+    --accent:#9DBA8E; --tape:rgba(223,175,82,.20);
+    --m-protein:#9DBA8E; --m-fat:#D07A57; --m-carb:#DFAF52;
+    --lift: 0 1px 1px rgba(0,0,0,.30), 0 8px 18px -10px rgba(0,0,0,.65);
+    --lift-2: 0 2px 3px rgba(0,0,0,.35), 0 16px 30px -14px rgba(0,0,0,.7);
+  }
+  :root[data-theme="light"] {
+    --desk:#F2ECDE; --paper:#FBF8F0; --paper-2:#F6F1E3;
+    --ink:#34402F; --ink-soft:#6B7360; --ink-faint: #6c6b5c;
+    --rule:#DED6C1; --rule-soft:#E8E1CF;
+    --olive: #6e764d; --moss:#4F6146; --sage:#A8B59A;
+    --blush:#D2907F; --terracotta: #ab5d41; --mustard:#D2A03C;
+    --sky:#93B3C2; --lavender:#A99BC4;
+    --accent:#4F6146; --tape:rgba(210,160,60,.30);
+    --m-protein:#4F6146; --m-fat:#BC6647; --m-carb: #a9852c;
+    --lift: 0 1px 1px rgba(52,64,47,.05), 0 8px 18px -10px rgba(52,64,47,.30);
+    --lift-2: 0 2px 3px rgba(52,64,47,.07), 0 16px 30px -14px rgba(52,64,47,.35);
+  }
+
+  * { box-sizing: border-box; }
+
+  /* Desk: dot-grid stationery under a fine paper grain */
+  body {
+    margin: 0; color: var(--ink);
+    font-family: var(--body); font-size: 16px; line-height: 1.58;
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--desk);
+    background-image:
+      var(--grain),
+      radial-gradient(circle at 1px 1px, var(--rule) 1px, transparent 0);
+    background-size: 160px 160px, 24px 24px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 26px; }
+
+  ::selection { background: var(--tape); color: var(--ink); }
+  :focus-visible { outline: 2px dashed var(--terracotta); outline-offset: 3px; border-radius: 3px; }
+
+  /* ---------- masthead ---------- */
+  .mast {
+    padding: 34px 0 18px; margin-bottom: 4px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  .mast::after {           /* second pencil rule, slightly off — hand-drawn feel */
+    content: ""; position: absolute; left: 2%; right: 6%; bottom: -4px; height: 1px;
+    background: var(--rule-soft); transform: rotate(-.12deg);
+  }
+  .langbtn {
+    position: absolute; right: 0; top: 26px; z-index: 4;
+    font: inherit; font-size: 11px; letter-spacing: .14em; font-weight: 700;
+    padding: 6px 12px; cursor: pointer; color: var(--olive);
+    border: 1.5px solid var(--olive); background: var(--paper);
+    border-radius: 11px 8px 12px 9px / 8px 12px 9px 11px;
+    box-shadow: 2px 2px 0 color-mix(in srgb, var(--ink) 10%, transparent);
+    transition: transform .12s, background .12s, color .12s;
+  }
+  .langbtn:hover { transform: translate(-1px,-1px); background: var(--moss);
+                   border-color: var(--moss); color: var(--paper); }
+  @media (max-width: 560px) { .langbtn { top: 14px; } }
+
+  .eyebrow {
+    font-family: var(--hand); font-size: 16px; letter-spacing: .01em;
+    color: var(--olive); margin: 0; transform: rotate(-.7deg); display: inline-block;
+  }
+
+  /* ---------- hand-drawn marks ---------- */
+  .doodle {
+    fill: none; stroke: var(--olive); stroke-width: 1.6;
+    stroke-linecap: round; stroke-linejoin: round; opacity: .62;
+  }
+  .doodle circle { fill: var(--mustard); stroke: none; opacity: .8; }
+  .sprig {
+    width: 120px; height: 46px; position: absolute; right: 4px; bottom: 6px;
+    transform: rotate(2deg);
+  }
+  @media (max-width: 560px) { .sprig { display: none; } }
+
+  .divider { margin: 52px 0 6px; text-align: center; }
+  .divider svg {
+    width: 260px; max-width: 70%; height: 22px;
+    fill: none; stroke: var(--rule); stroke-width: 1.6; stroke-linecap: round;
+  }
+  .divider circle { fill: var(--sage); stroke: none; }
+
+  /* ---------- section headings: notebook tab ---------- */
+  .sec-head {
+    margin: 40px 0 4px; display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  }
+  .sec-head h2 {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(30px, 4.4vw, 44px); line-height: 1.06;
+    letter-spacing: -.012em; margin: 0; text-wrap: balance;
+    position: relative; padding: 2px 16px 4px 0;
+  }
+  .sec-head h2::after {    /* pencil underline, tapering */
+    content: ""; position: absolute; left: 1px; right: 14px; bottom: -2px; height: 2px;
+    background: linear-gradient(90deg, var(--olive), var(--sage) 70%, transparent);
+    border-radius: 2px; transform: rotate(-.35deg); opacity: .75;
+  }
+  .sec-head p {
+    margin: 0; color: var(--ink-soft); font-size: 14.5px; max-width: 46ch;
+  }
+
+  /* ---------- sticky-note warning ---------- */
+  .clash-warn {
+    display: block; max-width: 60ch; margin: 18px 0 6px;
+    background: color-mix(in srgb, var(--blush) 34%, var(--paper));
+    color: var(--ink); font-size: 14.5px; line-height: 1.5;
+    padding: 15px 18px 16px; position: relative;
+    box-shadow: var(--lift-2); transform: rotate(-.8deg);
+    border-radius: 2px 2px 14px 2px;
+  }
+  .clash-warn::before {    /* torn-tape strip across the top */
+    content: ""; position: absolute; top: -9px; left: 26px; width: 78px; height: 20px;
+    background: var(--tape); transform: rotate(-3deg);
+    border-radius: 1px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.15);
+  }
+  .clash-warn b { font-weight: 600; }
+
+  /* ---------- the week: pinned paper ---------- */
+  .week {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 14px 10px; margin-top: 22px; padding: 4px 0 8px;
+  }
+  .daycol {
+    background: var(--paper);
+    background-image: repeating-linear-gradient(
+      transparent, transparent 21px, var(--rule-soft) 21px, var(--rule-soft) 22px);
+    border: 1px solid var(--rule);
+    border-radius: 13px 9px 15px 10px / 9px 14px 10px 13px;
+    box-shadow: var(--lift);
+    display: flex; flex-direction: column; overflow: hidden;
+    position: relative;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .daycol:nth-child(odd)  { transform: rotate(-.45deg); }
+  .daycol:nth-child(even) { transform: rotate(.4deg); }
+  .daycol:nth-child(3n)   { transform: rotate(.7deg); }
+  .daycol:nth-child(5n)   { transform: rotate(-.75deg); }
+  .daycol:hover { transform: rotate(0deg) translateY(-3px); box-shadow: var(--lift-2); z-index: 5; }
+  .daycol::before {        /* masking tape at the top edge */
+    content: ""; position: absolute; z-index: 3; top: -8px; left: 50%;
+    width: 62px; height: 19px; margin-left: -31px;
+    background: var(--tape); transform: rotate(-2.4deg);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+  }
+  .daycol:nth-child(even)::before { transform: rotate(2.8deg); left: 42%; }
+
+  .dayhd {
+    padding: 16px 12px 9px; border-bottom: 1px dashed var(--rule);
+    background: color-mix(in srgb, var(--sage) 15%, transparent);
+  }
+  .dayhd b {
+    display: block; font-family: var(--display); font-size: 21px; font-weight: 400;
+    letter-spacing: .01em; color: var(--moss); line-height: 1;
+  }
+  .dayhd .srcs {
+    display: block; font-family: var(--body); font-size: 9.5px; line-height: 1.4;
+    letter-spacing: .04em; color: var(--ink-faint); margin-top: 5px; text-transform: uppercase;
+  }
+  .eggct { color: var(--ink-soft); font-family: var(--hand); text-transform: none;
+           font-size: 12px; letter-spacing: 0; }
+
+  .daycol.clash { border-color: var(--terracotta); box-shadow: 0 0 0 1px var(--terracotta), var(--lift); }
+  .daycol.clash .dayhd { background: color-mix(in srgb, var(--terracotta) 14%, transparent); }
+  .daycol.clash .dayhd b { color: var(--terracotta); }
+  .daycol.clash .eggct { color: var(--terracotta); font-weight: 600; }
+
+  .cell {
+    padding: 11px 12px 12px; border-bottom: 1px dashed var(--rule-soft);
+    text-align: left; background: none; border-left: 0; border-right: 0; border-top: 0;
+    width: 100%; font: inherit; color: inherit; cursor: pointer; display: block;
+    transition: background .14s;
+  }
+  .cell:hover { background: color-mix(in srgb, var(--sage) 20%, transparent); }
+  .cell .slot {
+    font-family: var(--stamp); font-size: 8.5px; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--ink-faint); display: block; margin-bottom: 4px;
+  }
+  .cell.carry {
+    background:
+      repeating-linear-gradient(-45deg, transparent, transparent 9px,
+        color-mix(in srgb, var(--mustard) 9%, transparent) 9px,
+        color-mix(in srgb, var(--mustard) 9%, transparent) 18px);
+  }
+  .cell.carry:hover { background: color-mix(in srgb, var(--mustard) 20%, transparent); }
+  .cell.carry .slot { color: var(--mustard); font-family: var(--hand);
+                      font-size: 12px; letter-spacing: 0; text-transform: none; }
+  .cell .rname {
+    font-family: var(--display); font-size: 16.5px; line-height: 1.22;
+    display: block; letter-spacing: -.004em;
+  }
+  .cell .cmac {
+    font-family: var(--body); font-size: 10.5px; font-variant-numeric: tabular-nums;
+    color: var(--ink-faint); display: block; margin-top: 5px; letter-spacing: .02em;
+  }
+  .cell .cmac em { font-style: normal; color: var(--m-protein); font-weight: 600; }
+
+  /* rubber stamp */
+  .badge {
+    display: inline-block; margin-top: 7px; padding: 3px 9px 2px;
+    font-family: var(--stamp); font-size: 8.5px; letter-spacing: .14em;
+    text-transform: uppercase; font-weight: 700;
+    color: var(--terracotta); border: 1.5px solid var(--terracotta);
+    border-radius: 30px; transform: rotate(-3.5deg); opacity: .85;
+  }
+
+  /* ---------- buttons: drawn outlines ---------- */
+  .wk-acts { display: flex; gap: 10px; flex-wrap: wrap; margin: 26px 0 0; align-items: center; }
+  button.act {
+    font: inherit; font-size: 14px; padding: 10px 18px; cursor: pointer;
+    border: 1.5px solid var(--ink-soft); background: var(--paper); color: var(--ink);
+    border-radius: 14px 10px 15px 9px / 10px 14px 9px 15px;
+    box-shadow: 2px 2px 0 color-mix(in srgb, var(--ink) 12%, transparent);
+    transition: transform .12s, box-shadow .12s, background .12s;
+  }
+  button.act:hover { transform: translate(-1px,-1px);
+    box-shadow: 3px 3px 0 color-mix(in srgb, var(--ink) 18%, transparent); }
+  button.act:active { transform: translate(1px,1px); box-shadow: 1px 1px 0 rgba(0,0,0,.1); }
+  button.act.primary {
+    background: var(--moss); border-color: var(--moss); color: var(--paper); font-weight: 600;
+  }
+  button.act.primary:hover { background: var(--olive); border-color: var(--olive); }
+
+  .shuffle-note {
+    font-family: var(--hand); font-size: 16px; line-height: 1.45;
+    color: var(--olive); margin: 14px 0 0; max-width: 62ch;
+    padding-left: 26px; position: relative; transform: rotate(-.4deg);
+  }
+  .shuffle-note::before {   /* pencil arrow */
+    content: "↝"; position: absolute; left: 0; top: -1px; font-size: 19px; color: var(--mustard);
+  }
+  .shuffle-note.warn { color: var(--terracotta); }
+  .shuffle-note.warn::before { content: "✻"; color: var(--terracotta); }
+
+  /* ---------- filters: paper labels ---------- */
+  .controls {
+    position: sticky; top: 0; z-index: 30;
+    background: color-mix(in srgb, var(--desk) 94%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 0 13px; margin-top: 22px;
+  }
+  .ctl-row { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; }
+  .ctl-row + .ctl-row { margin-top: 8px; }
+  .ctl-label {
+    font-family: var(--hand); font-size: 15px; color: var(--ink-faint);
+    width: 74px; flex: none; transform: rotate(-1deg);
+  }
+  button.chip {
+    font: inherit; font-size: 13px; line-height: 1; padding: 8px 13px;
+    border: 1px solid var(--rule); background: var(--paper); color: var(--ink-soft);
+    border-radius: 9px 6px 10px 7px / 6px 10px 7px 9px;
+    cursor: pointer; transition: border-color .12s, color .12s, background .12s, transform .12s;
+  }
+  button.chip:hover { border-color: var(--olive); color: var(--olive); transform: translateY(-1px); }
+  button.chip[aria-pressed="true"] {
+    background: var(--moss); border-color: var(--moss); color: var(--paper); font-weight: 600;
+  }
+
+  .count {
+    font-family: var(--hand); font-size: 16px; color: var(--ink-faint);
+    margin: 24px 0 14px; transform: rotate(-.5deg); display: inline-block;
+  }
+
+  /* ---------- recipe cards ---------- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px 18px; }
+  .rec {
+    background: var(--paper); border: 1px solid var(--rule);
+    border-radius: 16px 11px 18px 12px / 11px 17px 12px 16px;
+    box-shadow: var(--lift); display: flex; flex-direction: column; overflow: hidden;
+    position: relative; transition: transform .16s ease, box-shadow .16s ease;
+  }
+  .rec:nth-child(4n+1) { transform: rotate(-.28deg); }
+  .rec:nth-child(4n+3) { transform: rotate(.24deg); }
+  .rec:hover { transform: rotate(0) translateY(-2px); box-shadow: var(--lift-2); }
+  .rec.fav { border-color: var(--mustard); box-shadow: 0 0 0 1px var(--mustard), var(--lift); }
+  .rec.fav::after {         /* gold seal */
+    content: "★"; position: absolute; top: 11px; right: 13px; z-index: 4;
+    width: 26px; height: 26px; line-height: 25px; text-align: center; font-size: 13px;
+    color: var(--paper); background: var(--mustard); border-radius: 50%;
+    transform: rotate(-9deg); box-shadow: var(--lift);
+  }
+  .rec.dim { opacity: .48; filter: saturate(.5); }
+  .rec.dim:hover { opacity: 1; filter: none; }
+
+  .rec-top { padding: 19px 19px 0; }
+  .rec-meta {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 10px;
+    font-family: var(--stamp); font-size: 9px; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--ink-faint); margin-bottom: 10px;
+  }
+  .rec-meta .meal { color: var(--terracotta); font-weight: 700; }
+  .rec h3 {
+    font-family: var(--display); font-weight: 400; font-size: 25px; line-height: 1.13;
+    margin: 0 0 4px; letter-spacing: -.012em; text-wrap: balance;
+  }
+  .rec .es {
+    font-family: var(--hand); font-style: normal; color: var(--olive);
+    font-size: 15px; margin: 0 0 15px; transform: rotate(-.5deg);
+  }
+
+  .macros { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+  .mac {
+    background: var(--paper-2); padding: 10px 6px; text-align: center;
+    border-top: 1px dashed var(--rule); border-bottom: 1px dashed var(--rule);
+    border-right: 1px dashed var(--rule);
+  }
+  .mac:last-child { border-right: 0; }
+  .mac b {
+    display: block; font-family: var(--display); font-size: 19px; font-weight: 400;
+    font-variant-numeric: tabular-nums; letter-spacing: -.02em; line-height: 1.1;
+  }
+  .mac span {
+    font-family: var(--stamp); font-size: 8px; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--ink-faint);
+  }
+  .mac.p b { color: var(--m-protein); }
+  .mac.f b { color: var(--m-fat); }
+  .mac.c b { color: var(--m-carb); }
+
+  .rec-body { padding: 16px 19px 0; flex: 1; }
+  .sect {
+    font-family: var(--hand); font-size: 14px; color: var(--ink-faint);
+    margin: 0 0 9px; transform: rotate(-.4deg);
+  }
+  ul.ing { list-style: none; margin: 0 0 15px; padding: 0; font-size: 14px; }
+  ul.ing li {
+    padding: 6px 0; border-bottom: 1px dotted var(--rule);
+    display: flex; justify-content: space-between; gap: 12px; align-items: baseline;
+  }
+  ul.ing li:last-child { border-bottom: 0; }
+  .iname { display: flex; flex-direction: column; }
+  .sp { font-family: var(--hand); font-size: 13px; color: var(--olive); margin-top: 1px; }
+  ul.ing .qty {
+    font-family: var(--body); font-size: 12.5px; color: var(--ink-soft);
+    font-variant-numeric: tabular-nums; flex: none; text-align: right; letter-spacing: .01em;
+  }
+
+  details.method { border-top: 1px dashed var(--rule); margin: 0 -19px; padding: 0 19px; }
+  details.method summary {
+    cursor: pointer; list-style: none; padding: 12px 0;
+    font-family: var(--hand); font-size: 15px; color: var(--olive);
+  }
+  details.method summary::-webkit-details-marker { display: none; }
+  details.method summary::after { content: " ↓"; }
+  details.method[open] summary::after { content: " ↑"; }
+  details.method ol { margin: 0 0 15px; padding-left: 20px; font-size: 14px; color: var(--ink-soft); }
+  details.method ol li { padding: 4px 0; }
+  details.method ol li::marker { color: var(--mustard); font-family: var(--display); }
+
+  /* circled pencil note */
+  .tip {
+    font-family: var(--hand); font-size: 15.5px; line-height: 1.45;
+    color: var(--ink); background: color-mix(in srgb, var(--mustard) 13%, transparent);
+    border: 1px dashed color-mix(in srgb, var(--mustard) 70%, transparent);
+    border-radius: 14px 9px 16px 10px / 9px 15px 10px 14px;
+    padding: 11px 14px; margin: 0 0 15px; transform: rotate(-.3deg);
+  }
+
+  .rec-rate { display: flex; gap: 8px; padding: 13px 19px 16px; border-top: 1px dashed var(--rule); margin-top: auto; }
+  button.rate {
+    flex: 1; font: inherit; font-size: 12.5px; padding: 8px; cursor: pointer;
+    border: 1px solid var(--rule); background: transparent; color: var(--ink-faint);
+    border-radius: 10px 7px 11px 8px / 7px 11px 8px 10px;
+    transition: border-color .12s, color .12s, background .12s;
+  }
+  button.rate:hover { border-color: var(--ink-soft); color: var(--ink-soft); }
+  button.rate.fav[aria-pressed="true"] {
+    border-color: var(--mustard); color: #6b4d0c;
+    background: color-mix(in srgb, var(--mustard) 30%, transparent); font-weight: 600;
+  }
+  button.rate.no[aria-pressed="true"] {
+    border-color: var(--terracotta); color: var(--terracotta);
+    background: color-mix(in srgb, var(--terracotta) 13%, transparent); font-weight: 600;
+  }
+  @media (prefers-color-scheme: dark) { button.rate.fav[aria-pressed="true"] { color: #F3DFA8; } }
+  :root[data-theme="dark"] button.rate.fav[aria-pressed="true"] { color: #F3DFA8; }
+  :root[data-theme="light"] button.rate.fav[aria-pressed="true"] { color: #6b4d0c; }
+  .star { color: var(--mustard); font-size: 13px; }
+
+  /* ---------- dialogs ---------- */
+  dialog {
+    border: 1px solid var(--rule); background: var(--paper); color: var(--ink);
+    border-radius: 18px 13px 20px 14px / 13px 19px 14px 18px;
+    max-width: 640px; width: calc(100% - 40px); padding: 0;
+    box-shadow: 0 30px 70px -20px rgba(0,0,0,.45);
+    background-image: var(--grain);
+  }
+  dialog::backdrop { background: rgba(38,44,33,.55); backdrop-filter: blur(3px); }
+  .dlg-head {
+    padding: 24px 28px 16px; border-bottom: 1px dashed var(--rule);
+    display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  }
+  .dlg-head h2 {
+    font-family: var(--display); font-weight: 400; font-size: 29px; margin: 0;
+    letter-spacing: -.012em; line-height: 1.1;
+  }
+  .dlg-body { padding: 20px 28px 28px; max-height: 62vh; overflow-y: auto; }
+  .dlg-body h4 {
+    font-family: var(--hand); font-size: 17px; color: var(--terracotta);
+    margin: 22px 0 9px; font-weight: 400; transform: rotate(-.5deg);
+  }
+  .dlg-body h4:first-child { margin-top: 0; }
+  .dlg-body ul { list-style: none; margin: 0; padding: 0; font-size: 14.5px; }
+  .dlg-body li {
+    padding: 7px 0; border-bottom: 1px dotted var(--rule);
+    display: flex; justify-content: space-between; gap: 14px; align-items: baseline;
+  }
+  .dlg-body li .qty {
+    font-family: var(--body); font-size: 12.5px; color: var(--ink-soft);
+    flex: none; font-variant-numeric: tabular-nums;
+  }
+  button.close {
+    font: inherit; font-size: 13px; padding: 7px 15px; cursor: pointer;
+    border: 1.5px solid var(--rule); background: transparent; color: var(--ink-soft);
+    border-radius: 11px 8px 12px 9px / 8px 12px 9px 11px;
+  }
+  button.close:hover { border-color: var(--ink-soft); color: var(--ink); }
+
+  .swaplist { display: grid; gap: 7px; margin-top: 8px; }
+  button.swapopt {
+    font: inherit; font-size: 14px; text-align: left; padding: 10px 13px; cursor: pointer;
+    border: 1px solid var(--rule); background: transparent; color: var(--ink);
+    border-radius: 11px 8px 12px 9px / 8px 12px 9px 11px;
+    display: flex; justify-content: space-between; gap: 12px; align-items: baseline;
+  }
+  button.swapopt:hover {
+    border-color: var(--olive); background: color-mix(in srgb, var(--sage) 22%, transparent);
+  }
+  button.swapopt[aria-current="true"] {
+    border-color: var(--moss); background: color-mix(in srgb, var(--moss) 15%, transparent);
+    font-weight: 600;
+  }
+  button.swapopt span.q {
+    font-family: var(--body); font-size: 11.5px; color: var(--ink-faint);
+    font-variant-numeric: tabular-nums; flex: none;
+  }
+
+  /* ---------- footer: torn note ---------- */
+  footer {
+    margin-top: 60px; padding: 30px 0 56px;
+    border-top: 1px dashed var(--rule);
+    font-size: 14px; color: var(--ink-soft); max-width: 68ch; line-height: 1.62;
+  }
+  footer p { margin: 0 0 12px; }
+  footer strong { color: var(--ink); font-weight: 600; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    .daycol, .rec { transform: none !important; }
+  }
+  @media (max-width: 620px) {
+    .ctl-label { width: 100%; transform: none; }
+    .daycol { transform: none !important; }
+    .daycol::before { left: 50%; }
+    .wrap { padding: 0 18px; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <p class="eyebrow" data-i18n>Pescatarian · Mercadona · 3 meals, no snacks</p>
+    <button class="langbtn" id="langBtn" type="button" aria-label="Language">УКР</button>
+    <svg class="doodle sprig" viewBox="0 0 120 46" aria-hidden="true" focusable="false">
+      <path d="M4 33c14-3 25-9 34-17 8-7 17-11 27-11" />
+      <path d="M22 27c-2-6-1-11 3-14 2 4 1 10-3 14z" />
+      <path d="M38 22c-3-6-2-11 2-15 3 4 2 10-2 15z" />
+      <path d="M53 15c-4-5-4-10 0-15 3 5 3 10 0 15z" />
+      <path d="M30 30c5-5 11-6 17-4-4 5-11 7-17 4z" />
+      <path d="M46 24c5-5 11-6 17-4-4 5-11 7-17 4z" />
+      <circle cx="68" cy="4" r="2.4" />
+    </svg>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <h2 data-i18n>Your week</h2>
+      <p data-i18n>Shuffle for a new week, or tap any breakfast or dinner to swap it yourself.</p>
+    </div>
+
+    <p class="clash-warn" id="clash" hidden></p>
+
+    <div class="week" id="week"></div>
+
+    <div class="wk-acts">
+      <button class="act primary" id="shuffleBtn" data-i18n>Shuffle the week</button>
+      <button class="act" id="shuffleDinnersBtn" data-i18n>Shuffle dinners only</button>
+      <button class="act" id="weekListBtn" data-i18n>Week shopping list</button>
+      <button class="act" id="resetWeekBtn" data-i18n>Reset</button>
+    </div>
+    <p class="shuffle-note" id="shuffleNote" hidden></p>
+
+  </section>
+
+  <div class="divider" aria-hidden="true">
+    <svg viewBox="0 0 260 22" focusable="false">
+      <path d="M2 12c22-7 44 6 66-1s44-9 66-2 44 8 66 1 44-6 58-3" />
+      <circle cx="130" cy="9" r="3.6" />
+    </svg>
+  </div>
+
+  <div class="sec-head" style="margin-bottom:2px">
+    <h2 data-i18n>All 77 recipes</h2>
+    <p data-i18n>26 breakfasts, 23 lunches, 28 dinners. Every one savoury at breakfast, vegetable-heavy, all Mercadona.</p>
+  </div>
+
+  <div class="controls">
+    <div class="ctl-row">
+      <span class="ctl-label" data-i18n>Meal</span>
+      <button class="chip f-meal" data-v="all" aria-pressed="true" data-i18n>All</button>
+      <button class="chip f-meal" data-v="breakfast" aria-pressed="false" data-i18n>Breakfast</button>
+      <button class="chip f-meal" data-v="lunch" aria-pressed="false" data-i18n>Lunch</button>
+      <button class="chip f-meal" data-v="dinner" aria-pressed="false" data-i18n>Dinner</button>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-label" data-i18n>Style</span>
+      <button class="chip f-cui" data-v="all" aria-pressed="true" data-i18n>Any</button>
+      <button class="chip f-cui" data-v="spanish" aria-pressed="false" data-i18n>Spanish</button>
+      <button class="chip f-cui" data-v="medit" aria-pressed="false" data-i18n>Mediterranean</button>
+      <button class="chip f-cui" data-v="asian" aria-pressed="false" data-i18n>Asian</button>
+      <button class="chip f-cui" data-v="mideast" aria-pressed="false" data-i18n>Middle Eastern</button>
+      <button class="chip f-cui" data-v="nordic" aria-pressed="false" data-i18n>Nordic</button>
+      <button class="chip f-cui" data-v="simple" aria-pressed="false" data-i18n>No fuss</button>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-label" data-i18n>Filter</span>
+      <button class="chip f-tag" data-v="fav" aria-pressed="false" data-i18n>★ Favourites</button>
+      <button class="chip f-tag" data-v="nocook" aria-pressed="false" data-i18n>No cooking</button>
+      <button class="chip f-tag" data-v="under10" aria-pressed="false" data-i18n>Under 10 min</button>
+      <button class="chip f-tag" data-v="fish" aria-pressed="false" data-i18n>Fish &amp; seafood</button>
+      <button class="chip f-tag" data-v="eggs" aria-pressed="false" data-i18n>Eggs</button>
+      <button class="chip f-tag" data-v="dairy" aria-pressed="false" data-i18n>Dairy</button>
+      <button class="chip f-tag" data-v="plant" aria-pressed="false" data-i18n>Plant protein</button>
+      <button class="chip f-tag" data-v="batch" aria-pressed="false" data-i18n>Keeps for tomorrow</button>
+    </div>
+  </div>
+
+  <p class="count" id="count"></p>
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    <p data-i18n-html><strong>The sweet bit, if you want one.</strong> Every breakfast here is savoury by design. If you want something sweet alongside, add it as a small finish rather than making the meal sweet: 80 g of berries (about 35 kcal), a small pear (80 kcal), or 10 g of 85% dark chocolate (55 kcal). None of them touch the protein and all of them fit inside the daily allowance. Oats appear nowhere on the list.</p>
+    <p data-i18n-html><strong>Portions are per person, per meal.</strong> The figures on each card are for one serving, so a day is simply its three meals added up. Dinners are cooked at twice the quantity shown, but you still eat one portion tonight and one tomorrow.</p>
+    <p data-i18n-html><strong>Leftovers.</strong> Cool them fast and get them in the fridge within an hour. Cooked fish is good for two days and everything here is eaten inside one.</p>
+    <p>Macros are estimates from standard food composition values and Mercadona pack labels; treat them as ±10%. Weigh the fish and the oil — those two move the number most. If the scale hasn't shifted in three weeks, drop 100 kcal rather than cutting a meal, since three meals is what makes this liveable for you.</p>
+    <p data-i18n-html>Not medical advice. If you're on medication or have a thyroid, blood-sugar or kidney condition, run the protein target past your GP first.</p>
+  </footer>
+</div>
+
+<dialog id="dlg">
+  <div class="dlg-head">
+    <h2 id="dlgTitle" data-i18n>Mercadona list</h2>
+    <button class="close" id="closeBtn" data-i18n>Close</button>
+  </div>
+  <div class="dlg-body" id="dlgBody"></div>
+</dialog>
+
+<dialog id="swapDlg">
+  <div class="dlg-head">
+    <h2 id="swapTitle" data-i18n>Swap</h2>
+    <button class="close" id="swapClose" data-i18n>Close</button>
+  </div>
+  <div class="dlg-body" id="swapBody"></div>
+</dialog>
+
+<script>
+const RECIPES = [
+
+  { id:'b2', meal:'breakfast', name:'Smoked Salmon Scramble on Rye', es:'Revuelto de salmón ahumado',
+    mins:10, tags:['fish','eggs'], kcal:396, p:38, f:17, c:23,
+    ing:[
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Liquid egg whites","Claras de huevo pasteurizadas",60,"g"],
+      ["Smoked salmon","Salmón ahumado",60,"g"],
+      ["Rye bread","Pan de centeno",1,"slice"],
+      ["Fresh spinach","Espinacas frescas",100,"g"],
+      ["Fresh dill","Eneldo fresco",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      'Beat the eggs and whites together with plenty of black pepper. No salt — the salmon brings it.',
+      'Wilt the spinach in a dry non-stick pan, 30 seconds, then pour in the eggs on a low heat.',
+      'Push the curds slowly with a spatula and pull the pan off while they still look slightly wet.',
+      'Pile onto the toasted rye, drape the salmon over the top, finish with dill.'
+    ],
+    tip:'Low heat and an early exit from the pan is the whole trick — scrambled eggs keep cooking on the plate.' },
+
+  { id:'b3', meal:'breakfast', name:'Requesón & Egg Toast with Tomato', es:'Tostada de requesón, huevo y tomate',
+    mins:10, tags:['dairy','eggs'], kcal:424, p:32, f:21, c:25,
+    ing:[
+      ["Ricotta-style curd cheese","Requesón",150,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Rye bread","Pan de centeno",1,"slice"],
+      ["Tomato","Tomate",1,""],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Dried oregano","Orégano",null,""],
+      ["Salt and black pepper","Sal y pimienta",null,""]
+    ],
+    steps:[
+      'Boil the eggs 8 minutes for a just-set yolk, then straight into cold water and peel.',
+      'Toast the rye and rub the cut face of the tomato hard across it, Catalan style, until the bread is stained.',
+      'Spread the requesón thickly, sit the halved eggs on top, drizzle the oil and season with oregano.'
+    ],
+    tip:'Boil six eggs on Sunday. This breakfast then takes four minutes flat all week.' },
+
+
+
+  { id:'l1', meal:'lunch', name:'Tuna & Chickpea Bowl', es:'Ensalada de atún y garbanzos',
+    mins:5, tags:['nocook','fish','plant','batch'], kcal:400, p:37, f:13, c:28,
+    ing:[
+      ["Tuna in brine","Atún claro al natural",2,"tin"],
+      ["Cooked chickpeas, jar","Garbanzos cocidos",120,"g"],
+      ["Cherry tomatoes","Tomates cherry",100,"g"],
+      ["Cucumber","Pepino",0.5,""],
+      ["Red onion","Cebolla roja",0.25,""],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",10,"g"],
+      ["Lemon","Limón",0.5,""],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      'Rinse the chickpeas well and shake them properly dry — wet chickpeas make a watery salad.',
+      'Halve the cherry tomatoes, dice the cucumber, slice the red onion as thinly as you can.',
+      'Fold everything with the drained tuna, dress with oil and a hard squeeze of lemon, then the parsley.'
+    ],
+    tip:'Your fastest meal, no heat at all. Dressed, it holds in the fridge for two days.' },
+
+  { id:'l2', meal:'lunch', name:'Prawn & Quinoa Salad', es:'Ensalada de langostinos y quinoa',
+    mins:15, tags:['fish','batch'], kcal:481, p:41, f:13, c:41,
+    ing:[
+      ["Peas, frozen","Guisantes congelados",80,"g"],
+      ["Cooked peeled prawns","Langostino cocido pelado",150,"g"],
+      ["Quinoa, dry","Quinoa",40,"g"],
+      ["Avocado","Aguacate",40,"g"],
+      ["Rocket","Rúcula",60,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Lemon","Limón",0.5,""],
+      ["Fresh dill","Eneldo fresco",5,"g"]
+    ],
+    steps:[
+      'Rinse the quinoa, then simmer in double its volume of salted water for 12 minutes until the germs uncoil.',
+      'Spread it on a plate to cool fast — warm quinoa turns rocket to slime.',
+      'Toss with the prawns, diced avocado and rocket. Dress with oil, lemon and dill.',
+      "Boil the peas 3 minutes with the quinoa and cool them together."
+    ],
+    tip:'Cook 160 g of quinoa at the weekend and this becomes a five-minute lunch four times over.' },
+
+  { id:'l3', meal:'lunch', name:'Mackerel & Lentil Salad', es:'Ensalada de caballa y lentejas',
+    mins:5, tags:['nocook','fish','plant','batch'], kcal:382, p:30, f:17, c:26,
+    ing:[
+      ["Mackerel in olive oil","Caballa en aceite de oliva",1,"tin"],
+      ["Cooked lentils, jar","Lentejas cocidas",150,"g"],
+      ["Baby spinach","Espinacas baby",100,"g"],
+      ["Red pepper","Pimiento rojo",100,"g"],
+      ["Sherry vinegar","Vinagre de Jerez",1,"tbsp"],
+      ["Dijon mustard","Mostaza de Dijon",1,"tsp"]
+    ],
+    steps:[
+      'Whisk the sherry vinegar and mustard together with a spoonful of the oil from the mackerel tin.',
+      'Rinse and drain the lentils, dice the pepper, and toss both through the spinach with the dressing.',
+      'Break the mackerel into large flakes over the top — don\'t stir it in or it disappears.'
+    ],
+    tip:'Mackerel is the cheapest omega-3 in the shop and beats tinned salmon on both price and flavour.' },
+
+  { id:'l4', meal:'lunch', name:'Tofu & Edamame Rice Bowl', es:'Bol de tofu y edamame',
+    mins:20, tags:['plant'], kcal:490, p:34, f:22, c:38,
+    ing:[
+      ["Firm tofu","Tofu firme",200,"g"],
+      ["Frozen shelled edamame","Edamame congelado",80,"g"],
+      ["Broccoli","Brócoli",150,"g"],
+      ["Basmati rice, cooked","Arroz basmati",50,"g"],
+      ["Soy sauce","Salsa de soja",2,"tbsp"],
+      ["Fresh ginger","Jengibre fresco",15,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Sesame oil","Aceite de sésamo",5,"g"]
+    ],
+    steps:[
+      'Press the tofu between two plates under something heavy for 10 minutes, then cube it. This step is not optional if you want it crisp.',
+      'Sear the cubes in a hot dry non-stick pan until golden on three sides, roughly 6 minutes.',
+      'Add the broccoli and a splash of water, lid on, 3 minutes. Then the edamame, ginger, garlic and soy.',
+      'Serve over the rice with the sesame oil poured over at the end, off the heat.'
+    ],
+    tip:'Sesame oil is a finishing oil. Heat it and you lose everything you paid for.' },
+
+  { id:'l5', meal:'lunch', name:'Hake in Tomato & Pepper', es:'Merluza con tomate y pimiento',
+    mins:20, tags:['fish'], kcal:482, p:39, f:13, c:44,
+    ing:[
+      ["Peas, frozen","Guisantes congelados",100,"g"],
+      ["Hake loins","Lomos de merluza",180,"g"],
+      ["Crushed tomatoes","Tomate triturado",200,"g"],
+      ["Green Italian pepper","Pimiento verde italiano",1,""],
+      ["Garlic","Ajo",2,"clove"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Sweet smoked paprika","Pimentón de la Vera",1,"tsp"],
+      ["Bread","Pan",30,"g"]
+    ],
+    steps:[
+      'Soften the sliced pepper and garlic in the oil over a medium heat, about 5 minutes.',
+      'Stir in the pimentón for ten seconds only — it burns and turns bitter fast — then the tomato. Simmer 8 minutes.',
+      'Nestle the hake into the sauce, lid on, 6 minutes. It\'s done when it flakes at the thickest part.',
+      'Bread on the side for the sauce.',
+      "Peas into the sauce with the hake so they cook in the tomato."
+    ],
+    tip:'Frozen hake loins work perfectly here and cost less. Cook from frozen, just add 3 minutes.' },
+
+
+  { id:'d1', meal:'dinner', name:'Baked Salmon with Roast Veg', es:'Salmón al horno con verduras',
+    mins:20, tags:['fish'], kcal:478, p:31, f:26, c:28,
+    ing:[
+      ["Fresh salmon fillet","Salmón fresco, lomo",150,"g"],
+      ["Courgette","Calabacín",150,"g"],
+      ["Red pepper","Pimiento rojo",100,"g"],
+      ["Potato","Patata",80,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",6,"g"],
+      ["Lemon","Limón",0.5,""],
+      ["Fresh thyme","Tomillo",null,""]
+    ],
+    steps:[
+      'Oven to 220°C. Cut the potato small — 1 cm dice — or it won\'t keep up with the rest.',
+      'Toss all the vegetables with the oil and thyme on a tray, roast 12 minutes.',
+      'Push them aside, lay the salmon skin-down in the gap, back in for 8 minutes.',
+      'Squeeze the lemon over as it comes out of the oven.'
+    ],
+    tip:'Salmon is done at 8 minutes when the fat starts beading white on the surface. Past that it goes dry and chalky.' },
+
+  { id:'d2', meal:'dinner', name:'Garlic Prawns with Courgette Noodles', es:'Gambas al ajillo con calabacín',
+    mins:15, tags:['fish'], kcal:377, p:39, f:14, c:24,
+    ing:[
+      ["Frozen peeled prawns","Gambas peladas congeladas",180,"g"],
+      ["Courgette","Calabacín",250,"g"],
+      ["Garlic","Ajo",2,"clove"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",10,"g"],
+      ["Fresh parsley","Perejil",10,"g"],
+      ["Wholemeal bread","Pan integral",30,"g"],
+      ["Dried chilli","Guindilla seca",null,""]
+    ],
+    steps:[
+      'Defrost the prawns in cold water, then dry them thoroughly on kitchen paper. Wet prawns steam instead of searing.',
+      'Ribbon or spiralise the courgette. Salt it lightly, wait 5 minutes, squeeze out the water.',
+      'Sizzle the sliced garlic and chilli in the oil until the garlic just turns blond, then the prawns — 90 seconds a side, no more.',
+      'Toss the courgette through the garlic oil for 60 seconds, add the parsley, serve with bread.'
+    ],
+    tip:'Highest protein for the fewest calories on this whole list. Good for a day you overshot at lunch.' },
+
+  { id:'d3', meal:'dinner', name:'Cod with Chickpeas & Spinach', es:'Bacalao con garbanzos y espinacas',
+    mins:20, tags:['fish','plant'], kcal:372, p:40, f:13, c:22,
+    ing:[
+      ["Cod loins","Lomos de bacalao",180,"g"],
+      ["Cooked chickpeas, jar","Garbanzos cocidos",100,"g"],
+      ["Fresh spinach","Espinacas frescas",150,"g"],
+      ["Garlic","Ajo",2,"clove"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Sweet paprika","Pimentón dulce",1,"tsp"]
+    ],
+    steps:[
+      'Pat the cod dry and salt it 10 minutes ahead — it firms the flesh so it doesn\'t collapse in the pan.',
+      'Fry the sliced garlic gently in the oil, add the drained chickpeas and pimentón, let them crisp a little, 4 minutes.',
+      'Wilt the spinach through, then sit the cod on top, lid on, 7 minutes over a low heat.'
+    ],
+    tip:'Forty grams of protein for 372 calories — the best ratio here. Use it on a day the numbers are tight.' },
+
+  { id:'d4', meal:'dinner', name:'Mussels in Tomato Broth', es:'Mejillones en salsa de tomate',
+    mins:15, tags:['fish'], kcal:388, p:36, f:6, c:42,
+    ing:[
+      ["Red pepper","Pimiento rojo",80,"g"],
+      ["Carrot","Zanahoria",80,"g"],
+      ["Fresh mussels","Mejillones frescos",500,"g"],
+      ["Crushed tomatoes","Tomate triturado",200,"g"],
+      ["Garlic","Ajo",2,"clove"],
+      ["White wine","Vino blanco",50,"ml"],
+      ["Fresh parsley","Perejil",10,"g"],
+      ["Bread","Pan",50,"g"]
+    ],
+    steps:[
+      'Scrub the mussels and pull the beards. Throw away any that stay open when you tap them.',
+      'Soften the garlic in a wide pan, add the wine, let it bubble hard for a minute, then the tomato. Simmer 5 minutes.',
+      'Mussels in, lid on, high heat, 4 minutes until they all open. Discard any that stayed shut.',
+      'Parsley over, bread alongside — the broth is the point.',
+      "Soften the diced carrot and pepper with the garlic before the wine goes in."
+    ],
+    tip:'The leanest dinner on the list. Six grams of fat, and the bread is genuinely part of the meal.' },
+
+  { id:'d5', meal:'dinner', name:'Tortilla with Skyr & Herbs', es:'Tortilla de patata con skyr',
+    mins:20, tags:['eggs','dairy'], kcal:530, p:48, f:19, c:39,
+    ing:[
+      ["Red pepper","Pimiento rojo",80,"g"],
+      ["Peas, frozen","Guisantes congelados",80,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Liquid egg whites","Claras de huevo pasteurizadas",160,"g"],
+      ["Potato","Patata",120,"g"],
+      ["Onion","Cebolla",0.5,""],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Plain 0% skyr","Skyr natural 0%",100,"g"],
+      ["Chives","Cebollino",5,"g"],
+      ["Garlic powder","Ajo en polvo",null,""]
+    ],
+    steps:[
+      'Slice the potato very thin and the onion finely. Cook them slowly in the oil with a lid on, 10 minutes — softened, not browned.',
+      'Beat the eggs and whites, season well, and pour over. Low heat, 5 minutes, until only the top is loose.',
+      'Slide onto a plate, invert the pan over it, flip, and give it 2 minutes more.',
+      'Whip the chives and garlic powder through the skyr and serve it alongside as a cold sauce.',
+      "Stir the peas and diced pepper into the softened potato before the eggs \u2014 this is tortilla paisana."
+    ],
+    tip:'The skyr on the side is doing real work — it adds 11 g of protein for 55 calories and stands in for aioli.' },
+
+  { id:'d6', meal:'dinner', name:'Tuna Tartare with Avocado', es:'Tartar de atún con aguacate',
+    mins:10, tags:['nocook','fish'], kcal:415, p:37, f:20, c:23,
+    ing:[
+      ["Cucumber","Pepino",0.5,""],
+      ["Tuna for tartare, previously frozen","Atún para tartar, ultracongelado",150,"g"],
+      ["Avocado","Aguacate",60,"g"],
+      ["Rye crispbread","Tostadas de centeno",25,"g"],
+      ["Soy sauce","Salsa de soja",1,"tbsp"],
+      ["Sesame oil","Aceite de sésamo",3,"g"],
+      ["Spring onion","Cebolleta",1,""],
+      ["Sesame seeds","Semillas de sésamo",1,"tsp"],
+      ["Lime","Lima",0.5,""]
+    ],
+    steps:[
+      'Keep the tuna very cold until the last moment, then dice it by hand into 5 mm cubes with a sharp knife. A blunt knife tears it and the texture goes to mush.',
+      'Dress with the soy, sesame oil and lime juice no more than five minutes before eating — the acid starts to cure the fish and turn it pale.',
+      'Dice the avocado the same size, fold it through gently.',
+      'Spring onion and sesame seeds over, crispbread alongside.',
+      "Dice the cucumber the same size as the tuna and fold it through at the end for crunch."
+    ],
+    tip:'Buy tuna sold for tartare or sushi — in Spain fish eaten raw must be frozen to -20°C first, by law, to kill anisakis. Mercadona sell it ultracongelado for exactly this. A home freezer runs warmer at about -18°C, so if you freeze it yourself give it five days, not one.' },
+
+  { id:'d7', meal:'dinner', name:'Tofu & Lentil Curry', es:'Curry de tofu y lentejas',
+    mins:20, tags:['plant','batch'], kcal:430, p:31, f:18, c:34,
+    ing:[
+      ["Firm tofu","Tofu firme",150,"g"],
+      ["Cooked lentils, jar","Lentejas cocidas",150,"g"],
+      ["Light coconut milk","Leche de coco ligera",60,"ml"],
+      ["Fresh spinach","Espinacas frescas",100,"g"],
+      ["Curry paste","Pasta de curry",1,"tbsp"],
+      ["Fresh ginger","Jengibre fresco",15,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Fresh coriander","Cilantro",10,"g"],
+      ["Lime","Lima",0.5,""]
+    ],
+    steps:[
+      'Cube and sear the tofu in a dry pan until it takes colour, then set it aside.',
+      'Fry the curry paste with the ginger and garlic for a minute until it smells fragrant, then add the coconut milk and a splash of water.',
+      'Lentils in, simmer 5 minutes, then fold back the tofu and wilt the spinach through.',
+      'Coriander and a squeeze of lime at the end.'
+    ],
+    tip:'Doubles well and tastes better on day two. The one recipe here genuinely worth batch-cooking.' },
+
+  { id:'b6', meal:'breakfast', name:'Shakshuka with Feta', es:'Huevos en salsa de tomate y pimiento',
+    mins:20, tags:['eggs','dairy'], kcal:453, p:34, f:22, c:31,
+    ing:[
+      ["Fresh spinach","Espinacas frescas",80,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Liquid egg whites","Claras de huevo pasteurizadas",60,"g"],
+      ["Crushed tomatoes","Tomate triturado",200,"g"],
+      ["Red pepper","Pimiento rojo",150,"g"],
+      ["Feta cheese","Queso feta",50,"g"],
+      ["Bread","Pan",30,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Ground cumin","Comino molido",1,"tsp"],
+      ["Sweet paprika","Pimentón dulce",1,"tsp"]
+    ],
+    steps:[
+      'Soften the sliced pepper and garlic in a small pan, then add the cumin and paprika and let them toast for ten seconds.',
+      'Pour in the tomato and simmer hard for 8 minutes — you want it thick enough that a spoon leaves a trail, or the eggs will slide around.',
+      'Make two wells, crack an egg into each, pour the whites around them. Lid on, low heat, 5 minutes for set whites and a soft yolk.',
+      'Crumble the feta over and take it straight to the table in the pan.',
+      "Spinach wilted into the sauce before you make the wells."
+    ],
+    tip:'The sauce is the part that takes time and it keeps four days. Make it once, poach fresh eggs into it all week.' },
+
+  { id:'b7', meal:'breakfast', name:'Cottage Cheese Bowl with Cucumber & Dill', es:'Bol de queso batido con pepino',
+    mins:5, tags:['nocook','dairy','eggs'], kcal:441, p:37, f:19, c:29,
+    ing:[
+      ["Cherry tomatoes","Tomates cherry",100,"g"],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",250,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Cucumber","Pepino",0.5,""],
+      ["Sunflower seeds","Semillas de girasol",10,"g"],
+      ["Rye crispbread","Tostadas de centeno",20,"g"],
+      ["Fresh dill","Eneldo fresco",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      'Spoon the cottage cheese into a wide bowl and grind over far more black pepper than feels sensible.',
+      'Dice the cucumber small and quarter the boiled eggs, arranging them over the top rather than stirring in.',
+      'Scatter the sunflower seeds and dill, with the crispbread on the side.'
+    ],
+    tip:'The savoury breakfast that stops the mid-morning slump — no sugar in it at all, so nothing to crash off.' },
+
+  { id:'b8', meal:'breakfast', name:'Smoked Mackerel Pâté on Crispbread', es:'Paté de caballa ahumada',
+    mins:5, tags:['nocook','fish','dairy','batch'], kcal:374, p:31, f:18, c:24,
+    ing:[
+      ["Cucumber","Pepino",0.5,""],
+      ["Mackerel in olive oil","Caballa en aceite de oliva",1,"tin"],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",120,"g"],
+      ["Rye crispbread","Tostadas de centeno",25,"g"],
+      ["Radishes","Rábanos",3,""],
+      ["Lemon","Limón",0.5,""],
+      ["Chives","Cebollino",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      'Mash the drained mackerel into the cottage cheese with a fork — leave it coarse, a smooth purée loses all the texture.',
+      'Beat in lemon juice, chopped chives and plenty of pepper. Taste before salting; the fish is already salty.',
+      'Spread thickly on the crispbread with sliced radish over the top for crunch.'
+    ],
+    tip:'Makes two portions and keeps three days covered. Cottage cheese instead of the usual cream cheese saves 200 calories.' },
+
+
+  { id:'b10', meal:'breakfast', name:'Tuna & Egg Breakfast Melt', es:'Tostada de atún y huevo gratinada',
+    mins:10, tags:['fish','eggs','dairy'], kcal:375, p:37, f:17, c:24,
+    ing:[
+      ["Tuna in brine","Atún claro al natural",1,"tin"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Grated light mozzarella","Mozzarella light rallada",30,"g"],
+      ["Wholemeal bread","Pan integral",1,"slice"],
+      ["Tomato","Tomate",1,""],
+      ["Dried oregano","Orégano",null,""],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      'Scramble the eggs softly and fold the drained tuna through them off the heat.',
+      'Pile onto the toasted bread, lay tomato slices over, then the mozzarella.',
+      'Under a hot grill for 3 minutes until the cheese blisters. Oregano over the top.'
+    ],
+    tip:'Sounds like an odd breakfast, works completely. Thirty-seven grams of protein for 375 calories.' },
+
+
+  { id:'l7', meal:'lunch', name:'Sardines on Toast with Capers', es:'Sardinas con tomate y alcaparras',
+    mins:5, tags:['nocook','fish','eggs'], kcal:425, p:36, f:22, c:26,
+    ing:[
+      ["Sardines in olive oil","Sardinas en aceite de oliva",1,"tin"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Rye bread","Pan de centeno",1,"slice"],
+      ["Tomato","Tomate",1,""],
+      ["Capers","Alcaparras",1,"tbsp"],
+      ["Lemon","Limón",0.5,""],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      'Rub the toasted rye with the cut tomato until the bread is stained pink.',
+      'Lay the sardines whole over the top — mashing them makes it a paste and loses the point.',
+      'Quartered eggs alongside, capers and parsley scattered, hard squeeze of lemon.'
+    ],
+    tip:'Sardines have more calcium than milk because you eat the soft bones, and more omega-3 per euro than anything else in the shop.' },
+
+  { id:'l8', meal:'lunch', name:'Smoked Salmon Poke Bowl', es:'Poke de salmón ahumado',
+    mins:15, tags:['nocook','fish','plant'], kcal:440, p:37, f:20, c:34,
+    ing:[
+      ["Smoked salmon","Salmón ahumado",110,"g"],
+      ["Frozen shelled edamame","Edamame congelado",80,"g"],
+      ["Basmati rice, cooked","Arroz basmati",60,"g"],
+      ["Avocado","Aguacate",40,"g"],
+      ["Cucumber","Pepino",0.5,""],
+      ["Soy sauce","Salsa de soja",1,"tbsp"],
+      ["Rice vinegar","Vinagre de arroz",1,"tsp"],
+      ["Sesame seeds","Semillas de sésamo",1,"tsp"]
+    ],
+    steps:[
+      'Boil the edamame 3 minutes from frozen, then cool under the tap.',
+      'Season the cooked rice with the rice vinegar while it is still warm — this is the step people skip and it is what makes it taste like a poke bowl.',
+      'Build in sections rather than mixing: rice base, then salmon, edamame, avocado and cucumber in their own quadrants.',
+      'Soy sauce and sesame seeds over the top.'
+    ],
+    tip:'Smoked salmon sidesteps the raw-fish question entirely — no sashimi-grade sourcing, no risk, same bowl.' },
+
+
+  { id:'l10', meal:'lunch', name:'Egg Salad & Avocado Open Sandwich', es:'Tostada de huevo y aguacate',
+    mins:10, tags:['eggs','dairy'], kcal:412, p:33, f:16, c:29,
+    ing:[
+      ["Rocket","R\u00facula",30,"g"],
+      ["Cucumber","Pepino",0.5,""],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",200,"g"],
+      ["Avocado","Aguacate",40,"g"],
+      ["Rye bread","Pan de centeno",1,"slice"],
+      ["Dijon mustard","Mostaza de Dijon",1,"tsp"],
+      ["Chives","Cebollino",5,"g"],
+      ["Sweet paprika","Pimentón dulce",0.5,"tsp"]
+    ],
+    steps:[
+      'Boil the two eggs 9 minutes for a fully set yolk, cool in cold water, peel and chop roughly.',
+      'Fold with the cottage cheese and mustard. The cottage cheese does the job mayonnaise usually does at a quarter of the calories.',
+      'Spread the mashed avocado on the toast, pile the egg salad on, finish with chives and a dusting of paprika.',
+      "Pile the rocket on the toast under the egg salad and tuck the cucumber alongside."
+    ],
+    tip:'Swapping mayo for cottage cheese here saves about 180 calories and adds 12 g of protein. Best trade on the list.' },
+
+  { id:'l11', meal:'lunch', name:'Prawn & Avocado Gazpacho Bowl', es:'Gazpacho con langostinos',
+    mins:10, tags:['nocook','fish','eggs'], kcal:432, p:39, f:18, c:29,
+    ing:[
+      ["Red pepper","Pimiento rojo",80,"g"],
+      ["Gazpacho","Gazpacho",300,"ml"],
+      ["Cooked peeled prawns","Langostino cocido pelado",150,"g"],
+      ["Avocado","Aguacate",40,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",1,""],
+      ["Cucumber","Pepino",0.5,""],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",3,"g"],
+      ["Sherry vinegar","Vinagre de Jerez",1,"tsp"]
+    ],
+    steps:[
+      'Pour the cold gazpacho into a wide shallow bowl, not a glass — this is a meal, not a drink.',
+      'Arrange the prawns, diced avocado, quartered egg and finely diced cucumber over the surface.',
+      'A thread of olive oil and a few drops of sherry vinegar to finish.',
+      "Diced raw pepper over the top with the cucumber."
+    ],
+    tip:'Made for a hot Tenerife afternoon when the oven is unthinkable. Nothing gets cooked and it is still 38 g of protein.' },
+
+  { id:'l12', meal:'lunch', name:'Cod & Potato Salad with Piquillo Peppers', es:'Ensalada de bacalao y patata',
+    mins:15, tags:['fish','batch'], kcal:452, p:40, f:16, c:34,
+    ing:[
+      ["Cod loins","Lomos de bacalao",160,"g"],
+      ["Potato","Patata",150,"g"],
+      ["Piquillo peppers, jar","Pimientos del piquillo",60,"g"],
+      ["Green beans","Judías verdes",100,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",1,""],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Sherry vinegar","Vinagre de Jerez",1,"tbsp"],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      'Boil the diced potato and green beans together, 10 minutes, adding the cod on top for the last 5 to steam.',
+      'Drain and let everything cool for a few minutes — dressing it boiling-hot makes the potato mushy.',
+      'Flake the cod into large pieces, toss gently with the sliced piquillos, oil and vinegar.',
+      'Quartered egg on top, parsley over.'
+    ],
+    tip:'Better cold the next day, so make double. Forty grams of protein and it travels well in a box.' },
+
+  { id:'d8', meal:'dinner', name:'Sea Bass en Papillote with Fennel', es:'Lubina al papillote con hinojo',
+    mins:20, tags:['fish'], kcal:375, p:37, f:15, c:24,
+    ing:[
+      ["Sea bass fillets","Lomos de lubina",200,"g"],
+      ["Fennel","Hinojo",150,"g"],
+      ["Cherry tomatoes","Tomates cherry",80,"g"],
+      ["Potato","Patata",80,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Lemon","Limón",0.5,""],
+      ["White wine","Vino blanco",30,"ml"],
+      ["Fresh thyme","Tomillo",null,""]
+    ],
+    steps:[
+      'Oven to 200°C. Par-boil the thinly sliced potato for 5 minutes so it finishes at the same time as the fish.',
+      'Build a parcel of baking paper: potato underneath, fennel and tomatoes around, sea bass on top.',
+      'Oil, lemon, a splash of wine and the thyme inside, then fold the edges over tightly. A loose parcel steams out and the fish dries.',
+      'Twelve minutes. Open it at the table — the burst of steam is most of the pleasure.'
+    ],
+    tip:'No pan to wash and the fish cannot overcook, because it is steaming in its own juices rather than frying.' },
+
+  { id:'d9', meal:'dinner', name:'Clams with White Wine & Garlic', es:'Almejas a la marinera',
+    mins:15, tags:['fish'], kcal:442, p:43, f:11, c:39,
+    ing:[
+      ["Peas, frozen","Guisantes congelados",100,"g"],
+      ["Fresh clams","Almejas frescas",600,"g"],
+      ["White wine","Vino blanco",50,"ml"],
+      ["Garlic","Ajo",2,"clove"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Bread","Pan",50,"g"],
+      ["Fresh parsley","Perejil",10,"g"],
+      ["Sweet paprika","Pimentón dulce",1,"tsp"]
+    ],
+    steps:[
+      'Sit the clams in cold salted water for 20 minutes so they spit out their sand, then rinse. Skipping this ruins the dish.',
+      'Soften the sliced garlic in the oil, add the paprika for a few seconds, then the wine and let it bubble for a minute.',
+      'Clams in, lid on, high heat, 3–4 minutes until they open. Throw away any that stay shut.',
+      'Parsley through, bread on the side.',
+      "Peas into the wine for 3 minutes before the clams go in \u2014 almejas con guisantes, and they soak up the broth."
+    ],
+    tip:'Thirty-eight grams of protein and eleven of fat. Clams are one of the leanest proteins in the shop.' },
+
+  { id:'d10', meal:'dinner', name:'Salmon Teriyaki with Broccoli', es:'Salmón teriyaki con brócoli',
+    mins:20, tags:['fish'], kcal:470, p:37, f:22, c:32,
+    ing:[
+      ["Fresh salmon fillet","Salmón fresco, lomo",140,"g"],
+      ["Teriyaki sauce","Salsa teriyaki",20,"ml"],
+      ["Broccoli","Brócoli",200,"g"],
+      ["Basmati rice, cooked","Arroz basmati",40,"g"],
+      ["Sesame seeds","Semillas de sésamo",1,"tsp"],
+      ["Fresh ginger","Jengibre fresco",15,"g"],
+      ["Spring onion","Cebolleta",1,""]
+    ],
+    steps:[
+      'Steam the broccoli 4 minutes — still squeaky, not soft.',
+      'Sear the salmon skin-side down in a dry non-stick pan for 4 minutes, flip, 2 more.',
+      'Pour the teriyaki in with the grated ginger and let it bubble down around the fish for a minute until it glazes and goes tacky.',
+      'Over the rice with the broccoli, sesame and sliced spring onion.'
+    ],
+    tip:'Add the sauce at the very end. Teriyaki is mostly sugar and it burns black long before the salmon is cooked.' },
+
+  { id:'d11', meal:'dinner', name:'Prawn & Coconut Curry', es:'Curry de gambas y coco',
+    mins:20, tags:['fish'], kcal:365, p:38, f:13, c:30,
+    ing:[
+      ["Frozen peeled prawns","Gambas peladas congeladas",180,"g"],
+      ["Light coconut milk","Leche de coco ligera",80,"ml"],
+      ["Red pepper","Pimiento rojo",75,"g"],
+      ["Courgette","Calabacín",75,"g"],
+      ["Red curry paste","Pasta de curry rojo",1,"tbsp"],
+      ["Basmati rice, cooked","Arroz basmati",50,"g"],
+      ["Lime","Lima",0.5,""],
+      ["Fresh coriander","Cilantro",10,"g"]
+    ],
+    steps:[
+      'Fry the curry paste in a dry pan for a minute until it darkens and smells fragrant — raw paste tastes flat and dusty.',
+      'Coconut milk in with a splash of water, then the sliced vegetables. Simmer 6 minutes.',
+      'Prawns last, only 3 minutes — they are done the moment they curl and turn opaque.',
+      'Lime squeezed in off the heat, coriander over, rice alongside.'
+    ],
+    tip:'Light coconut milk instead of full-fat saves 120 calories here and you genuinely cannot tell in a spiced curry.' },
+
+  { id:'d12', meal:'dinner', name:'Baked Feta, Chickpeas & Egg', es:'Feta al horno con garbanzos y huevo',
+    mins:20, tags:['dairy','eggs','plant'], kcal:466, p:31, f:22, c:36,
+    ing:[
+      ["Feta cheese","Queso feta",60,"g"],
+      ["Cooked chickpeas, jar","Garbanzos cocidos",120,"g"],
+      ["Crushed tomatoes","Tomate triturado",200,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Fresh spinach","Espinacas frescas",100,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Dried oregano","Orégano",null,""],
+      ["Chilli flakes","Guindilla molida",null,""]
+    ],
+    steps:[
+      'Oven to 200°C. Tip the tomato, drained chickpeas, garlic and oregano into a small oven dish and sit the block of feta in the middle.',
+      'Fifteen minutes, until the feta softens and takes colour at the edges.',
+      'Stir the spinach through, make two wells, crack in the eggs and return for 5 minutes until the whites set.',
+      'Chilli flakes over.'
+    ],
+    tip:'The only fully vegetarian dinner here that still clears 30 g. Good for a night you have no fish in the house.' },
+
+  { id:'d13', meal:'dinner', name:'Tuna Meatballs in Tomato Sauce', es:'Albóndigas de atún en salsa',
+    mins:20, tags:['fish','batch'], kcal:496, p:44, f:15, c:43,
+    ing:[
+      ["Carrot","Zanahoria",80,"g"],
+      ["Peas, frozen","Guisantes congelados",100,"g"],
+      ["Tuna in brine","Atún claro al natural",2,"tin"],
+      ["Free-range eggs, medium","Huevos camperos M",1,""],
+      ["Breadcrumbs","Pan rallado",20,"g"],
+      ["Crushed tomatoes","Tomate triturado",200,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Fresh parsley","Perejil",10,"g"],
+      ["Onion","Cebolla",0.5,""]
+    ],
+    steps:[
+      'Squeeze the tuna properly dry, then mix with the egg, breadcrumbs, chopped parsley and half the garlic. Roll into eight small balls.',
+      'Chill them 5 minutes if you have time — they hold together far better cold.',
+      'Brown them in the oil on all sides, about 4 minutes, then lift out.',
+      'Soften the onion and remaining garlic in the same pan, add the tomato, simmer 6 minutes, then return the meatballs for 4 minutes to finish.',
+      "Diced carrot in with the onion, peas into the sauce for the last 5 minutes."
+    ],
+    tip:'Store-cupboard dinner from two tins — nothing fresh required except an onion. Freezes well too.' },
+
+  { id:'d14', meal:'dinner', name:'Tofu Larb Lettuce Cups', es:'Tofu larb en hojas de lechuga',
+    mins:15, tags:['plant'], kcal:400, p:34, f:20, c:22,
+    ing:[
+      ["Firm tofu","Tofu firme",200,"g"],
+      ["Frozen shelled edamame","Edamame congelado",80,"g"],
+      ["Little gem lettuce","Cogollos de lechuga",1,""],
+      ["Soy sauce","Salsa de soja",2,"tbsp"],
+      ["Shallot","Chalota",1,""],
+      ["Lime","Lima",1,""],
+      ["Fresh coriander","Cilantro",10,"g"],
+      ["Fresh mint","Menta",5,"g"],
+      ["Chilli flakes","Guindilla molida",null,""]
+    ],
+    steps:[
+      'Crumble the tofu with your hands rather than dicing it — you want a rubbly mince texture, not cubes.',
+      'Dry-fry in a hot pan for 6 minutes until the water cooks off and the edges catch and brown. Do not stir constantly.',
+      'Soy sauce, sliced shallot and edamame in for 2 minutes, then off the heat.',
+      'Lime juice, torn herbs and chilli stirred through, spooned into cold lettuce leaves.'
+    ],
+    tip:'Crumbled and browned properly, tofu stops being the bland thing people complain about. The dry pan is the whole secret.' },
+
+  { id:'b12', meal:'breakfast', name:'Boiled Eggs, Avocado & Cottage Cheese', es:'Huevos cocidos con aguacate',
+    mins:10, tags:['eggs','dairy'], kcal:416, p:37, f:17, c:28,
+    ing:[
+      ["Rocket","R\u00facula",30,"g"],
+      ["Cherry tomatoes","Tomates cherry",100,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",250,"g"],
+      ["Avocado","Aguacate",40,"g"],
+      ["Rye crispbread","Tostadas de centeno",20,"g"],
+      ["Chives","Cebollino",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      'Two eggs into already-boiling water for 8 minutes, then straight into cold water — that is a set white with a yolk still soft in the middle.',
+      'Spread the cottage cheese across the plate, season it hard with black pepper.',
+      'Halve the eggs and sit them on top with the sliced avocado, chives scattered over, crispbread on the side.',
+      "Halved tomatoes and rocket around the outside, dressed with a little of the pepper."
+    ],
+    tip:'The plainest thing here and probably the one you will make most. Boil the eggs the night before and it takes three minutes.' },
+
+  { id:'b13', meal:'breakfast', name:'Smoked Salmon & Cottage Cheese Crispbread', es:'Tostada de salmón ahumado y queso batido',
+    mins:5, tags:['nocook','fish','dairy'], kcal:380, p:38, f:14, c:25,
+    ing:[
+      ["Rocket","R\u00facula",30,"g"],
+      ["Smoked salmon","Salmón ahumado",90,"g"],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",150,"g"],
+      ["Rye crispbread","Tostadas de centeno",25,"g"],
+      ["Cucumber","Pepino",0.5,""],
+      ["Capers","Alcaparras",1,"tbsp"],
+      ["Fresh dill","Eneldo fresco",5,"g"],
+      ["Lemon","Limón",0.5,""],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      'Spread the cottage cheese thickly over the crispbread — thicker than looks sensible, it is most of the protein.',
+      'Drape the salmon over in loose folds rather than flat sheets, so it does not go rubbery in the mouth.',
+      'Cucumber ribbons, capers, dill, a squeeze of lemon and plenty of pepper.'
+    ],
+    tip:'Thirty-seven grams of protein and not a pan involved. The fastest savoury breakfast on the list.' },
+
+  { id:'b14', meal:'breakfast', name:'Mushroom & Spinach Omelette with Feta', es:'Tortilla de champiñones y espinacas',
+    mins:15, tags:['eggs','dairy'], kcal:392, p:39, f:23, c:8,
+    ing:[
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Liquid egg whites","Claras de huevo pasteurizadas",140,"g"],
+      ["Mushrooms","Champiñones",100,"g"],
+      ["Fresh spinach","Espinacas frescas",100,"g"],
+      ["Feta cheese","Queso feta",40,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      'Fry the sliced mushrooms in a hot dry pan first, alone, until they squeak and brown. Adding oil or salt too early makes them steam and go grey.',
+      'Oil in, spinach wilted through, then pour over the beaten eggs and whites.',
+      'Low heat, drag the edges in as they set, and fold in half while the middle is still glossy.',
+      'Crumble the feta over as it folds so it softens without melting away.'
+    ],
+    tip:'Only 9 g of carbs. Useful on a day the rest of your meals are bread-heavy.' },
+
+  { id:'b15', meal:'breakfast', name:'Tuna & White Bean Toast', es:'Tostada de atún y alubias',
+    mins:5, tags:['nocook','fish','plant'], kcal:396, p:38, f:12, c:32,
+    ing:[
+      ["Tuna in brine","Atún claro al natural",2,"tin"],
+      ["Cooked white beans, jar","Alubias blancas cocidas",100,"g"],
+      ["Rye bread","Pan de centeno",1,"slice"],
+      ["Tomato","Tomate",1,""],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Lemon","Limón",0.5,""],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      'Crush half the rinsed beans roughly with a fork and leave the rest whole — you want two textures, not a paste.',
+      'Fold the drained tuna through with the oil, lemon and parsley.',
+      'Rub the toasted rye with the cut tomato, then pile the mixture on.'
+    ],
+    tip:'A store-cupboard breakfast: two tins and a jar. Nothing in it needs to be fresh except the tomato.' },
+
+  { id:'b16', meal:'breakfast', name:'Prawn & Avocado Crispbread', es:'Tostada de langostinos y aguacate',
+    mins:5, tags:['nocook','fish','dairy'], kcal:372, p:38, f:12, c:27,
+    ing:[
+      ["Rocket","R\u00facula",30,"g"],
+      ["Cucumber","Pepino",0.5,""],
+      ["Cooked peeled prawns","Langostino cocido pelado",130,"g"],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",100,"g"],
+      ["Avocado","Aguacate",40,"g"],
+      ["Rye crispbread","Tostadas de centeno",25,"g"],
+      ["Lemon","Limón",0.5,""],
+      ["Fresh dill","Eneldo fresco",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      'Mash the avocado straight onto the crispbread with a squeeze of lemon and a good grind of pepper.',
+      'Spoon the cottage cheese over, then pile the prawns on whole.',
+      'Dill and more lemon to finish.',
+      "Cucumber ribbons and rocket under the prawns."
+    ],
+    tip:'Buy the cooked prawns already peeled. Thirty-seven grams of protein for 352 calories and no cooking at all.' },
+
+  { id:'b17', meal:'breakfast', name:'Savoury Skyr Bowl with Tomato & Olives', es:'Bol salado de skyr con tomate y aceitunas',
+    mins:5, tags:['nocook','dairy','eggs'], kcal:388, p:35, f:17, c:25,
+    ing:[
+      ["Plain 0% skyr","Skyr natural 0%",250,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",1,""],
+      ["Cherry tomatoes","Tomates cherry",80,"g"],
+      ["Cucumber","Pepino",0.5,""],
+      ["Green olives","Aceitunas verdes",20,"g"],
+      ["Rye crispbread","Tostadas de centeno",20,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      'Season the skyr properly — salt, pepper and the olive oil stirred right through. Unseasoned skyr tastes like a dessert missing its sugar, which is the whole problem with it.',
+      'Halve the tomatoes and olives, dice the cucumber, and pile them on top rather than mixing in.',
+      'Quartered boiled egg alongside, crispbread on the side.'
+    ],
+    tip:'This is the sweet-breakfast staple turned savoury. Same protein, none of the sugar — the oil and salt are what make it work.' },
+
+  { id:'b18', meal:'breakfast', name:'Tofu Scramble with Spinach', es:'Revuelto de tofu con espinacas',
+    mins:15, tags:['plant'], kcal:455, p:31, f:24, c:30,
+    ing:[
+      ["Firm tofu","Tofu firme",200,"g"],
+      ["Fresh spinach","Espinacas frescas",100,"g"],
+      ["Cherry tomatoes","Tomates cherry",100,"g"],
+      ["Wholemeal bread","Pan integral",1,"slice"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Soy sauce","Salsa de soja",1,"tsp"],
+      ["Ground turmeric","Cúrcuma molida",null,""],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      'Crumble the tofu with your hands into a hot dry pan and let the water cook off, 5 minutes, without stirring much.',
+      'Once it starts catching and browning, add the oil, turmeric and soy sauce.',
+      'Halved tomatoes in for 2 minutes, then the spinach wilted through at the end.',
+      'Onto the toast, with plenty of black pepper.'
+    ],
+    tip:'The turmeric is for colour, the soy sauce is for savouriness. Skip either and it tastes like plain tofu, which is nobody\'s idea of breakfast.' },
+  { id:'b19', meal:'breakfast', name:"Anchovy, Tomato & Egg Toast", es:"Tostada de anchoas, tomate y huevo",
+    mins:10, tags:['fish','eggs'], kcal:396, p:34, f:18, c:23,
+    ing:[
+      ["Anchovies in olive oil","Anchoas en aceite de oliva",30,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Liquid egg whites","Claras de huevo pasteurizadas",80,"g"],
+      ["Rye bread","Pan de centeno",1,"slice"],
+      ["Tomato","Tomate",1,""],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Fresh parsley","Perejil",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      "Rub the toasted rye hard with the cut tomato until the bread is stained.",
+      "Beat the eggs with the whites, scramble on a low heat and pull them off while still glossy.",
+      "Pile onto the toast and lay the anchovy fillets over the top whole.",
+      "Olive oil, parsley and pepper. No salt at all: the anchovies carry it."
+    ],
+    tip:"Anchovies are the most protein-dense tin in the shop at roughly 29 g per 100 g. Thirty grams is enough to season a whole plate." },
+
+  { id:'b20', meal:'breakfast', name:"Cockle & Cottage Cheese Crispbread", es:"Tostada de berberechos y queso batido",
+    mins:5, tags:['nocook','fish','dairy'], kcal:362, p:34, f:12, c:28,
+    ing:[
+      ["Cucumber","Pepino",0.5,""],
+      ["Cockles in brine, drained","Berberechos al natural",120,"g"],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",150,"g"],
+      ["Rye crispbread","Tostadas de centeno",25,"g"],
+      ["Avocado","Aguacate",40,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Lemon","Lim\u00f3n",0.5,""],
+      ["Fresh parsley","Perejil",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      "Drain the cockles well and squeeze over half the lemon while they are still in the sieve.",
+      "Spread the cottage cheese on the crispbread, then the mashed avocado.",
+      "Pile the cockles on, oil and pepper over, parsley to finish.",
+      "Diced cucumber through the cockles for crunch."
+    ],
+    tip:"Cockles are 15 g of protein per 100 g for almost no fat, and the tin keeps in the cupboard for years." },
+
+  { id:'b21', meal:'breakfast', name:"Smoked Trout & Scrambled Egg", es:"Revuelto con trucha ahumada",
+    mins:10, tags:['fish','eggs'], kcal:406, p:43, f:16, c:21,
+    ing:[
+      ["Fresh spinach","Espinacas frescas",80,"g"],
+      ["Smoked trout","Trucha ahumada",80,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Liquid egg whites","Claras de huevo pasteurizadas",60,"g"],
+      ["Rye bread","Pan de centeno",1,"slice"],
+      ["Fresh dill","Eneldo fresco",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      "Beat the eggs and whites together with pepper only.",
+      "Low heat, push the curds slowly, and take the pan off while they still look underdone.",
+      "Onto the toasted rye with the trout draped over in folds and dill scattered on top.",
+      "Wilt the spinach in the dry pan first, then pour the eggs over it."
+    ],
+    tip:"Smoked trout is cheaper than smoked salmon, milder, and gives you a pink fish that is not salmon for the rotation." },
+
+  { id:'b22', meal:'breakfast', name:"Feta & Spinach Baked Eggs", es:"Huevos al horno con feta y espinacas",
+    mins:15, tags:['eggs','dairy'], kcal:407, p:35, f:26, c:10,
+    ing:[
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Liquid egg whites","Claras de huevo pasteurizadas",100,"g"],
+      ["Feta cheese","Queso feta",50,"g"],
+      ["Fresh spinach","Espinacas frescas",150,"g"],
+      ["Cherry tomatoes","Tomates cherry",100,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Chilli flakes","Guindilla molida",null,""]
+    ],
+    steps:[
+      "Oven to 200 C. Wilt the spinach with the garlic in an oven dish on the hob first, then squeeze out the water.",
+      "Halve the tomatoes and stir them through, crumble half the feta over.",
+      "Make two wells, crack in the eggs, pour the whites around them, scatter the rest of the feta.",
+      "Ten minutes, until the whites are just set. Chilli flakes over."
+    ],
+    tip:"Ten grams of carbs, the lowest breakfast here. Useful on a day the rest of your meals are bread-heavy." },
+
+  { id:'b23', meal:'breakfast', name:"Sardine & Piquillo Toast", es:"Tostada de sardinas y piquillos",
+    mins:5, tags:['nocook','fish','dairy'], kcal:360, p:34, f:12, c:25,
+    ing:[
+      ["Rocket","R\u00facula",30,"g"],
+      ["Sardines in olive oil","Sardinas en aceite de oliva",1,"tin"],
+      ["Piquillo peppers, jar","Pimientos del piquillo",80,"g"],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",100,"g"],
+      ["Rye bread","Pan de centeno",1,"slice"],
+      ["Lemon","Lim\u00f3n",0.5,""],
+      ["Fresh parsley","Perejil",5,"g"]
+    ],
+    steps:[
+      "Spread the cottage cheese thickly on the toasted rye.",
+      "Lay the sliced piquillos over, then the sardines whole on top.",
+      "Lemon squeezed over and parsley. Do not mash it into a paste."
+    ],
+    tip:"Piquillos come ready roasted in the jar, which is the only reason this is a five-minute breakfast." },
+
+  { id:'b24', meal:'breakfast', name:"Tempeh & Mushroom Hash", es:"Salteado de tempeh y champi\u00f1ones",
+    mins:20, tags:['plant'], kcal:396, p:35, f:22, c:15,
+    ing:[
+      ["Tempeh","Tempeh",150,"g"],
+      ["Mushrooms","Champi\u00f1ones",150,"g"],
+      ["Fresh spinach","Espinacas frescas",100,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",6,"g"],
+      ["Soy sauce","Salsa de soja",1,"tbsp"],
+      ["Sweet paprika","Piment\u00f3n dulce",1,"tsp"],
+      ["Garlic","Ajo",1,"clove"]
+    ],
+    steps:[
+      "Crumble the tempeh roughly and brown it in a dry hot pan for 5 minutes without stirring much.",
+      "Mushrooms in, still dry, until they squeak and colour. Only then add the oil and garlic.",
+      "Paprika and soy sauce in, then the spinach wilted through at the end."
+    ],
+    tip:"Tempeh has around 19 g of protein per 100 g against tofu's 12, and it browns properly instead of going soggy." },
+
+  { id:'b25', meal:'breakfast', name:"Burgos Cheese with Anchovies & Tomato", es:"Queso de Burgos con anchoas y tomate",
+    mins:5, tags:['nocook','dairy','fish'], kcal:340, p:35, f:10, c:22,
+    ing:[
+      ["Fresh Burgos cheese 0%","Queso fresco de Burgos 0%",200,"g"],
+      ["Anchovies in olive oil","Anchoas en aceite de oliva",25,"g"],
+      ["Tomato","Tomate",1,""],
+      ["Rye crispbread","Tostadas de centeno",25,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Dried oregano","Or\u00e9gano",null,""],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      "Slice the Burgos cheese thickly and lay it out flat on the plate rather than in a heap.",
+      "Sliced tomato over, then the anchovy fillets draped across.",
+      "Oil, oregano and pepper. Crispbread on the side."
+    ],
+    tip:"A Spanish bar plate turned into breakfast. Thirty-five grams of protein and only ten of fat." },
+
+  { id:'b26', meal:'breakfast', name:"Prawn & Egg Scramble", es:"Revuelto de gambas y espinacas",
+    mins:10, tags:['fish','eggs'], kcal:414, p:44, f:16, c:20,
+    ing:[
+      ["Cooked peeled prawns","Langostino cocido pelado",120,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Wholemeal bread","Pan integral",1,"slice"],
+      ["Fresh spinach","Espinacas frescas",120,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Fresh parsley","Perejil",5,"g"]
+    ],
+    steps:[
+      "Warm the garlic in the oil, add the spinach and let it collapse.",
+      "Prawns in for 30 seconds only, just to heat through. They are already cooked.",
+      "Pour the beaten eggs over, low heat, and take it off while still soft.",
+      "Onto the toast with parsley over."
+    ],
+    tip:"Forty-two grams of protein, the highest breakfast on the list, and it takes ten minutes." },
+
+  { id:'b27', meal:'breakfast', name:"Savoury Yogurt Bowl with Cucumber & Walnuts", es:"Bol salado de yogur con pepino y nueces",
+    mins:5, tags:['nocook','dairy','eggs'], kcal:414, p:36, f:18, c:24,
+    ing:[
+      ["Cherry tomatoes","Tomates cherry",80,"g"],
+      ["0% Greek yogurt","Yogur griego 0%",250,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",1,""],
+      ["Cucumber","Pepino",0.5,""],
+      ["Walnuts","Nueces",15,"g"],
+      ["Rye crispbread","Tostadas de centeno",20,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",3,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Fresh dill","Eneldo fresco",5,"g"]
+    ],
+    steps:[
+      "Grate the cucumber, salt it, wait two minutes and squeeze the water out in your hands.",
+      "Stir it through the yogurt with crushed garlic, dill, oil and plenty of salt and pepper.",
+      "Quartered boiled egg on top, walnuts crushed over, crispbread on the side."
+    ],
+    tip:"Essentially tzatziki eaten with a spoon. Salting and squeezing the cucumber is what stops it going watery." },
+
+
+  { id:'l13', meal:'lunch', name:"Cockle & White Bean Salad", es:"Ensalada de berberechos y alubias",
+    mins:5, tags:['nocook','fish','plant','batch'], kcal:370, p:30, f:12, c:32,
+    ing:[
+      ["Cockles in brine, drained","Berberechos al natural",120,"g"],
+      ["Cooked white beans, jar","Alubias blancas cocidas",150,"g"],
+      ["Tomato","Tomate",1,""],
+      ["Red onion","Cebolla roja",0.25,""],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",10,"g"],
+      ["Sherry vinegar","Vinagre de Jerez",1,"tbsp"],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      "Rinse the beans and shake them properly dry, or the salad turns cloudy.",
+      "Slice the onion as thinly as you can and let it sit in the vinegar for five minutes to take the raw edge off.",
+      "Fold everything together with the drained cockles last so they stay whole."
+    ],
+    tip:"Two tins and a jar. Better after an hour in the fridge and fine the next day." },
+
+
+  { id:'l15', meal:'lunch', name:"Anchovy, Egg & Potato Salad", es:"Ensalada de patata, huevo y anchoas",
+    mins:15, tags:['fish','eggs','batch'], kcal:518, p:33, f:22, c:47,
+    ing:[
+      ["Cooked beetroot","Remolacha cocida",80,"g"],
+      ["Anchovies in olive oil","Anchoas en aceite de oliva",30,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Potato","Patata",200,"g"],
+      ["Green beans","Jud\u00edas verdes",150,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Sherry vinegar","Vinagre de Jerez",1,"tbsp"],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      "Boil the diced potato and green beans in the same pan, 10 minutes, with the eggs dropped in for the last 8.",
+      "Drain and dress the potato while it is still warm so it drinks the vinegar.",
+      "Quartered eggs and anchovies laid over the top, parsley to finish."
+    ],
+    tip:"Dress warm potato, never hot or cold. Hot and it falls apart, cold and it absorbs nothing." },
+
+  { id:'l16', meal:'lunch', name:"Griddled Sea Bream with Tomato & Caper Salad", es:"Dorada a la plancha con ensalada de tomate",
+    mins:15, tags:['fish'], kcal:376, p:41, f:15, c:18,
+    ing:[
+      ["Sea bream fillets","Lomos de dorada",200,"g"],
+      ["Tomato","Tomate",1,""],
+      ["Cucumber","Pepino",0.5,""],
+      ["Capers","Alcaparras",1,"tbsp"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Bread","Pan",30,"g"],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      "Salt the bream skin and leave it ten minutes, then pat dry. This is what makes the skin crisp.",
+      "Skin-side down in a hot pan, press flat with a spatula for the first 20 seconds, then 4 minutes untouched.",
+      "Flip for 60 seconds only.",
+      "Serve on the chopped tomato and cucumber, capers and oil over."
+    ],
+    tip:"Press the fillet down for the first twenty seconds. Skin contracts as it hits the pan and curls away otherwise." },
+
+  { id:'l17', meal:'lunch', name:"Tempeh & Lentil Bowl", es:"Bol de tempeh y lentejas",
+    mins:15, tags:['plant','batch'], kcal:465, p:38, f:19, c:35,
+    ing:[
+      ["Tempeh","Tempeh",120,"g"],
+      ["Cooked lentils, jar","Lentejas cocidas",120,"g"],
+      ["Broccoli","Br\u00f3coli",150,"g"],
+      ["Soy sauce","Salsa de soja",1,"tbsp"],
+      ["Fresh ginger","Jengibre fresco",15,"g"],
+      ["Sesame oil","Aceite de s\u00e9samo",5,"g"],
+      ["Lime","Lima",0.5,""]
+    ],
+    steps:[
+      "Slice the tempeh thinly and brown both sides in a dry pan, 3 minutes a side.",
+      "Steam the broccoli 4 minutes so it stays squeaky.",
+      "Warm the lentils through with the grated ginger and soy.",
+      "Build the bowl, sesame oil and lime over at the end, off the heat."
+    ],
+    tip:"Thirty-eight grams of protein with no animal in it at all. Sesame oil goes on last or you waste it." },
+
+  { id:'l18', meal:'lunch', name:"Smoked Trout & Potato Salad", es:"Ensalada de trucha ahumada y patata",
+    mins:15, tags:['fish','dairy','batch'], kcal:480, p:43, f:13, c:47,
+    ing:[
+      ["Green beans","Jud\u00edas verdes",80,"g"],
+      ["Cooked beetroot","Remolacha cocida",100,"g"],
+      ["Smoked trout","Trucha ahumada",100,"g"],
+      ["Potato","Patata",180,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",1,""],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",80,"g"],
+      ["Dijon mustard","Mostaza de Dijon",1,"tsp"],
+      ["Chives","Cebollino",5,"g"],
+      ["Lemon","Lim\u00f3n",0.5,""]
+    ],
+    steps:[
+      "Boil the potato in thick rounds, 12 minutes, and cool for a few minutes.",
+      "Whisk the cottage cheese with the mustard and lemon into a dressing.",
+      "Fold through the warm potato, then flake the trout over and add the quartered egg.",
+      "Chives on top.",
+      "Beetroot diced in last so it does not stain everything pink, green beans boiled with the potato."
+    ],
+    tip:"Cottage cheese and mustard replaces the sour cream dressing this normally has, and saves about 150 calories." },
+
+  { id:'l19', meal:'lunch', name:"Melva & Roasted Pepper Salad", es:"Ensalada de melva y pimientos",
+    mins:5, tags:['nocook','fish','plant','batch'], kcal:400, p:31, f:16, c:25,
+    ing:[
+      ["Melva in olive oil, drained","Melva canutera en aceite de oliva",90,"g"],
+      ["Piquillo peppers, jar","Pimientos del piquillo",80,"g"],
+      ["Cooked chickpeas, jar","Garbanzos cocidos",120,"g"],
+      ["Baby spinach","Espinacas baby",60,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Sherry vinegar","Vinagre de Jerez",1,"tbsp"]
+    ],
+    steps:[
+      "Slice the piquillos into strips and toss them with the chickpeas, vinegar and oil.",
+      "Break the melva into large chunks over the top rather than flaking it small.",
+      "Spinach folded through at the last moment so it does not wilt."
+    ],
+    tip:"Melva is the cheaper cousin of bonito and has more flavour. Nothing here needs cooking or even a knife, really." },
+
+  { id:'l20', meal:'lunch', name:"Whipped Cottage Cheese with Roasted Peppers", es:"Queso batido con pimientos asados",
+    mins:10, tags:['nocook','dairy','eggs'], kcal:466, p:37, f:16, c:38,
+    ing:[
+      ["Cherry tomatoes","Tomates cherry",100,"g"],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",250,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Piquillo peppers, jar","Pimientos del piquillo",100,"g"],
+      ["Rye crispbread","Tostadas de centeno",30,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",6,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      "Beat the cottage cheese hard with a fork with the crushed garlic, salt and pepper until it loosens and goes glossy.",
+      "Spread it across a wide plate in a thick swoosh.",
+      "Roasted peppers torn over, halved boiled eggs, oil and parsley.",
+      "Crispbread for scooping."
+    ],
+    tip:"Beating the cottage cheese changes it completely. Two minutes with a fork turns it from grainy to creamy." },
+
+  { id:'l21', meal:'lunch', name:"Prawn & Egg Ensaladilla", es:"Ensaladilla de langostinos",
+    mins:15, tags:['fish','eggs','batch'], kcal:510, p:50, f:11, c:45,
+    ing:[
+      ["Carrot","Zanahoria",60,"g"],
+      ["Peas, frozen","Guisantes congelados",80,"g"],
+      ["Cooked peeled prawns","Langostino cocido pelado",130,"g"],
+      ["Potato","Patata",150,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",1,""],
+      ["Green beans","Jud\u00edas verdes",100,"g"],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",100,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Lemon","Lim\u00f3n",0.5,""],
+      ["Fresh parsley","Perejil",5,"g"]
+    ],
+    steps:[
+      "Boil the diced potato and green beans together for 10 minutes with the egg in for the last 8.",
+      "Cool them under the tap and drain very well.",
+      "Beat the cottage cheese with lemon, oil, salt and pepper into a dressing and fold everything through.",
+      "Prawns and chopped egg last, parsley over.",
+      "Diced carrot and peas boiled with the potato \u2014 this is what makes it a real ensaladilla."
+    ],
+    tip:"Forty-five grams of protein, the highest on the list. Cottage cheese instead of mayonnaise is doing all the work." },
+
+  { id:'l22', meal:'lunch', name:"Monkfish & Potato Stew", es:"Rape guisado con patata",
+    mins:20, tags:['fish'], kcal:385, p:35, f:12, c:32,
+    ing:[
+      ["Monkfish","Rape",200,"g"],
+      ["Potato","Patata",150,"g"],
+      ["Crushed tomatoes","Tomate triturado",150,"g"],
+      ["Green Italian pepper","Pimiento verde italiano",1,""],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Garlic","Ajo",2,"clove"],
+      ["Sweet smoked paprika","Piment\u00f3n de la Vera",1,"tsp"]
+    ],
+    steps:[
+      "Soften the sliced pepper and garlic in the oil, then the paprika for ten seconds only.",
+      "Tomato and the potato broken into rough chunks, plus a splash of water. Simmer 12 minutes.",
+      "Monkfish in for the last 5 minutes, cut into thick pieces. It is firm and will not fall apart."
+    ],
+    tip:"Monkfish holds its shape in a stew where cod or hake collapse. Worth the extra euro for that alone." },
+
+  { id:'d15', meal:'dinner', name:"Baked Cod with Piquillo & Chickpeas", es:"Bacalao al horno con piquillos",
+    mins:20, tags:['fish','plant'], kcal:380, p:41, f:11, c:24,
+    ing:[
+      ["Cod loins","Lomos de bacalao",180,"g"],
+      ["Piquillo peppers, jar","Pimientos del piquillo",80,"g"],
+      ["Cooked chickpeas, jar","Garbanzos cocidos",120,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Garlic","Ajo",2,"clove"],
+      ["Sweet smoked paprika","Piment\u00f3n de la Vera",1,"tsp"],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      "Oven to 200 C. Toss the chickpeas and torn piquillos with the oil, garlic and paprika in a dish.",
+      "Ten minutes in the oven to let the chickpeas crisp at the edges.",
+      "Sit the cod on top and give it 8 minutes more, until it flakes at the thickest part.",
+      "Parsley over."
+    ],
+    tip:"Forty-one grams of protein for 380 calories, and it is just as good cold the next day." },
+
+
+  { id:'d17', meal:'dinner', name:"Tempeh Stir-fry with Broccoli", es:"Tempeh salteado con br\u00f3coli",
+    mins:15, tags:['plant','batch'], kcal:465, p:35, f:22, c:32,
+    ing:[
+      ["Tempeh","Tempeh",150,"g"],
+      ["Broccoli","Br\u00f3coli",200,"g"],
+      ["Basmati rice, cooked","Arroz basmati",50,"g"],
+      ["Soy sauce","Salsa de soja",2,"tbsp"],
+      ["Fresh ginger","Jengibre fresco",15,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Sesame oil","Aceite de s\u00e9samo",5,"g"]
+    ],
+    steps:[
+      "Slice the tempeh into thin slabs and brown in a dry hot pan, 3 minutes a side, until deeply coloured.",
+      "Broccoli in with a splash of water and a lid on for 3 minutes.",
+      "Ginger, garlic and soy in for the last minute.",
+      "Off the heat, sesame oil over, on the rice."
+    ],
+    tip:"Tempeh does not need pressing the way tofu does, which makes this ten minutes faster than the tofu version." },
+
+  { id:'d18', meal:'dinner', name:"Baked Trout with Fennel & Lemon", es:"Trucha al horno con hinojo",
+    mins:20, tags:['fish'], kcal:405, p:38, f:16, c:21,
+    ing:[
+      ["Trout fillets","Lomos de trucha",170,"g"],
+      ["Fennel","Hinojo",150,"g"],
+      ["Potato","Patata",100,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",6,"g"],
+      ["Lemon","Lim\u00f3n",0.5,""],
+      ["Fresh thyme","Tomillo",null,""]
+    ],
+    steps:[
+      "Oven to 210 C. Slice the fennel and potato thin, toss with oil and thyme, roast 14 minutes.",
+      "Lay the trout on top, skin down, and give it 7 minutes.",
+      "Lemon squeezed over the moment it leaves the oven."
+    ],
+    tip:"Trout cooks faster than salmon and dries out faster too. Pull it as soon as it flakes." },
+
+  { id:'d19', meal:'dinner', name:"Mussels in Escabeche with Bean Salad", es:"Mejillones en escabeche con alubias",
+    mins:10, tags:['nocook','fish','plant','batch'], kcal:385, p:33, f:13, c:30,
+    ing:[
+      ["Mussels in escabeche, drained","Mejillones en escabeche",120,"g"],
+      ["Cooked white beans, jar","Alubias blancas cocidas",150,"g"],
+      ["Tomato","Tomate",1,""],
+      ["Red onion","Cebolla roja",0.25,""],
+      ["Sherry vinegar","Vinagre de Jerez",1,"tbsp"],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      "Rinse and drain the beans, then dress them with a spoonful of the escabeche liquid from the tin, plus the vinegar.",
+      "Slice the onion thinly and dice the tomato.",
+      "Fold together and sit the mussels on top whole."
+    ],
+    tip:"Fresh mussels cannot be reheated, but tinned escabeche ones can sit in the fridge happily, which is why this is the shellfish dinner that works for a next-day lunch." },
+
+  { id:'d20', meal:'dinner', name:"Sardine & Tomato Pasta", es:"Pasta con sardinas y tomate",
+    mins:20, tags:['fish','batch'], kcal:491, p:34, f:16, c:54,
+    ing:[
+      ["Broccoli","Br\u00f3coli",150,"g"],
+      ["Sardines in olive oil","Sardinas en aceite de oliva",1,"tin"],
+      ["Wholemeal pasta, dry","Macarrones integrales",55,"g"],
+      ["Crushed tomatoes","Tomate triturado",200,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",3,"g"],
+      ["Garlic","Ajo",2,"clove"],
+      ["Fresh parsley","Perejil",10,"g"],
+      ["Chilli flakes","Guindilla molida",null,""]
+    ],
+    steps:[
+      "Pasta on. While it boils, soften the sliced garlic in the oil with the chilli.",
+      "Tomato in and simmer hard for 8 minutes until it thickens.",
+      "Break the sardines in at the very end and warm them through without stirring much, so they stay in pieces.",
+      "Drain the pasta, keeping a splash of the water, and toss it all together.",
+      "Drop the broccoli into the pasta water for the last 4 minutes and drain them together."
+    ],
+    tip:"The one pasta dish here that clears 30 g of protein, and it comes from a tin that costs under a euro." },
+
+  { id:'d21', meal:'dinner', name:"Lentil & Feta Bake", es:"Lentejas al horno con feta",
+    mins:20, tags:['dairy','plant','eggs','batch'], kcal:460, p:30, f:22, c:32,
+    ing:[
+      ["Feta cheese","Queso feta",50,"g"],
+      ["Cooked lentils, jar","Lentejas cocidas",150,"g"],
+      ["Crushed tomatoes","Tomate triturado",200,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",1,""],
+      ["Fresh spinach","Espinacas frescas",100,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",4,"g"],
+      ["Garlic","Ajo",1,"clove"],
+      ["Dried oregano","Or\u00e9gano",null,""]
+    ],
+    steps:[
+      "Oven to 200 C. Simmer the tomato with the garlic and oregano for 5 minutes on the hob in an oven dish.",
+      "Stir in the rinsed lentils and the spinach until it wilts.",
+      "Crumble the feta over, make a well and crack the egg in.",
+      "Ten minutes in the oven until the white sets and the feta browns at the edges."
+    ],
+    tip:"Reheats better than almost anything here. The lentils drink up the tomato overnight and it improves." },
+
+  { id:'d22', meal:'dinner', name:"Baked Eggs with Lentils & Spinach", es:"Huevos al horno con lentejas",
+    mins:15, tags:['eggs','plant','dairy','batch'], kcal:480, p:36, f:18, c:40,
+    ing:[
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Cooked lentils, jar","Lentejas cocidas",180,"g"],
+      ["Crushed tomatoes","Tomate triturado",150,"g"],
+      ["Fresh spinach","Espinacas frescas",100,"g"],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",80,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",6,"g"],
+      ["Ground cumin","Comino molido",1,"tsp"],
+      ["Garlic","Ajo",1,"clove"]
+    ],
+    steps:[
+      "Fry the garlic and cumin in the oil for thirty seconds, then add the tomato and simmer 5 minutes.",
+      "Lentils and spinach stirred through until the leaves collapse.",
+      "Two wells, eggs cracked in, lid on, low heat for 5 minutes.",
+      "Spoon the cottage cheese over in cold dollops at the table."
+    ],
+    tip:"The cold cottage cheese against the hot spiced lentils is the whole point. Do not stir it in." },
+
+
+  { id:'d24', meal:'dinner', name:"Salmon & Lentil Traybake", es:"Salm\u00f3n al horno con lentejas",
+    mins:20, tags:['fish','plant','batch'], kcal:470, p:37, f:21, c:27,
+    ing:[
+      ["Fresh salmon fillet","Salm\u00f3n fresco, lomo",120,"g"],
+      ["Cooked lentils, jar","Lentejas cocidas",130,"g"],
+      ["Cherry tomatoes","Tomates cherry",100,"g"],
+      ["Fresh spinach","Espinacas frescas",80,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Dijon mustard","Mostaza de Dijon",1,"tsp"],
+      ["Lemon","Lim\u00f3n",0.5,""]
+    ],
+    steps:[
+      "Oven to 210 C. Spread the rinsed lentils and halved tomatoes in a dish with the oil.",
+      "Smear the mustard over the salmon and sit it on top.",
+      "Twelve minutes, then stir the spinach through the hot lentils until it wilts.",
+      "Lemon over."
+    ],
+    tip:"One dish, one wash-up. The lentils soak up the salmon fat as it renders, which is most of the flavour." },
+  { id:'b29', meal:'breakfast', name:"Scrambled Eggs with Peas, Corn & Peppers", es:"Revuelto con guisantes, ma\u00edz y pimiento",
+    mins:10, tags:['eggs','plant'], kcal:385, p:31, f:16, c:26,
+    ing:[
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Liquid egg whites","Claras de huevo pasteurizadas",100,"g"],
+      ["Peas, frozen","Guisantes congelados",100,"g"],
+      ["Sweetcorn, tin","Ma\u00edz dulce",60,"g"],
+      ["Red pepper","Pimiento rojo",100,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Fresh parsley","Perejil",5,"g"]
+    ],
+    steps:[
+      "Boil the peas straight from frozen for 3 minutes, then drain hard.",
+      "Soften the diced pepper in the oil for 4 minutes, add the drained corn and peas and let them take a bit of colour.",
+      "Beat the eggs with the whites, pour over, low heat, and pull the pan off while still soft.",
+      "Parsley and plenty of pepper."
+    ],
+    tip:"Two hundred and sixty grams of vegetables in a breakfast, and it still comes in under 400 calories." },
+
+  { id:'b30', meal:'breakfast', name:"Beetroot, Cottage Cheese & Egg Bowl", es:"Bol de remolacha, queso batido y huevo",
+    mins:5, tags:['nocook','dairy','eggs'], kcal:455, p:38, f:17, c:35,
+    ing:[
+      ["Fat-free cottage cheese","Queso fresco batido 0%",250,"g"],
+      ["Cooked beetroot","Remolacha cocida",150,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Rye crispbread","Tostadas de centeno",20,"g"],
+      ["Walnuts","Nueces",10,"g"],
+      ["Fresh dill","Eneldo fresco",5,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      "Spread the cottage cheese across a wide bowl and season it hard.",
+      "Dice the cooked beetroot and pile it on one side rather than stirring it in, or the whole thing turns pink.",
+      "Halved boiled eggs alongside, walnuts crushed over, dill and pepper."
+    ],
+    tip:"Mercadona sell beetroot ready cooked and vacuum-packed, which is the only reason this takes five minutes." },
+
+  { id:'b31', meal:'breakfast', name:"Cauliflower & Feta Scramble", es:"Revuelto de coliflor y feta",
+    mins:15, tags:['eggs','dairy'], kcal:397, p:35, f:23, c:12,
+    ing:[
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Liquid egg whites","Claras de huevo pasteurizadas",100,"g"],
+      ["Cauliflower","Coliflor",200,"g"],
+      ["Feta cheese","Queso feta",40,"g"],
+      ["Fresh spinach","Espinacas frescas",80,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Sweet paprika","Piment\u00f3n dulce",1,"tsp"]
+    ],
+    steps:[
+      "Break the cauliflower into very small florets and fry them in the oil for 6 minutes until browned at the edges. Browning is what stops cauliflower tasting of nothing.",
+      "Paprika in, then the spinach until it collapses.",
+      "Eggs and whites poured over, low heat, folded gently until barely set.",
+      "Feta crumbled over at the end."
+    ],
+    tip:"Twelve grams of carbs and 280 g of vegetables. The lowest-carb breakfast on the list." },
+
+  { id:'l23', meal:'lunch', name:"Tuna, Chickpea & Sweetcorn Salad", es:"Ensalada de at\u00fan, garbanzos y ma\u00edz",
+    mins:5, tags:['nocook','fish','plant','batch'], kcal:460, p:40, f:12, c:40,
+    ing:[
+      ["Tuna in brine","At\u00fan claro al natural",2,"tin"],
+      ["Cooked chickpeas, jar","Garbanzos cocidos",120,"g"],
+      ["Sweetcorn, tin","Ma\u00edz dulce",80,"g"],
+      ["Red pepper","Pimiento rojo",100,"g"],
+      ["Cherry tomatoes","Tomates cherry",100,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",10,"g"],
+      ["Lemon","Lim\u00f3n",0.5,""],
+      ["Fresh parsley","Perejil",10,"g"]
+    ],
+    steps:[
+      "Rinse and drain the chickpeas and corn properly, then dry them off.",
+      "Dice the pepper small and halve the tomatoes.",
+      "Fold everything through with the drained tuna, oil and a hard squeeze of lemon.",
+      "Parsley last."
+    ],
+    tip:"Four hundred grams of vegetables and pulses in one bowl, and nothing needs cooking." },
+
+  { id:'l24', meal:'lunch', name:"Beetroot, Chickpea & Feta Salad", es:"Ensalada de remolacha, garbanzos y feta",
+    mins:5, tags:['nocook','dairy','plant','eggs'], kcal:465, p:30, f:20, c:35,
+    ing:[
+      ["Feta cheese","Queso feta",50,"g"],
+      ["Cooked chickpeas, jar","Garbanzos cocidos",130,"g"],
+      ["Cooked beetroot","Remolacha cocida",150,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",1,""],
+      ["Rocket","R\u00facula",40,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Red wine vinegar","Vinagre de vino tinto",1,"tbsp"]
+    ],
+    steps:[
+      "Dress the chickpeas with the vinegar and oil first and leave them while you cut everything else.",
+      "Dice the beetroot and add it last, on top, so the salad does not go uniformly magenta.",
+      "Feta crumbled over, rocket tucked round the edge, quartered egg on top."
+    ],
+    tip:"Beetroot and feta is one of those pairings that works because the sweetness needs the salt." },
+
+  { id:'l25', meal:'lunch', name:"Cabbage, Carrot & Edamame Slaw with Prawns", es:"Ensalada de col, zanahoria y edamame con langostinos",
+    mins:10, tags:['nocook','fish','plant','batch'], kcal:360, p:42, f:10, c:20,
+    ing:[
+      ["Cooked peeled prawns","Langostino cocido pelado",150,"g"],
+      ["White cabbage","Col blanca",150,"g"],
+      ["Carrot","Zanahoria",100,"g"],
+      ["Frozen shelled edamame","Edamame congelado",80,"g"],
+      ["Sesame oil","Aceite de s\u00e9samo",5,"g"],
+      ["Soy sauce","Salsa de soja",1,"tbsp"],
+      ["Lime","Lima",0.5,""],
+      ["Fresh coriander","Cilantro",10,"g"]
+    ],
+    steps:[
+      "Boil the edamame 3 minutes from frozen and cool under the tap.",
+      "Shred the cabbage as finely as you can and grate the carrot. Fine shredding is the difference between slaw and a bowl of raw cabbage.",
+      "Dress with the sesame oil, soy and lime, and squeeze it with your hands for a few seconds to soften.",
+      "Prawns and coriander folded through."
+    ],
+    tip:"Forty-two grams of protein for 360 calories, and the slaw keeps two days dressed." },
+
+  { id:'l26', meal:'lunch', name:"Pea, Mint & Smoked Salmon Salad", es:"Ensalada de guisantes, menta y salm\u00f3n ahumado",
+    mins:10, tags:['fish','dairy','plant'], kcal:470, p:45, f:13, c:35,
+    ing:[
+      ["Smoked salmon","Salm\u00f3n ahumado",90,"g"],
+      ["Peas, frozen","Guisantes congelados",150,"g"],
+      ["Fat-free cottage cheese","Queso fresco batido 0%",150,"g"],
+      ["Rocket","R\u00facula",40,"g"],
+      ["Rye crispbread","Tostadas de centeno",20,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Fresh mint","Menta",5,"g"],
+      ["Lemon","Lim\u00f3n",0.5,""]
+    ],
+    steps:[
+      "Boil the peas 3 minutes from frozen, then straight into cold water so they stay bright green.",
+      "Crush about half of them roughly with a fork and leave the rest whole.",
+      "Fold through the cottage cheese with the chopped mint, lemon and oil.",
+      "Salmon draped over, rocket alongside, crispbread on the side."
+    ],
+    tip:"Crushing half the peas turns the cottage cheese into a dressing. Whole peas alone just roll around." },
+
+  { id:'d25', meal:'dinner', name:"Cauliflower & Chickpea Curry with Egg", es:"Curry de coliflor y garbanzos con huevo",
+    mins:20, tags:['plant','eggs','batch'], kcal:465, p:30, f:17, c:40,
+    ing:[
+      ["Cooked chickpeas, jar","Garbanzos cocidos",150,"g"],
+      ["Cauliflower","Coliflor",250,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Fresh spinach","Espinacas frescas",100,"g"],
+      ["Light coconut milk","Leche de coco ligera",60,"ml"],
+      ["Curry paste","Pasta de curry",1,"tbsp"],
+      ["Fresh ginger","Jengibre fresco",15,"g"],
+      ["Garlic","Ajo",1,"clove"]
+    ],
+    steps:[
+      "Boil the eggs 8 minutes, cool and peel while everything else cooks.",
+      "Fry the curry paste with the ginger and garlic for a minute, then the cauliflower in small florets.",
+      "Coconut milk and a splash of water, lid on, 10 minutes until the cauliflower gives to a knife.",
+      "Chickpeas and spinach stirred through, halved eggs sat on top."
+    ],
+    tip:"Five hundred grams of vegetables and pulses. Better on day two once the cauliflower has drunk the sauce." },
+
+  { id:'d26', meal:'dinner', name:"Cod, White Bean & Cabbage Stew", es:"Bacalao guisado con alubias y col",
+    mins:20, tags:['fish','plant','batch'], kcal:435, p:44, f:11, c:36,
+    ing:[
+      ["Cod loins","Lomos de bacalao",180,"g"],
+      ["Cooked white beans, jar","Alubias blancas cocidas",120,"g"],
+      ["White cabbage","Col blanca",150,"g"],
+      ["Carrot","Zanahoria",80,"g"],
+      ["Crushed tomatoes","Tomate triturado",100,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",8,"g"],
+      ["Garlic","Ajo",2,"clove"],
+      ["Sweet smoked paprika","Piment\u00f3n de la Vera",1,"tsp"]
+    ],
+    steps:[
+      "Soften the sliced carrot and garlic in the oil, then the paprika for ten seconds.",
+      "Shredded cabbage and tomato in with a splash of water, lid on, 10 minutes until the cabbage collapses.",
+      "Beans in for 3 minutes, then lay the cod on top, lid back on, 6 minutes."
+    ],
+    tip:"Cabbage goes sweet rather than sulphurous if you keep the lid on and do not boil it hard." },
+
+  { id:'d27', meal:'dinner', name:"Pea, Corn & Tofu Fried Rice", es:"Arroz salteado con guisantes, ma\u00edz y tofu",
+    mins:20, tags:['plant','batch'], kcal:470, p:30, f:20, c:34,
+    ing:[
+      ["Firm tofu","Tofu firme",170,"g"],
+      ["Peas, frozen","Guisantes congelados",120,"g"],
+      ["Sweetcorn, tin","Ma\u00edz dulce",60,"g"],
+      ["Carrot","Zanahoria",80,"g"],
+      ["Basmati rice, cooked","Arroz basmati",40,"g"],
+      ["Spring onion","Cebolleta",1,""],
+      ["Soy sauce","Salsa de soja",2,"tbsp"],
+      ["Sesame oil","Aceite de s\u00e9samo",5,"g"]
+    ],
+    steps:[
+      "Press the tofu 10 minutes, cube it, and brown it in a dry hot pan on three sides.",
+      "Diced carrot in for 4 minutes, then the peas from frozen and the drained corn.",
+      "Cold cooked rice in last and leave it alone for a minute so it catches \u2014 stirring constantly steams it.",
+      "Soy sauce, then sesame oil and spring onion off the heat."
+    ],
+    tip:"Use rice cooked the day before. Fresh warm rice turns to paste in a hot pan." },
+
+  { id:'d28', meal:'dinner', name:"Roast Cauliflower, Broccoli & Lentils with Feta", es:"Coliflor y br\u00f3coli asados con lentejas",
+    mins:20, tags:['plant','dairy','eggs','batch'], kcal:480, p:33, f:24, c:26,
+    ing:[
+      ["Cauliflower","Coliflor",200,"g"],
+      ["Broccoli","Br\u00f3coli",150,"g"],
+      ["Cooked lentils, jar","Lentejas cocidas",120,"g"],
+      ["Feta cheese","Queso feta",50,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",1,""],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",6,"g"],
+      ["Garlic","Ajo",2,"clove"],
+      ["Sweet smoked paprika","Piment\u00f3n de la Vera",1,"tsp"]
+    ],
+    steps:[
+      "Oven to 220 C. Toss the cauliflower and broccoli in small florets with the oil, garlic and paprika.",
+      "Fourteen minutes, until the edges are properly charred. Pale roast cauliflower is a wasted opportunity.",
+      "Stir the rinsed lentils through the hot tray so they warm in the oil.",
+      "Feta crumbled over and a halved boiled egg on top."
+    ],
+    tip:"Four hundred and seventy grams of vegetables and pulses, and the charred bits are the whole point." },
+
+  { id:'d29', meal:'dinner', name:"Carrot, Pea & Salmon Traybake", es:"Salm\u00f3n al horno con zanahoria y guisantes",
+    mins:20, tags:['fish','plant','batch'], kcal:485, p:34, f:23, c:30,
+    ing:[
+      ["Fresh salmon fillet","Salm\u00f3n fresco, lomo",130,"g"],
+      ["Carrot","Zanahoria",150,"g"],
+      ["Peas, frozen","Guisantes congelados",120,"g"],
+      ["Red pepper","Pimiento rojo",100,"g"],
+      ["Extra virgin olive oil","Aceite de oliva virgen extra",5,"g"],
+      ["Lemon","Lim\u00f3n",0.5,""],
+      ["Fresh dill","Eneldo fresco",5,"g"]
+    ],
+    steps:[
+      "Oven to 210 C. Cut the carrot into thin batons \u2014 thick ones will still be hard when the salmon is done.",
+      "Carrot and pepper with the oil, 12 minutes.",
+      "Peas from frozen scattered over, salmon on top, 8 minutes more.",
+      "Lemon and dill as it comes out."
+    ],
+    tip:"Three hundred and seventy grams of vegetables round a single fillet. Carrots go sweet and slightly caramelised at this heat." },
+
+  { id:'d30', meal:'dinner', name:"Beetroot, Bean & Mackerel Salad", es:"Ensalada de remolacha, alubias y caballa",
+    mins:10, tags:['nocook','fish','plant','batch'], kcal:445, p:31, f:16, c:38,
+    ing:[
+      ["Mackerel in olive oil","Caballa en aceite de oliva",1,"tin"],
+      ["Cooked white beans, jar","Alubias blancas cocidas",150,"g"],
+      ["Cooked beetroot","Remolacha cocida",150,"g"],
+      ["Baby spinach","Espinacas baby",60,"g"],
+      ["Red onion","Cebolla roja",0.25,""],
+      ["Sherry vinegar","Vinagre de Jerez",1,"tbsp"],
+      ["Fresh dill","Eneldo fresco",5,"g"]
+    ],
+    steps:[
+      "Dress the rinsed beans with the vinegar and a spoonful of the oil from the mackerel tin.",
+      "Slice the onion paper-thin and let it sit in the dressing for five minutes.",
+      "Dice the beetroot and fold it in last, then break the mackerel over in large flakes.",
+      "Spinach and dill through at the end."
+    ],
+    tip:"No added oil needed \u2014 the tin brings its own, and it is olive oil worth using." },
+
+  { id:'b32', meal:'breakfast', name:'Air-Fryer Courgette & Egg Bake', es:'Pastel de calabacín al aire',
+    mins:15, tags:['eggs','dairy'], kcal:448, p:43, f:11, c:42,
+    ing:[
+      ["Courgette","Calabacín",125,"g"],
+      ["Free-range eggs, medium","Huevos camperos M",2,""],
+      ["Plain flour","Harina de trigo",1,"tbsp"],
+      ["Baking powder","Levadura química",0.5,"tsp"],
+      ["0% Greek yogurt","Yogur griego 0%",250,"g"],
+      ["Rye crispbread","Tostadas de centeno",30,"g"],
+      ["Black pepper","Pimienta negra",null,""]
+    ],
+    steps:[
+      "Grate the half courgette coarsely, salt it, wait three minutes and then squeeze the water out in your hands. Skip this and the batter goes soupy and never sets.",
+      "Beat the eggs, fold in the flour and baking powder, then the drained courgette and plenty of pepper.",
+      "Into a lined tin or silicone dish, air fryer at 180 C for 12-14 minutes, until risen and just firm in the middle.",
+      "Greek yogurt spooned alongside, cold and seasoned with salt and pepper so it reads savoury rather than like a dessert, crispbread on the side."
+    ],
+    tip:"The bake by itself is about 190 kcal and 14 g of protein - under the 30 g floor every meal here clears, and too light to carry a full slot. The Greek yogurt and crispbread alongside are what take it to 43 g. Cook just the bake if you want it as a small plate." }
+];
+
+const CUISINE = {
+  b2:'nordic', b3:'spanish', b6:'mideast', b7:'simple', b8:'nordic', b10:'simple',
+  b12:'simple', b13:'nordic', b14:'medit', b15:'spanish', b16:'medit',
+  b17:'medit', b18:'simple',
+  l1:'medit', l2:'medit', l3:'medit', l4:'asian', l5:'spanish',
+  l7:'spanish', l8:'asian', l10:'simple', l11:'spanish', l12:'spanish',
+  d1:'nordic', d2:'spanish', d3:'spanish', d4:'spanish', d5:'spanish', d6:'asian',
+  d7:'asian', d8:'medit', d9:'spanish', d10:'asian', d11:'asian', d12:'medit',
+  d13:'spanish', d14:'asian',
+  b19:'spanish', b20:'spanish', b21:'nordic', b22:'medit', b23:'spanish', b24:'simple', b25:'spanish', b26:'spanish', b27:'medit',
+  l13:'spanish', l15:'spanish', l16:'medit', l17:'asian', l18:'nordic', l19:'spanish', l20:'medit', l21:'spanish', l22:'spanish',
+  d15:'spanish', d17:'asian', d18:'medit', d19:'spanish', d20:'medit', d21:'medit', d22:'mideast', d24:'nordic',
+  b29:'simple', b30:'nordic', b31:'medit', l23:'medit', l24:'medit', l25:'asian', l26:'nordic',
+  d25:'asian', d26:'spanish', d27:'asian', d28:'medit', d29:'nordic', d30:'nordic', b32:'simple'
+};
+const CUISINE_LABEL = {
+  spanish:'Spanish', medit:'Mediterranean', asian:'Asian',
+  mideast:'Middle Eastern', nordic:'Nordic', simple:'No fuss'
+};
+
+// Primary protein source, used to stop the same one landing three days running.
+const SOURCE = {
+  b2:'salmon', b3:'dairy', b6:'egg', b7:'dairy', b8:'oilyfish', b10:'tuna',
+  b12:'egg', b13:'salmon', b14:'egg', b15:'tuna', b16:'prawn', b17:'dairy', b18:'plant',
+  l1:'tuna', l2:'prawn', l3:'oilyfish', l4:'plant', l5:'whitefish',
+  l7:'oilyfish', l8:'salmon', l10:'egg', l11:'prawn', l12:'whitefish',
+  d1:'salmon', d2:'prawn', d3:'whitefish', d4:'shellfish', d5:'egg', d6:'tuna',
+  d7:'plant', d8:'whitefish', d9:'shellfish', d10:'salmon', d11:'prawn',
+  d12:'dairy', d13:'tuna', d14:'plant',
+  b19:'oilyfish', b20:'shellfish', b21:'salmon', b22:'egg', b23:'oilyfish', b24:'plant', b25:'dairy', b26:'prawn', b27:'dairy',
+  l13:'shellfish', l15:'oilyfish', l16:'whitefish', l17:'plant', l18:'salmon', l19:'oilyfish', l20:'dairy', l21:'prawn', l22:'whitefish',
+  d15:'whitefish', d17:'plant', d18:'salmon', d19:'shellfish', d20:'oilyfish', d21:'dairy', d22:'egg', d24:'salmon',
+  b29:'egg', b30:'dairy', b31:'egg', l23:'tuna', l24:'dairy', l25:'prawn', l26:'salmon',
+  d25:'plant', d26:'whitefish', d27:'plant', d28:'dairy', d29:'salmon', d30:'oilyfish', b32:'egg'
+};
+const SOURCE_LABEL = {
+  salmon:'Salmon & trout', whitefish:'White fish', tuna:'Tuna', oilyfish:'Mackerel, sardines & anchovies',
+  prawn:'Prawns', shellfish:'Mussels & clams',
+  egg:'Eggs', dairy:'Dairy', plant:'Tofu & pulses'
+};
+
+// Dinners that genuinely hold overnight and are worth doubling.
+// Excluded: d2 (courgette weeps), d4 + d9 (shellfish, don't reheat),
+// d6 (rare tuna), d8 (delicate papillote), d11 (prawns toughen).
+const KEEPS = ['d1','d3','d5','d7','d10','d12','d13','d14',
+  'd15', 'd17', 'd18', 'd19', 'd20', 'd21', 'd22', 'd24',
+  'd25', 'd26', 'd27', 'd28', 'd29', 'd30'];
+
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+// Dinner sources are spaced so that no protein reaches three consecutive days once
+// each dinner carries into the following lunch. Breakfasts fill the gaps.
+// Built to land on TARGET: 1351 kcal/day average, every day inside the band.
+// Built to land on TARGET: 1347 kcal/day average, only 33 kcal between the
+// lightest and heaviest day.
+const DEFAULT_PLAN = [
+  { b:'b16', d:'d25' },   // Mon  1328 kcal   prawn crispbread  / cauliflower & chickpea curry
+  { b:'b24', d:'d24' },   // Tue  1331 kcal   tempeh hash       / salmon & lentil traybake
+  { b:'b6',  d:'d26' },   // Wed  1358 kcal   shakshuka         / cod, bean & cabbage stew
+  { b:'b18', d:'d27' },   // Thu  1360 kcal   tofu scramble     / pea, corn & tofu rice
+  { b:'b17', d:'d29' },   // Fri  1343 kcal   savoury skyr bowl / carrot, pea & salmon
+  { b:'b15', d:'d22' },   // Sat  1361 kcal   tuna & bean toast / baked eggs & lentils
+  { b:'b8',  d:'d20' }    // Sun  1345 kcal   mackerel pâté     / sardine & broccoli pasta
+];
+let plan = DEFAULT_PLAN.map(x => ({ ...x }));
+
+// A saved week can outlive the recipes it points at — if a dish is removed from the
+// library, fall back to the default rather than rendering nothing.
+try {
+  const saved = localStorage.getItem('mealPlanWeek');
+  if (saved) {
+    const p = JSON.parse(saved);
+    const valid = Array.isArray(p) && p.length === 7 && p.every(d =>
+      d && RECIPES.some(r => r.id === d.b && r.meal === 'breakfast') &&
+           RECIPES.some(r => r.id === d.d && r.meal === 'dinner'));
+    if (valid) plan = p;
+    else localStorage.removeItem('mealPlanWeek');
+  }
+} catch (e) { /* storage unavailable or corrupt — run with defaults */ }
+
+function savePlan() {
+  try { localStorage.setItem('mealPlanWeek', JSON.stringify(plan)); } catch (e) {}
+}
+
+// 1 = cook this more often, -1 = cook this less. Anything unrated sits in between.
+let rating = {};
+try {
+  const r = JSON.parse(localStorage.getItem('mealPlanRatings')) || {};
+  // Drop ratings for recipes that no longer exist, so they can't skew the shuffle.
+  for (const id in r) if (RECIPES.some(x => x.id === id)) rating[id] = r[id];
+} catch (e) {}
+function saveRatings() {
+  try { localStorage.setItem('mealPlanRatings', JSON.stringify(rating)); } catch (e) {}
+}
+const FAV_WEIGHT = 4;
+
+// Energy level the week is balanced around. Derived from the default plan itself so
+// there is no figure hard-coded here; override it in your own browser with
+// localStorage.setItem('menuKcal', 1500) if you want a different level.
+const TARGET = (() => {
+  let kcal = null;
+  try { kcal = parseInt(localStorage.getItem('menuKcal'), 10) || null; } catch (e) {}
+  if (!kcal) {
+    const byId = id => RECIPES.find(r => r.id === id);
+    const total = DEFAULT_PLAN.reduce((sum, d, i) =>
+      sum + byId(d.b).kcal + byId(DEFAULT_PLAN[(i + 6) % 7].d).kcal + byId(d.d).kcal, 0);
+    kcal = Math.round(total / 7 / 5) * 5;
+  }
+  return { kcal, dayBand: 130, weekBand: 45 };
+})();
+
+const byId = id => RECIPES.find(r => r.id === id);
+// Monday's lunch is the previous Sunday's dinner, so the week loops.
+const lunchFor = i => plan[(i + 6) % 7].d;
+
+// Ukrainian strings. Spanish shelf names are deliberately NOT translated —
+// they are how things are found in the Mercadona app.
+const UK = {
+ "Weekly menu": "Тижневе меню",
+ "Pescatarian · Mercadona · 3 meals, no snacks": "Пескетаріанське · Mercadona · 3 прийоми їжі, без перекусів",
+ "Your week": "Твій тиждень",
+ "Shuffle for a new week, or tap any breakfast or dinner to swap it yourself.": "Перемішай, щоб отримати новий тиждень, або натисни на сніданок чи вечерю, щоб замінити вручну.",
+ "Shuffle the week": "Перемішати тиждень",
+ "Shuffle dinners only": "Тільки вечері",
+ "Week shopping list": "Список покупок на тиждень",
+ "Reset": "Скинути",
+ "All 77 recipes": "Усі 77 рецептів",
+ "26 breakfasts, 23 lunches, 28 dinners. Every one savoury at breakfast, vegetable-heavy, all Mercadona.": "26 сніданків, 23 обіди, 28 вечер. Усі сніданки несолодкі, багато овочів, усе з Mercadona.",
+ "Meal": "Прийом їжі",
+ "All": "Усі",
+ "Breakfast": "Сніданок",
+ "Lunch": "Обід",
+ "Dinner": "Вечеря",
+ "Style": "Стиль",
+ "Any": "Будь-який",
+ "Spanish": "Іспанська",
+ "Mediterranean": "Середземноморська",
+ "Asian": "Азійська",
+ "Middle Eastern": "Близькосхідна",
+ "Nordic": "Скандинавська",
+ "No fuss": "Без мороки",
+ "Filter": "Фільтр",
+ "★ Favourites": "★ Улюблені",
+ "No cooking": "Без готування",
+ "Under 10 min": "До 10 хв",
+ "Fish & seafood": "Риба і морепродукти",
+ "Eggs": "Яйця",
+ "Dairy": "Молочне",
+ "Plant protein": "Рослинний білок",
+ "Keeps for tomorrow": "Зберігається до завтра",
+ "Mercadona list": "Список Mercadona",
+ "Close": "Закрити",
+ "Swap": "Заміна",
+ "Method": "Приготування",
+ "More often": "★ Частіше",
+ "★ More often": "★ Частіше",
+ "Less often": "Рідше",
+ "cook ×2": "готуй ×2",
+ "from last night": "з учорашньої вечері",
+ "At Mercadona · English, then the shelf name": "У Mercadona · українською, потім назва на полиці",
+ "Ingredients — one portion": "Інгредієнти — одна порція",
+ "Store cupboard — check before you go": "У шафі — перевір перед виходом",
+ "have some": "має бути",
+ "recipe": "рецепт",
+ "recipes": "рецептів",
+ "The sweet bit, if you want one.": "Солодке, якщо хочеться.",
+ "Portions are per person, per meal.": "Порції — на одну людину, на один прийом їжі.",
+ "Leftovers.": "Залишки.",
+ "New week — on your daily calorie target, no protein more than two days running. Star a few dishes and they will come up more often.": "Новий тиждень — у межах денної норми калорій, жоден білок не повторюється більше двох днів поспіль. Познач кілька страв зірочкою, і вони траплятимуться частіше.",
+ "New week — but you have marked so much as \"less often\" that some of it had to come back in to fill seven days.": "Новий тиждень — але ти позначила стільки страв як «рідше», що частину довелося повернути, аби заповнити сім днів.",
+ "Could not build a week that keeps every protein under three days running. Un-mark a few \"less often\" dishes and try again.": "Не вдалося скласти тиждень, де жоден білок не йде три дні поспіль. Зніми позначку «рідше» з кількох страв і спробуй ще раз.",
+ "Could not fit new dinners around the breakfasts you already have. Try shuffling the whole week instead.": "Не вдалося підібрати нові вечері до наявних сніданків. Спробуй перемішати весь тиждень.",
+ "Courgette": "Кабачок",
+ "Free-range eggs, medium": "Яйця вільного вигулу, середні",
+ "Liquid egg whites": "Рідкі яєчні білки",
+ "Plain flour": "Пшеничне борошно",
+ "Baking powder": "Розпушувач",
+ "Fat-free cottage cheese": "Знежирений м'який сир",
+ "0% Greek yogurt": "Грецький йогурт 0%",
+ "Plain 0% skyr": "Скір натуральний 0%",
+ "Ricotta-style curd cheese": "Рікотта (requesón)",
+ "Fresh Burgos cheese 0%": "Сир Бургос 0%",
+ "Feta cheese": "Сир фета",
+ "Grated light mozzarella": "Терта легка моцарела",
+ "Skimmed milk": "Знежирене молоко",
+ "Firm tofu": "Твердий тофу",
+ "Tempeh": "Темпе",
+ "Rye crispbread": "Житні хлібці",
+ "Rye bread": "Житній хліб",
+ "Wholemeal bread": "Цільнозерновий хліб",
+ "Bread": "Хліб",
+ "Breadcrumbs": "Панірувальні сухарі",
+ "Wholemeal pasta, dry": "Цільнозернова паста, суха",
+ "Basmati rice, cooked": "Рис басматі, варений",
+ "Quinoa, dry": "Кіноа, суха",
+ "Fresh salmon fillet": "Свіже філе лосося",
+ "Smoked salmon": "Копчений лосось",
+ "Smoked trout": "Копчена форель",
+ "Trout fillets": "Філе форелі",
+ "Cod loins": "Філе тріски",
+ "Hake loins": "Філе хека",
+ "Sea bass fillets": "Філе сібаса",
+ "Sea bream fillets": "Філе дорадо",
+ "Monkfish": "Морський чорт",
+ "Fresh tuna steak": "Свіжий стейк тунця",
+ "Tuna for tartare, previously frozen": "Тунець для тартару, попередньо заморожений",
+ "Tuna in brine": "Тунець у власному соку",
+ "Mackerel in olive oil": "Скумбрія в оливковій олії",
+ "Sardines in olive oil": "Сардини в оливковій олії",
+ "Anchovies in olive oil": "Анчоуси в оливковій олії",
+ "Melva in olive oil, drained": "Мелва в оливковій олії, зціджена",
+ "Cockles in brine, drained": "Сердцевидки у власному соку, зціджені",
+ "Mussels in escabeche, drained": "Мідії в маринаді, зціджені",
+ "Fresh mussels": "Свіжі мідії",
+ "Fresh clams": "Свіжі молюски",
+ "Cooked peeled prawns": "Варені очищені креветки",
+ "Frozen peeled prawns": "Заморожені очищені креветки",
+ "Frozen shelled edamame": "Заморожені боби едамаме",
+ "Cooked chickpeas, jar": "Варений нут, банка",
+ "Cooked lentils, jar": "Варена сочевиця, банка",
+ "Cooked white beans, jar": "Варена біла квасоля, банка",
+ "Piquillo peppers, jar": "Перець піквільо, банка",
+ "Crushed tomatoes": "Подрібнені помідори",
+ "Gazpacho": "Гаспачо",
+ "Light coconut milk": "Легке кокосове молоко",
+ "Capers": "Каперси",
+ "Green olives": "Зелені оливки",
+ "Teriyaki sauce": "Соус теріякі",
+ "Soy sauce": "Соєвий соус",
+ "Curry paste": "Паста карі",
+ "Red curry paste": "Червона паста карі",
+ "Dijon mustard": "Діжонська гірчиця",
+ "Honey": "Мед",
+ "100% peanut butter": "Арахісова паста 100%",
+ "Almond butter": "Мигдальна паста",
+ "Fresh spinach": "Свіжий шпинат",
+ "Baby spinach": "Молодий шпинат",
+ "Rocket": "Рукола",
+ "Broccoli": "Броколі",
+ "Cauliflower": "Цвітна капуста",
+ "White cabbage": "Білокачанна капуста",
+ "Carrot": "Морква",
+ "Cooked beetroot": "Варений буряк",
+ "Peas, frozen": "Заморожений зелений горошок",
+ "Sweetcorn, tin": "Кукурудза, банка",
+ "Red pepper": "Червоний перець",
+ "Green Italian pepper": "Зелений італійський перець",
+ "Cherry tomatoes": "Помідори чері",
+ "Tomato": "Помідор",
+ "Cucumber": "Огірок",
+ "Potato": "Картопля",
+ "Green beans": "Зелена квасоля",
+ "Fennel": "Фенхель",
+ "Mushrooms": "Печериці",
+ "Little gem lettuce": "Салат ромен (маленький)",
+ "Avocado": "Авокадо",
+ "Banana": "Банан",
+ "Pear": "Груша",
+ "Blueberries": "Чорниця",
+ "Frozen mixed berries": "Заморожені ягоди",
+ "Lemon": "Лимон",
+ "Lime": "Лайм",
+ "Onion": "Цибуля",
+ "Red onion": "Червона цибуля",
+ "Shallot": "Шалот",
+ "Spring onion": "Зелена цибуля",
+ "Radishes": "Редиска",
+ "Garlic": "Часник",
+ "Fresh ginger": "Свіжий імбир",
+ "Fresh parsley": "Свіжа петрушка",
+ "Fresh coriander": "Свіжа кінза",
+ "Fresh dill": "Свіжий кріп",
+ "Fresh mint": "Свіжа м'ята",
+ "Chives": "Зелена цибулька",
+ "Fresh thyme": "Свіжий чебрець",
+ "Extra virgin olive oil": "Оливкова олія extra virgin",
+ "Sesame oil": "Кунжутна олія",
+ "White wine": "Біле вино",
+ "Sherry vinegar": "Хересний оцет",
+ "Red wine vinegar": "Оцет із червоного вина",
+ "Rice vinegar": "Рисовий оцет",
+ "Raw almonds": "Сирий мигдаль",
+ "Walnuts": "Волоські горіхи",
+ "Sunflower seeds": "Насіння соняшнику",
+ "Pumpkin seeds": "Гарбузове насіння",
+ "Sesame seeds": "Кунжут",
+ "Whey protein powder": "Сироватковий протеїн",
+ "Black pepper": "Чорний перець",
+ "Salt and black pepper": "Сіль і чорний перець",
+ "Coarse sea salt": "Крупна морська сіль",
+ "Dried oregano": "Сушений орегано",
+ "Sweet paprika": "Солодка паприка",
+ "Sweet smoked paprika": "Копчена солодка паприка",
+ "Hot smoked paprika": "Копчена гостра паприка",
+ "Ground cumin": "Мелений кумін",
+ "Ground turmeric": "Мелена куркума",
+ "Chilli flakes": "Пластівці чилі",
+ "Dried chilli": "Сушений чилі",
+ "Garlic powder": "Часниковий порошок",
+ "Fish counter & frozen": "Риба та заморожене",
+ "Tins & jars": "Консерви та банки",
+ "Fridge": "Холодильник",
+ "Fruit & veg": "Овочі та фрукти",
+ "Dry goods & bakery": "Бакалія та випічка",
+ "Spices & seasoning": "Спеції",
+ "Salmon & trout": "Лосось і форель",
+ "White fish": "Біла риба",
+ "Tuna": "Тунець",
+ "Mackerel, sardines & anchovies": "Скумбрія, сардини й анчоуси",
+ "Prawns": "Креветки",
+ "Mussels & clams": "Мідії та молюски",
+ "Tofu & pulses": "Тофу і бобові",
+ "to taste": "за смаком",
+ "a pinch": "дрібка",
+ "tiny pinch": "маленька дрібка",
+ "to finish": "для подачі",
+ "large handful": "велика жменя",
+ "handful": "жменя",
+ "slice": "скибка",
+ "slices": "скибки",
+ "clove": "зубчик",
+ "cloves": "зубчики",
+ "tin": "банка",
+ "tins": "банки",
+ "tbsp": "ст. л.",
+ "tsp": "ч. л.",
+ "g": "г",
+ "ml": "мл",
+ "kg": "кг",
+ "L": "л",
+ "min": "хв",
+ "kcal": "ккал",
+ "protein": "білок",
+ "prot": "білок",
+ "fat": "жир",
+ "carb": "вугл",
+ "g protein": "г білка",
+ "Smoked Salmon Scramble on Rye": "Яєчня з копченим лососем на житньому",
+ "Requesón & Egg Toast with Tomato": "Тост із рікоттою, яйцем і помідором",
+ "Shakshuka with Feta": "Шакшука з фетою",
+ "Cottage Cheese Bowl with Cucumber & Dill": "Миска м'якого сиру з огірком і кропом",
+ "Smoked Mackerel Pâté on Crispbread": "Паштет із копченої скумбрії на хлібцях",
+ "Tuna & Egg Breakfast Melt": "Гарячий тост із тунцем і яйцем",
+ "Boiled Eggs, Avocado & Cottage Cheese": "Варені яйця, авокадо і м'який сир",
+ "Smoked Salmon & Cottage Cheese Crispbread": "Хлібці з копченим лососем і сиром",
+ "Mushroom & Spinach Omelette with Feta": "Омлет із печерицями, шпинатом і фетою",
+ "Tuna & White Bean Toast": "Тост із тунцем і білою квасолею",
+ "Prawn & Avocado Crispbread": "Хлібці з креветками та авокадо",
+ "Savoury Skyr Bowl with Tomato & Olives": "Несолодкий скір із помідорами й оливками",
+ "Tofu Scramble with Spinach": "Скрембл із тофу і шпинатом",
+ "Anchovy, Tomato & Egg Toast": "Тост з анчоусами, помідором і яйцем",
+ "Cockle & Cottage Cheese Crispbread": "Хлібці з сердцевидками і м'яким сиром",
+ "Smoked Trout & Scrambled Egg": "Копчена форель із яєчнею",
+ "Feta & Spinach Baked Eggs": "Яйця запечені з фетою і шпинатом",
+ "Sardine & Piquillo Toast": "Тост із сардинами і перцем піквільо",
+ "Tempeh & Mushroom Hash": "Темпе з печерицями",
+ "Burgos Cheese with Anchovies & Tomato": "Сир Бургос з анчоусами й помідором",
+ "Prawn & Egg Scramble": "Яєчня з креветками",
+ "Savoury Yogurt Bowl with Cucumber & Walnuts": "Несолодкий йогурт з огірком і горіхами",
+ "Air-Fryer Courgette & Egg Bake": "Кабачково-яєчна запіканка в аерофритюрниці",
+ "Tuna & Chickpea Bowl": "Миска з тунцем і нутом",
+ "Prawn & Quinoa Salad": "Салат із креветками та кіноа",
+ "Mackerel & Lentil Salad": "Салат зі скумбрією та сочевицею",
+ "Tofu & Edamame Rice Bowl": "Рисова миска з тофу й едамаме",
+ "Hake in Tomato & Pepper": "Хек у томаті з перцем",
+ "Sardines on Toast with Capers": "Сардини на тості з каперсами",
+ "Smoked Salmon Poke Bowl": "Поке з копченим лососем",
+ "Egg Salad & Avocado Open Sandwich": "Відкритий бутерброд з яєчним салатом і авокадо",
+ "Prawn & Avocado Gazpacho Bowl": "Гаспачо з креветками й авокадо",
+ "Cod & Potato Salad with Piquillo Peppers": "Салат із тріски, картоплі та перцю піквільо",
+ "Anchovy, Egg & Potato Salad": "Салат з анчоусами, яйцем і картоплею",
+ "Griddled Sea Bream with Tomato & Caper Salad": "Дорадо на грилі з томатним салатом",
+ "Tempeh & Lentil Bowl": "Миска з темпе і сочевицею",
+ "Smoked Trout & Potato Salad": "Салат із копченою фореллю і картоплею",
+ "Melva & Roasted Pepper Salad": "Салат із мелвою і печеним перцем",
+ "Whipped Cottage Cheese with Roasted Peppers": "Збитий м'який сир із печеним перцем",
+ "Prawn & Egg Ensaladilla": "Енсаладілья з креветками та яйцем",
+ "Monkfish & Potato Stew": "Рагу з морського чорта і картоплі",
+ "Cockle & White Bean Salad": "Салат із сердцевидками і білою квасолею",
+ "Tuna, Chickpea & Sweetcorn Salad": "Салат із тунцем, нутом і кукурудзою",
+ "Beetroot, Chickpea & Feta Salad": "Салат із буряком, нутом і фетою",
+ "Cabbage, Carrot & Edamame Slaw with Prawns": "Салат із капусти, моркви й едамаме з креветками",
+ "Pea, Mint & Smoked Salmon Salad": "Салат із горошком, м'ятою і копченим лососем",
+ "Baked Salmon with Roast Veg": "Запечений лосось із овочами",
+ "Garlic Prawns with Courgette Noodles": "Креветки з часником і кабачковою локшиною",
+ "Cod with Chickpeas & Spinach": "Тріска з нутом і шпинатом",
+ "Mussels in Tomato Broth": "Мідії в томатному бульйоні",
+ "Tortilla with Skyr & Herbs": "Тортилья зі скіром і зеленню",
+ "Tuna Tartare with Avocado": "Тартар із тунця з авокадо",
+ "Tofu & Lentil Curry": "Карі з тофу і сочевицею",
+ "Sea Bass en Papillote with Fennel": "Сібас у пергаменті з фенхелем",
+ "Clams with White Wine & Garlic": "Молюски з білим вином і часником",
+ "Salmon Teriyaki with Broccoli": "Лосось теріякі з броколі",
+ "Prawn & Coconut Curry": "Кокосове карі з креветками",
+ "Baked Feta, Chickpeas & Egg": "Запечена фета з нутом і яйцем",
+ "Tuna Meatballs in Tomato Sauce": "Тунцеві фрикадельки в томатному соусі",
+ "Tofu Larb Lettuce Cups": "Ларб із тофу в листках салату",
+ "Baked Cod with Piquillo & Chickpeas": "Запечена тріска з перцем піквільо і нутом",
+ "Tempeh Stir-fry with Broccoli": "Темпе з броколі на сковороді",
+ "Baked Trout with Fennel & Lemon": "Запечена форель із фенхелем і лимоном",
+ "Mussels in Escabeche with Bean Salad": "Мідії в маринаді з квасолевим салатом",
+ "Sardine & Tomato Pasta": "Паста з сардинами і томатом",
+ "Lentil & Feta Bake": "Запіканка із сочевиці з фетою",
+ "Baked Eggs with Lentils & Spinach": "Яйця запечені із сочевицею і шпинатом",
+ "Salmon & Lentil Traybake": "Лосось із сочевицею на деку",
+ "Cauliflower & Chickpea Curry with Egg": "Карі з цвітної капусти і нуту з яйцем",
+ "Cod, White Bean & Cabbage Stew": "Рагу з тріски, квасолі та капусти",
+ "Pea, Corn & Tofu Fried Rice": "Смажений рис із горошком, кукурудзою і тофу",
+ "Roast Cauliflower, Broccoli & Lentils with Feta": "Запечена цвітна капуста, броколі й сочевиця з фетою",
+ "Carrot, Pea & Salmon Traybake": "Лосось із морквою і горошком на деку",
+ "Beetroot, Bean & Mackerel Salad": "Салат із буряком, квасолею і скумбрією",
+ "Scrambled Eggs with Peas, Corn & Peppers": "Яєчня з горошком, кукурудзою і перцем",
+ "Beetroot, Cottage Cheese & Egg Bowl": "Миска з буряком, м'яким сиром і яйцем",
+ "Cauliflower & Feta Scramble": "Скрембл із цвітною капустою і фетою",
+ "Monday": "Понеділок",
+ "Tuesday": "Вівторок",
+ "Wednesday": "Середа",
+ "Thursday": "Четвер",
+ "Friday": "П'ятниця",
+ "Saturday": "Субота",
+ "Sunday": "Неділя",
+ "Ingredients — one portion": "Інгредієнти — одна порція",
+ "egg": "яйце",
+ "eggs": "яйця"
+};
+let lang = 'en';
+try { lang = localStorage.getItem('mealPlanLang') === 'uk' ? 'uk' : 'en'; } catch (e) {}
+const t = str => (lang === 'uk' && UK[str]) ? UK[str] : str;
+
+const MEAL_LABEL = { breakfast:'Breakfast', lunch:'Lunch', dinner:'Dinner' };
+let meal = 'all';
+let cuisine = 'all';
+let tags = new Set();
+
+const $ = id => document.getElementById(id);
+
+const FRACT = { 0.25:'¼', 0.5:'½', 0.75:'¾' };
+const PLURAL = { clove:'cloves', tin:'tins', slice:'slices' };
+
+// amount === null means store-cupboard: no quantity to buy, nothing to sum.
+function fmtQty(a, u) {
+  if (a === null) return 'to taste';
+  const whole = Math.floor(a), frac = a - whole;
+  let n = FRACT[frac] ? (whole ? whole + FRACT[frac] : FRACT[frac])
+        : String(Math.round(a * 100) / 100);
+  if (u === '') return n;
+  if (PLURAL[u]) return n + ' ' + (a === 1 ? u : PLURAL[u]);
+  return n + ' ' + u;
+}
+
+// Whole units can't be bought in halves, so round up. Weights convert at 1000.
+function fmtTotal(a, u) {
+  if (u === 'g' && a >= 1000) return (Math.round(a / 10) / 100) + ' kg';
+  if (u === 'ml' && a >= 1000) return (Math.round(a / 10) / 100) + ' L';
+  if (u === '' || PLURAL[u]) {
+    const n = Math.ceil(a - 1e-9);
+    return u === '' ? String(n) : n + ' ' + (n === 1 ? u : PLURAL[u]);
+  }
+  const n = Math.round(a * 100) / 100;
+  return n + ' ' + u;
+}
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+
+function matches(r) {
+  if (meal !== 'all' && r.meal !== meal) return false;
+  if (cuisine !== 'all' && CUISINE[r.id] !== cuisine) return false;
+  for (const t of tags) {
+    if (t === 'under10') { if (r.mins > 10) return false; }
+    else if (t === 'fav') { if (rating[r.id] !== 1) return false; }
+    else if (!r.tags.includes(t)) return false;
+  }
+  return true;
+}
+
+function render() {
+  const list = RECIPES.filter(matches);
+  $('count').textContent = list.length + ' ' + t(list.length === 1 ? 'recipe' : 'recipes');
+  $('grid').innerHTML = list.map(r => `
+    <article class="rec${rating[r.id] === 1 ? ' fav' : ''}${rating[r.id] === -1 ? ' dim' : ''}" data-id="${r.id}">
+      <div class="rec-top">
+        <div class="rec-meta"><span class="meal">${t(MEAL_LABEL[r.meal])}</span><span>${t(CUISINE_LABEL[CUISINE[r.id]])} · ${r.mins} ${t('min')}</span></div>
+        <h3>${esc(t(r.name))}</h3>
+        <p class="es">${esc(r.es)}</p>
+      </div>
+      <div class="macros">
+        <div class="mac"><b>${r.kcal}</b><span>kcal</span></div>
+        <div class="mac p"><b>${r.p}</b><span>prot</span></div>
+        <div class="mac f"><b>${r.f}</b><span>fat</span></div>
+        <div class="mac c"><b>${r.c}</b><span>carb</span></div>
+      </div>
+      <div class="rec-body">
+        <p class="sect">${t('At Mercadona · English, then the shelf name')}</p>
+        <ul class="ing">
+          ${r.ing.map(([n,sp,a,u]) => `<li><span class="iname">${esc(t(n))}<span class="sp">${esc(sp)}</span></span><span class="qty">${esc(fmtQty(a,u))}</span></li>`).join('')}
+        </ul>
+        <details class="method">
+          <summary>${t('Method')}</summary>
+          <ol>${r.steps.map(s => `<li>${esc(t(s))}</li>`).join('')}</ol>
+          <p class="tip">${esc(t(r.tip))}</p>
+        </details>
+      </div>
+      <div class="rec-rate">
+        <button class="rate fav" data-rate="1"  data-id="${r.id}" aria-pressed="${rating[r.id] === 1}">${t('★ More often')}</button>
+        <button class="rate no"  data-rate="-1" data-id="${r.id}" aria-pressed="${rating[r.id] === -1}">${t('Less often')}</button>
+      </div>
+    </article>`).join('');
+}
+
+$('grid').addEventListener('click', e => {
+  const btn = e.target.closest('[data-rate]');
+  if (!btn) return;
+  const id = btn.dataset.id, v = +btn.dataset.rate;
+  if (rating[id] === v) delete rating[id]; else rating[id] = v;
+  saveRatings(); render(); renderWeek();
+});
+
+document.querySelectorAll('.f-meal').forEach(b => b.addEventListener('click', () => {
+  meal = b.dataset.v;
+  document.querySelectorAll('.f-meal').forEach(x =>
+    x.setAttribute('aria-pressed', String(x === b)));
+  render();
+}));
+
+document.querySelectorAll('.f-cui').forEach(b => b.addEventListener('click', () => {
+  cuisine = b.dataset.v;
+  document.querySelectorAll('.f-cui').forEach(x =>
+    x.setAttribute('aria-pressed', String(x === b)));
+  render();
+}));
+
+document.querySelectorAll('.f-tag').forEach(b => b.addEventListener('click', () => {
+  const v = b.dataset.v;
+  if (tags.has(v)) { tags.delete(v); b.setAttribute('aria-pressed','false'); }
+  else { tags.add(v); b.setAttribute('aria-pressed','true'); }
+  render();
+}));
+
+$('closeBtn').addEventListener('click', () => $('dlg').close());
+
+// Last resort: never leave the grid blank. If the saved week somehow can't be drawn,
+// fall back to the default rather than failing silently.
+function safeRenderWeek() {
+  try {
+    renderWeek();
+  } catch (e) {
+    plan = DEFAULT_PLAN.map(x => ({ ...x }));
+    try { localStorage.removeItem('mealPlanWeek'); } catch (_) {}
+    renderWeek();
+  }
+}
+
+/* ---------- schedule ---------- */
+
+function cellHtml(r, slot, opts) {
+  const cls = 'cell' + (opts.carry ? ' carry' : '');
+  const label = opts.carry ? t('from last night') : t(slot);
+  const badge = opts.badge ? `<span class="badge">${t(opts.badge)}</span>` : '';
+  const attrs = opts.swap ? ` data-swap="${opts.swap}" data-day="${opts.dayIdx}"` : ' data-view="' + r.id + '"';
+  return `<button class="${cls}"${attrs}>
+    <span class="slot">${label}</span>
+    <span class="rname">${esc(t(r.name))}</span>
+    <span class="cmac">${r.kcal} ${t('kcal')} · <em>${r.p} ${t('g')}</em></span>
+    ${badge}
+  </button>`;
+}
+
+// A protein appearing on three consecutive days breaks the rule. Because each dinner
+// carries into the next day's lunch, two dinners of the same fish within two days of
+// each other is enough to trigger it — that is the case worth catching.
+// Whole eggs only — pasteurised whites are a separate product and don't count here.
+const EGG_LIMIT = 2;
+function eggsIn(id) {
+  const row = byId(id).ing.find(x => x[0] === 'Free-range eggs, medium');
+  return row ? row[2] : 0;
+}
+// A dinner's eggs land twice: once tonight, once in tomorrow's lunch.
+function eggsOnDay(p, i) {
+  return (p[i].b ? eggsIn(p[i].b) : 0) + eggsIn(p[(i + 6) % 7].d) + eggsIn(p[i].d);
+}
+function findEggDays(p = plan) {
+  const out = [];
+  for (let i = 0; i < 7; i++) {
+    const n = eggsOnDay(p, i);
+    if (n > EGG_LIMIT) out.push({ day: i, eggs: n });
+  }
+  return out;
+}
+
+function findRuns(p = plan) {
+  const daySrc = p.map((day, i) => {
+    const s = new Set([SOURCE[p[(i + 6) % 7].d], SOURCE[day.d]]);
+    if (day.b) s.add(SOURCE[day.b]);   // breakfast may be unset mid-shuffle
+    return s;
+  });
+  const runs = [];
+  for (const src of new Set(daySrc.flatMap(s => [...s]))) {
+    let start = null;
+    // Walk twice round so a run spanning Sunday into Monday is caught too.
+    for (let i = 0; i < 14; i++) {
+      if (daySrc[i % 7].has(src)) {
+        if (start === null) start = i;
+        if (i - start === 2) {
+          runs.push({ src, days: [start % 7, (start + 1) % 7, (start + 2) % 7] });
+          break;
+        }
+      } else start = null;
+    }
+  }
+  return runs;
+}
+
+/* ---------- shuffle ---------- */
+
+// Weighted sample without replacement (Efraimidis-Spirakis): key = U^(1/weight),
+// sorted descending. A favourite with weight 4 is four times as likely to come out on top.
+function weightedOrder(pool) {
+  return pool
+    .map(r => ({ r, k: Math.pow(Math.random(), 1 / (rating[r.id] === 1 ? FAV_WEIGHT : 1)) }))
+    .sort((a, b) => b.k - a.k)
+    .map(x => x.r);
+}
+
+// Two dinners sharing a protein must sit at least three days apart, because each one
+// also occupies the following day's lunch slot.
+function pickDinners(pool) {
+  const chosen = new Array(7).fill(null);
+  const free = (src, i) => [-2, -1, 1, 2].every(o => {
+    const j = chosen[(i + o + 7) % 7];
+    return !j || SOURCE[j] !== src;
+  });
+  // Two consecutive dinners share a day, so their eggs must already fit under the
+  // limit before breakfast is even added.
+  const eggsFit = (id, i) => [-1, 1].every(o => {
+    const j = chosen[(i + o + 7) % 7];
+    return !j || eggsIn(j) + eggsIn(id) <= EGG_LIMIT;
+  });
+  for (let i = 0; i < 7; i++) {
+    const pick = weightedOrder(pool)
+      .find(r => !chosen.includes(r.id) && free(SOURCE[r.id], i) && eggsFit(r.id, i));
+    if (!pick) return null;
+    chosen[i] = pick.id;
+  }
+  return chosen;
+}
+
+const dayKcal = (p, i) => byId(p[i].b).kcal + byId(p[(i + 6) % 7].d).kcal + byId(p[i].d).kcal;
+
+function pickBreakfasts(pool, dinners) {
+  const out = new Array(7).fill(null);
+  for (let i = 0; i < 7; i++) {
+    const legal = pool.filter(r => {
+      if (out.includes(r.id)) return false;
+      out[i] = r.id;
+      const trial = dinners.map((d, j) => ({ b: out[j], d }));
+      const ok = findRuns(trial).length === 0 && eggsOnDay(trial, i) <= EGG_LIMIT;
+      out[i] = null;
+      return ok;
+    });
+    if (!legal.length) return null;
+    // Lunch and dinner are already fixed, so breakfast is the lever that lands the day
+    // on target. Shortlist the closest fits, then let favourites decide between them.
+    const need = TARGET.kcal - byId(dinners[(i + 6) % 7]).kcal - byId(dinners[i]).kcal;
+    legal.sort((a, b) => Math.abs(a.kcal - need) - Math.abs(b.kcal - need));
+    out[i] = weightedOrder(legal.slice(0, 6))[0].id;
+  }
+  return out;
+}
+
+function buildWeek(keepBreakfasts) {
+  const liked = r => rating[r.id] !== -1;
+  const allD = RECIPES.filter(r => KEEPS.includes(r.id));
+  const allB = RECIPES.filter(r => r.meal === 'breakfast');
+  let dPool = allD.filter(liked), bPool = allB.filter(liked), relaxed = false;
+  // If she has ruled out too much to fill a week, put the rejects back rather than fail.
+  if (dPool.length < 7) { dPool = allD; relaxed = true; }
+  if (bPool.length < 7) { bPool = allB; relaxed = true; }
+
+  let fallback = null;
+  for (let attempt = 0; attempt < 500; attempt++) {
+    const dinners = pickDinners(dPool);
+    if (!dinners) continue;
+    const bs = keepBreakfasts ? plan.map(d => d.b) : pickBreakfasts(bPool, dinners);
+    if (!bs) continue;
+    const trial = dinners.map((d, i) => ({ b: bs[i], d }));
+    if (findRuns(trial).length || findEggDays(trial).length) continue;
+
+    const days = [0,1,2,3,4,5,6].map(i => dayKcal(trial, i));
+    const avg = days.reduce((a, b) => a + b, 0) / 7;
+    const onTarget = days.every(k => Math.abs(k - TARGET.kcal) <= TARGET.dayBand)
+                  && Math.abs(avg - TARGET.kcal) <= TARGET.weekBand;
+    if (onTarget) return { plan: trial, relaxed, offTarget: 0 };
+
+    // Otherwise remember the closest week seen, in case nothing lands in the band.
+    const miss = Math.abs(avg - TARGET.kcal);
+    if (!fallback || miss < fallback.miss) fallback = { plan: trial, miss: Math.round(miss) };
+  }
+  return fallback
+    ? { plan: fallback.plan, relaxed, offTarget: fallback.miss }
+    : { plan: null, relaxed };
+}
+
+function shuffle(keepBreakfasts) {
+  const note = document.getElementById('shuffleNote');
+  const res = buildWeek(keepBreakfasts);
+  if (!res.plan) {
+    note.hidden = false;
+    note.className = 'shuffle-note warn';
+    note.textContent = keepBreakfasts
+      ? 'Could not fit new dinners around the breakfasts you already have. Try shuffling the whole week instead.'
+      : 'Could not build a week that keeps every protein under three days running. Un-mark a few "less often" dishes and try again.';
+    return;
+  }
+  plan = res.plan;
+  savePlan(); renderWeek();
+  const favs = plan.filter(d => rating[d.b] === 1 || rating[d.d] === 1).length;
+  note.hidden = false;
+  note.className = res.offTarget ? 'shuffle-note warn' : 'shuffle-note';
+  note.textContent = res.relaxed
+    ? 'New week — but you have marked so much as "less often" that some of it had to come back in to fill seven days.'
+    : res.offTarget
+      ? 'New week, but the closest it could get sits about ' + res.offTarget +
+        ' kcal a day off your target. Shuffle again, or un-mark a few "less often" dishes to widen the choice.'
+      : favs
+        ? 'New week — on your daily calorie target, no protein more than two days running. ' +
+          favs + ' of the 7 days use something you starred.'
+        : 'New week — on your daily calorie target, no protein more than two days running. Star a few dishes and they will come up more often.';
+}
+
+document.getElementById('shuffleBtn').addEventListener('click', () => shuffle(false));
+document.getElementById('shuffleDinnersBtn').addEventListener('click', () => shuffle(true));
+
+function renderWeek() {
+  const runs = findRuns();
+  const eggDays = findEggDays();
+  const flagged = new Set([...runs.flatMap(r => r.days), ...eggDays.map(e => e.day)]);
+
+  document.getElementById('week').innerHTML = plan.map((day, i) => {
+    const b = byId(day.b), l = byId(lunchFor(i)), d = byId(day.d);
+    return `<div class="daycol${flagged.has(i) ? ' clash' : ''}">
+      <div class="dayhd"><b>${t(DAYS[i]).slice(0,3)}</b>
+        <span class="srcs">${[...new Set([SOURCE[day.b], SOURCE[lunchFor(i)], SOURCE[day.d]])]
+          .map(s => t(SOURCE_LABEL[s])).join(' · ')}${
+          eggsOnDay(plan, i) ? ` <span class="eggct">· ${eggsOnDay(plan, i)} ${t(eggsOnDay(plan, i) > 1 ? 'eggs' : 'egg')}</span>` : ''
+        }</span></div>
+      ${cellHtml(b, 'Breakfast', { swap:'b', dayIdx:i })}
+      ${cellHtml(l, 'Lunch', { carry:true, dayIdx:i })}
+      ${cellHtml(d, 'Dinner', { swap:'d', dayIdx:i, badge:'cook ×2' })}
+    </div>`;
+  }).join('');
+
+  const warn = document.getElementById('clash');
+  const msgs = runs.map(r =>
+      `<b>${SOURCE_LABEL[r.src]}</b> lands on ${r.days.map(d => t(DAYS[d])).join(', ')} — three days running.`)
+    .concat(eggDays.map(e =>
+      `<b>${t(DAYS[e.day])}</b> comes to ${e.eggs} eggs, over your limit of ${EGG_LIMIT}.`));
+  warn.hidden = !msgs.length;
+  warn.innerHTML = msgs.join('<br>');
+
+}
+
+document.getElementById('week').addEventListener('click', e => {
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  if (btn.dataset.view) return openRecipe(byId(btn.dataset.view));
+  const slot = btn.dataset.swap, dayIdx = +btn.dataset.day;
+  const rank = r => (rating[r.id] === 1 ? 0 : rating[r.id] === -1 ? 2 : 1);
+  const pool = (slot === 'b'
+      ? RECIPES.filter(r => r.meal === 'breakfast')
+      : RECIPES.filter(r => KEEPS.includes(r.id))
+    ).sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
+  const current = slot === 'b' ? plan[dayIdx].b : plan[dayIdx].d;
+  document.getElementById('swapTitle').textContent =
+    t(slot === 'b' ? 'Breakfast' : 'Dinner') + ' — ' + t(DAYS[dayIdx]);
+  document.getElementById('swapBody').innerHTML =
+    (slot === 'd'
+      ? '<p style="margin:0 0 12px;font-size:14px;color:var(--ink-soft)">Only dinners that hold overnight are listed, because this one becomes ' + DAYS[(dayIdx + 1) % 7] + '\'s lunch.</p>'
+      : '') +
+    '<div class="swaplist">' + pool.map(r =>
+      `<button class="swapopt" data-pick="${r.id}" aria-current="${r.id === current}">
+        <span>${rating[r.id] === 1 ? '<span class="star">★</span> ' : ''}${esc(t(r.name))}</span>
+        <span class="q">${rating[r.id] === -1 ? 'less often · ' : ''}${r.kcal} kcal · ${r.p} g</span>
+      </button>`).join('') + '</div>';
+  document.getElementById('swapBody').dataset.slot = slot;
+  document.getElementById('swapBody').dataset.day = dayIdx;
+  document.getElementById('swapDlg').showModal();
+});
+
+document.getElementById('swapBody').addEventListener('click', e => {
+  const opt = e.target.closest('[data-pick]');
+  if (!opt) return;
+  const body = document.getElementById('swapBody');
+  const slot = body.dataset.slot, dayIdx = +body.dataset.day;
+  plan[dayIdx][slot] = opt.dataset.pick;
+  savePlan(); renderWeek();
+  document.getElementById('swapDlg').close();
+});
+
+document.getElementById('swapClose').addEventListener('click', () =>
+  document.getElementById('swapDlg').close());
+
+document.getElementById('resetWeekBtn').addEventListener('click', () => {
+  plan = DEFAULT_PLAN.map(x => ({ ...x }));
+  savePlan(); renderWeek();
+});
+
+function openRecipe(r) {
+  document.getElementById('dlgTitle').textContent = t(r.name);
+  document.getElementById('dlgBody').innerHTML = `
+    <p style="margin:0 0 14px;font-size:14px;color:var(--ink-soft)">
+      ${t(CUISINE_LABEL[CUISINE[r.id]])} · ${r.mins} ${t('min')} · ${r.kcal} ${t('kcal')} ·
+      ${r.p} g protein · ${r.f} g fat · ${r.c} g carbs</p>
+    <h4>${t('Ingredients — one portion')}</h4>
+    <ul>${r.ing.map(([n,sp,a,u]) =>
+      `<li><span class="iname">${esc(n)}<span class="sp">${esc(sp)}</span></span><span class="qty">${esc(fmtQty(a,u))}</span></li>`).join('')}</ul>
+    <h4>${t('Method')}</h4>
+    <ol style="margin:0;padding-left:19px;font-size:14.5px;color:var(--ink-soft)">
+      ${r.steps.map(s => `<li style="padding:3px 0">${esc(t(s))}</li>`).join('')}</ol>
+    <p class="tip" style="margin-top:14px">${esc(t(r.tip))}</p>`;
+  document.getElementById('dlg').showModal();
+}
+
+/* ---------- week shopping list ---------- */
+
+// Which Mercadona aisle each thing lives in, so the list follows the walk round the shop.
+const AISLE = [
+  ['Fish counter & frozen', ['Fresh salmon fillet','Smoked salmon','Smoked trout','Trout fillets','Cod loins','Hake loins','Sea bass fillets','Sea bream fillets','Monkfish','Fresh tuna steak','Tuna for tartare, previously frozen','Cooked peeled prawns','Frozen peeled prawns','Squid rings','Fresh mussels','Fresh clams','Frozen shelled edamame','Frozen mixed berries']],
+  ['Tins & jars',           ['Tuna in brine','Mackerel in olive oil','Sardines in olive oil','Anchovies in olive oil','Melva in olive oil, drained','Cockles in brine, drained','Mussels in escabeche, drained','Cooked chickpeas, jar','Cooked lentils, jar','Cooked white beans, jar','Piquillo peppers, jar','Sweetcorn, tin','Crushed tomatoes','Gazpacho','Light coconut milk','Capers','Green olives','Teriyaki sauce','Soy sauce','Curry paste','Red curry paste','Dijon mustard','Honey','100% peanut butter','Almond butter']],
+  ['Fridge',                ['Free-range eggs, medium','Liquid egg whites','Plain 0% skyr','0% Greek yogurt','Fat-free cottage cheese','Ricotta-style curd cheese','Fresh Burgos cheese 0%','Feta cheese','Grated light mozzarella','Skimmed milk','Firm tofu','Tempeh']],
+  ['Fruit & veg',           ['Fresh spinach','Baby spinach','Rocket','Broccoli','Courgette','Red pepper','Green Italian pepper','Cherry tomatoes','Tomato','Cucumber','Potato','Green beans','Fennel','Mushrooms','Peas, frozen','Carrot','Cooked beetroot','White cabbage','Cauliflower','Little gem lettuce','Avocado','Banana','Pear','Blueberries','Lemon','Lime','Onion','Red onion','Shallot','Spring onion','Radishes','Garlic','Fresh ginger','Fresh parsley','Fresh coriander','Fresh dill','Fresh mint','Chives']],
+  ['Dry goods & bakery',    ['Rolled oats','Quinoa, dry','Basmati rice, cooked','Wholemeal pasta, dry','Plain flour','Baking powder','Breadcrumbs','Bread','Rye bread','Wholemeal bread','Rye crispbread','Whey protein powder','Vanilla protein powder','Raw almonds','Walnuts','Sunflower seeds','Pumpkin seeds','Sesame seeds','Extra virgin olive oil','Sesame oil','White wine','Sherry vinegar','Red wine vinegar','Rice vinegar']]
+];
+const aisleOf = name => {
+  for (const [label, items] of AISLE) if (items.includes(name)) return label;
+  return 'Spices & seasoning';
+};
+const AISLE_ORDER = AISLE.map(a => a[0]).concat('Spices & seasoning');
+
+document.getElementById('weekListBtn').addEventListener('click', () => {
+  // Recipes are written in whatever unit reads best on the card. For totalling,
+  // fold everything into one base unit per ingredient so nothing splits in two.
+  const NORM = { tbsp:[3,'tsp'], kg:[1000,'g'], l:[1000,'ml'], slice:[40,'g'] };
+
+  const totals = new Map();   // "name|unit" -> { name, sp, unit, amount }
+  const pantry = new Map();   // name -> spanish
+
+  const add = (r, mult) => r.ing.forEach(([n, sp, a, u]) => {
+    if (a === null) { pantry.set(n, sp); return; }
+    if (NORM[u]) { a *= NORM[u][0]; u = NORM[u][1]; }
+    const k = n + '|' + u;
+    if (!totals.has(k)) totals.set(k, { name:n, sp, unit:u, amount:0 });
+    totals.get(k).amount += a * mult;
+  });
+
+  plan.forEach(day => {
+    add(byId(day.b), 1);
+    add(byId(day.d), 2);   // doubled — tonight's dinner is tomorrow's lunch
+  });
+
+  const groups = {};
+  for (const t of totals.values()) (groups[aisleOf(t.name)] ||= []).push(t);
+
+  const body = AISLE_ORDER.filter(a => groups[a]).map(a => {
+    const rows = groups[a].sort((x, y) => x.name.localeCompare(y.name));
+    return `<h4>${esc(t(a))}</h4><ul>${rows.map(row =>
+      `<li><span class="iname">${esc(t(row.name))}<span class="sp">${esc(row.sp)}</span></span>
+       <span class="qty">${esc(fmtTotal(row.amount, row.unit))}</span></li>`).join('')}</ul>`;
+  }).join('');
+
+  const pantryRows = [...pantry.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+
+  document.getElementById('dlgTitle').textContent = t('Week shopping list');
+  document.getElementById('dlgBody').innerHTML =
+    `<p style="margin:0 0 16px;font-size:14px;color:var(--ink-soft)">
+       Seven breakfasts plus seven dinners at double quantity, totalled and grouped by aisle —
+       ${totals.size} items to buy. Lunches need nothing extra; they are the doubled dinners.</p>
+     ${body}
+     <h4>${t('Store cupboard — check before you go')}</h4>
+     <ul>${pantryRows.map(([n, sp]) =>
+       `<li><span class="iname">${esc(t(n))}<span class="sp">${esc(sp)}</span></span>
+        <span class="qty">${t('have some')}</span></li>`).join('')}</ul>`;
+  document.getElementById('dlg').showModal();
+});
+
+/* ---------- language ---------- */
+const FOOT_UK = {};
+
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    if (el.dataset.en === undefined) el.dataset.en = el.textContent.trim();
+    el.textContent = t(el.dataset.en);
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    if (el.dataset.enHtml === undefined) el.dataset.enHtml = el.innerHTML;
+    el.innerHTML = (lang === 'uk' && FOOT_UK[el.dataset.enHtml]) || el.dataset.enHtml;
+  });
+  const b = document.getElementById('langBtn');
+  if (b) b.textContent = lang === 'uk' ? 'ENG' : 'УКР';
+  render(); safeRenderWeek();
+}
+
+document.getElementById('langBtn').addEventListener('click', () => {
+  lang = lang === 'uk' ? 'en' : 'uk';
+  try { localStorage.setItem('mealPlanLang', lang); } catch (e) {}
+  applyLang();
+});
+
+applyLang();
+</script>
