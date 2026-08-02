@@ -521,6 +521,15 @@
   .pickbar-in { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 13px 0; }
   .pickcount { font-family: var(--hand); font-size: 17px; color: var(--moss); flex: 1; min-width: 150px; }
 
+  .listtop {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap; margin: 0 0 6px;
+  }
+  .listcount { margin: 0; font-size: 14px; color: var(--ink-soft); }
+  .listtop button.act { font-size: 13px; padding: 8px 14px; }
+  .listnote { font-family: var(--hand); font-size: 15px; color: var(--olive);
+              margin: 0 0 14px; min-height: 1.3em; }
+
   /* ---------- share snapshot ---------- */
   .snapwrap {
     border: 1px solid var(--rule); border-radius: 12px 8px 13px 9px / 8px 13px 9px 12px;
@@ -2678,8 +2687,6 @@ const UK = {
  "Selected": "Обрано",
  "Share these recipes": "Поділитися рецептами",
  "Clear": "Очистити",
- "recipe selected": "рецепт обрано",
- "recipes selected": "рецептів обрано",
  "Recipes": "Рецепти",
  "Shopping & prep": "Покупки і підготовка",
  "Which fish": "Яка риба",
@@ -2697,7 +2704,8 @@ const UK = {
  "Prawns": "Креветки",
  "Mussels": "Мідії",
  "Clams": "Молюски",
- "Cockles": "Сердцевидки"
+ "Cockles": "Сердцевидки",
+ "To buy": "Купити"
 };
 let lang = 'en';
 try { lang = localStorage.getItem('mealPlanLang') === 'uk' ? 'uk' : 'en'; } catch (e) {}
@@ -3269,11 +3277,11 @@ const aisleOf = name => {
 };
 const AISLE_ORDER = AISLE.map(a => a[0]).concat('Spices & seasoning');
 
-document.getElementById('weekListBtn').addEventListener('click', () => {
+// Totals for the week, shared by the on-screen list and the copyable text.
+function shoppingData() {
   // Recipes are written in whatever unit reads best on the card. For totalling,
   // fold everything into one base unit per ingredient so nothing splits in two.
   const NORM = { tbsp:[3,'tsp'], kg:[1000,'g'], l:[1000,'ml'], slice:[40,'g'] };
-
   const totals = new Map();   // "name|unit" -> { name, sp, unit, amount }
   const pantry = new Map();   // name -> spanish
 
@@ -3291,27 +3299,68 @@ document.getElementById('weekListBtn').addEventListener('click', () => {
   });
 
   const groups = {};
-  for (const t of totals.values()) (groups[aisleOf(t.name)] ||= []).push(t);
+  for (const item of totals.values()) (groups[aisleOf(item.name)] ||= []).push(item);
+  Object.values(groups).forEach(g => g.sort((x, y) => t(x.name).localeCompare(t(y.name))));
 
-  const body = AISLE_ORDER.filter(a => groups[a]).map(a => {
-    const rows = groups[a].sort((x, y) => x.name.localeCompare(y.name));
-    return `<h4>${esc(t(a))}</h4><ul>${rows.map(row =>
+  return {
+    groups,
+    aisles: AISLE_ORDER.filter(a => groups[a]),
+    pantry: [...pantry.entries()].sort((a, b) => t(a[0]).localeCompare(t(b[0]))),
+    count: totals.size
+  };
+}
+
+// Plain text, with the Spanish shelf name kept beside each item so whoever
+// is actually in the shop can find it.
+function shoppingText() {
+  const d = shoppingData();
+  const out = [t('Week shopping list').toUpperCase(), t('To buy') + ': ' + d.count, ''];
+  d.aisles.forEach(a => {
+    out.push(t(a).toUpperCase());
+    d.groups[a].forEach(row =>
+      out.push('· ' + t(row.name) + (row.sp ? ' / ' + row.sp : '') +
+               ' — ' + fmtTotal(row.amount, row.unit)));
+    out.push('');
+  });
+  out.push(t('Store cupboard — check before you go').toUpperCase());
+  d.pantry.forEach(([n, sp]) => out.push('· ' + t(n) + (sp ? ' / ' + sp : '')));
+  return out.join('\n').trim();
+}
+
+document.getElementById('weekListBtn').addEventListener('click', () => {
+  const d = shoppingData();
+  const body = d.aisles.map(a =>
+    `<h4>${esc(t(a))}</h4><ul>${d.groups[a].map(row =>
       `<li><span class="iname">${esc(t(row.name))}<span class="sp">${esc(row.sp)}</span></span>
-       <span class="qty">${esc(fmtTotal(row.amount, row.unit))}</span></li>`).join('')}</ul>`;
-  }).join('');
-
-  const pantryRows = [...pantry.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+       <span class="qty">${esc(fmtTotal(row.amount, row.unit))}</span></li>`).join('')}</ul>`).join('');
 
   document.getElementById('dlgTitle').textContent = t('Week shopping list');
   document.getElementById('dlgBody').innerHTML =
-    `<p style="margin:0 0 16px;font-size:14px;color:var(--ink-soft)">
-       Seven breakfasts plus seven dinners at double quantity, totalled and grouped by aisle —
-       ${totals.size} items to buy. Lunches need nothing extra; they are the doubled dinners.</p>
+    `<div class="listtop">
+       <p class="listcount">${t('To buy')}: ${d.count}</p>
+       <button class="act" id="listCopy">${t('Copy as text')}</button>
+     </div>
+     <p class="listnote" id="listNote"></p>
      ${body}
      <h4>${t('Store cupboard — check before you go')}</h4>
-     <ul>${pantryRows.map(([n, sp]) =>
+     <ul>${d.pantry.map(([n, sp]) =>
        `<li><span class="iname">${esc(t(n))}<span class="sp">${esc(sp)}</span></span>
         <span class="qty">${t('have some')}</span></li>`).join('')}</ul>`;
+
+  document.getElementById('listCopy').addEventListener('click', async () => {
+    const el = document.getElementById('listNote');
+    const txt = shoppingText();
+    try {
+      await navigator.clipboard.writeText(txt);
+      el.textContent = t('Copied — paste it into any chat.');
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); el.textContent = t('Copied — paste it into any chat.'); }
+      catch (_) { el.textContent = t('Could not copy automatically.'); }
+      ta.remove();
+    }
+  });
   document.getElementById('dlg').showModal();
 });
 
@@ -3346,7 +3395,7 @@ function renderPickBar() {
   const bar = document.getElementById('pickBar');
   bar.hidden = picked.size === 0;
   document.getElementById('pickCount').textContent =
-    picked.size + ' ' + t(picked.size === 1 ? 'recipe selected' : 'recipes selected');
+    t('Selected') + ': ' + picked.size;
   document.body.style.paddingBottom = picked.size ? '84px' : '';
 }
 
