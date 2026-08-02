@@ -2940,9 +2940,10 @@ function findEggDays(p = plan) {
 }
 
 // The same protein twice in one day — e.g. sardines at breakfast and again at lunch.
-// Dairy is exempt: yogurt, cottage cheese and feta turn up as sides rather than as
-// the thing you'd tire of, so twice in a day is fine.
-const DUPE_EXEMPT = ['dairy'];
+// Dairy and pulses are exempt: yogurt, cottage cheese and feta turn up as sides,
+// and chickpeas at lunch with lentils at dinner is two different things, not a
+// repeat. Everything else still counts.
+const DUPE_EXEMPT = ['dairy', 'plant'];
 const dupeCounts = src => src && !DUPE_EXEMPT.includes(src);
 
 function findDupeDays(p = plan) {
