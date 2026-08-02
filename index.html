@@ -240,8 +240,26 @@
     transition: background .14s;
   }
   .cell-main:hover { background: color-mix(in srgb, var(--sage) 20%, transparent); }
+  .cell-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px; width: 100%; padding: 0 12px 10px;
+  }
+  .cell-pick {
+    flex: none; width: 24px; height: 24px; line-height: 1; padding: 0;
+    font: inherit; font-size: 14px; cursor: pointer;
+    border: 1.5px dashed var(--rule); background: transparent; color: var(--ink-faint);
+    border-radius: 50%; transition: all .12s;
+  }
+  .cell-pick:hover { border-color: var(--moss); color: var(--moss); }
+  .cell-pick[aria-pressed="true"] {
+    border-style: solid; border-color: var(--moss);
+    background: var(--moss); color: var(--paper); font-weight: 700;
+  }
+  .cell.chosen { background: color-mix(in srgb, var(--moss) 9%, transparent); }
+  .cell.chosen .cell-main { border-left: 3px solid var(--moss); padding-left: 9px; }
+
   .cell-view {
-    margin: 0 12px 10px; padding: 2px 0; background: none; border: 0;
+    margin: 0; padding: 2px 0; background: none; border: 0;
     font-family: var(--hand); font-size: 13px; color: var(--olive);
     cursor: pointer; border-bottom: 1px solid color-mix(in srgb, var(--olive) 45%, transparent);
     transition: color .12s, border-color .12s;
@@ -485,19 +503,6 @@
   button.close:hover { border-color: var(--ink-soft); color: var(--ink); }
 
   /* ---------- recipe picker ---------- */
-  .rec-pick { padding: 13px 19px 0; }
-  button.pick {
-    width: 100%; font: inherit; font-size: 13px; padding: 9px; cursor: pointer;
-    border: 1.5px dashed var(--rule); background: transparent; color: var(--ink-soft);
-    border-radius: 12px 8px 13px 9px / 8px 13px 9px 12px;
-    transition: border-color .12s, color .12s, background .12s;
-  }
-  button.pick:hover { border-color: var(--olive); color: var(--olive); }
-  button.pick[aria-pressed="true"] {
-    border-style: solid; border-color: var(--moss); color: var(--paper);
-    background: var(--moss); font-weight: 600;
-  }
-  .rec.chosen { box-shadow: 0 0 0 2px var(--moss), var(--lift); }
 
   .pickbar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
@@ -2728,7 +2733,7 @@ function render() {
   const list = RECIPES.filter(matches);
   $('count').textContent = list.length + ' ' + t(list.length === 1 ? 'recipe' : 'recipes');
   $('grid').innerHTML = list.map(r => `
-    <article class="rec${rating[r.id] === 1 ? ' fav' : ''}${rating[r.id] === -1 ? ' dim' : ''}${picked.has(r.id) ? ' chosen' : ''}" data-id="${r.id}">
+    <article class="rec${rating[r.id] === 1 ? ' fav' : ''}${rating[r.id] === -1 ? ' dim' : ''}" data-id="${r.id}">
       <div class="rec-top">
         <div class="rec-meta"><span class="meal">${t(MEAL_LABEL[r.meal])}</span><span>${t(CUISINE_LABEL[CUISINE[r.id]])} · ${r.mins} ${t('min')}</span></div>
         <h3>${esc(t(r.name))}</h3>
@@ -2751,10 +2756,6 @@ function render() {
           <p class="tip">${esc(t(r.tip))}</p>
         </details>
       </div>
-      <div class="rec-pick">
-        <button class="pick" data-pick-id="${r.id}" aria-pressed="${picked.has(r.id)}">${
-          picked.has(r.id) ? '✓ ' + t('Selected') : '+ ' + t('Select to cook')}</button>
-      </div>
       <div class="rec-rate">
         <button class="rate fav" data-rate="1"  data-id="${r.id}" aria-pressed="${rating[r.id] === 1}">${t('★ More often')}</button>
         <button class="rate no"  data-rate="-1" data-id="${r.id}" aria-pressed="${rating[r.id] === -1}">${t('Less often')}</button>
@@ -2763,14 +2764,6 @@ function render() {
 }
 
 $('grid').addEventListener('click', e => {
-  const pk = e.target.closest('[data-pick-id]');
-  if (pk) {
-    const id = pk.dataset.pickId;
-    picked.has(id) ? picked.delete(id) : picked.add(id);
-    [...picked].forEach(x => { if (!byId(x)) picked.delete(x); });   // drop removed recipes
-    savePicked(); render(); renderPickBar();
-    return;
-  }
   const btn = e.target.closest('[data-rate]');
   if (!btn) return;
   const id = btn.dataset.id, v = +btn.dataset.rate;
@@ -2816,7 +2809,7 @@ function safeRenderWeek() {
 /* ---------- schedule ---------- */
 
 function cellHtml(r, slot, opts) {
-  const cls = 'cell' + (opts.carry ? ' carry' : '');
+  const cls = 'cell' + (opts.carry ? ' carry' : '') + (picked.has(r.id) ? ' chosen' : '');
   const label = opts.carry ? t('from last night') : t(slot);
   // Main area swaps the meal (lunch can't be swapped, so it opens the recipe);
   // the second button always opens the recipe, which is the thing you actually
@@ -2829,7 +2822,11 @@ function cellHtml(r, slot, opts) {
       <span class="rname">${esc(t(r.name))}</span>
       <span class="cmac">${r.kcal} ${t('kcal')} · <em>${r.p} ${t('g')}</em></span>
     </button>
-    <button class="cell-view" data-view="${r.id}" title="${esc(t('See how to cook it'))}">${t('Recipe')} &rsaquo;</button>
+    <div class="cell-foot">
+      <button class="cell-view" data-view="${r.id}" title="${esc(t('See how to cook it'))}">${t('Recipe')} &rsaquo;</button>
+      <button class="cell-pick" data-pick-id="${r.id}" aria-pressed="${picked.has(r.id)}"
+              title="${esc(t('Select to cook'))}">${picked.has(r.id) ? '✓' : '+'}</button>
+    </div>
   </div>`;
 }
 
@@ -3081,6 +3078,13 @@ function swapIssues(slot, dayIdx, id) {
 document.getElementById('week').addEventListener('click', e => {
   const btn = e.target.closest('button');
   if (!btn) return;
+  if (btn.dataset.pickId) {
+    const id = btn.dataset.pickId;
+    picked.has(id) ? picked.delete(id) : picked.add(id);
+    [...picked].forEach(x => { if (!byId(x)) picked.delete(x); });   // drop removed recipes
+    savePicked(); renderWeek(); renderPickBar();
+    return;
+  }
   if (btn.dataset.view) return openRecipe(byId(btn.dataset.view));
   const slot = btn.dataset.swap, dayIdx = +btn.dataset.day;
   const current = slot === 'b' ? plan[dayIdx].b : plan[dayIdx].d;
